@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="glow" cx="100" cy="46" r="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f3d58a" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#f3d58a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="100" cy="46" r="52" fill="url(#glow)"/>
+  <g fill="none" stroke="#d9ad55" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M100 176 C 60 146, 26 116, 27 84 C 28 56, 48 42, 68 44 C 84 45, 94 54, 100 68"/>
+    <path d="M100 176 C 140 146, 174 116, 173 84 C 172 56, 152 42, 132 44 C 116 45, 106 54, 100 68"/>
+  </g>
+  <path d="M33 118 C 17 124, 4 116, 0 100 C 16 96, 29 104, 33 118 Z" fill="#d9ad55"/>
+  <path d="M31 115 C 22 112, 12 108, 5 102" stroke="#0e1a36" stroke-width="1.6" fill="none" opacity=".6"/>
+  <path d="M167 118 C 183 124, 196 116, 200 100 C 184 96, 171 104, 167 118 Z" fill="#d9ad55"/>
+  <path d="M169 115 C 178 112, 188 108, 195 102" stroke="#0e1a36" stroke-width="1.6" fill="none" opacity=".6"/>
+  <path d="M100 74 C 84 64, 84 42, 100 8 C 116 42, 116 64, 100 74 Z" fill="#d9ad55"/>
+  <path d="M100 68 C 93 61, 93 50, 100 36 C 107 50, 107 61, 100 68 Z" fill="#0e1a36" opacity=".5"/>
+</svg>

@@ -1,0 +1,6 @@
+{
+  "appId": "be.coeuracoeur.priere",
+  "appName": "Cœur à Cœur",
+  "webDir": "www",
+  "android": { "backgroundColor": "#0e1a36" }
+}
