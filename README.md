@@ -1,4 +1,6 @@
-# Cœur à Cœur
+# Manete · Cœur à Cœur
+
+*Manete in me* : « Demeurez en moi » (Jn 15,4).
 
 Application de prière catholique **gratuite, sans publicité, sans compte et sans collecte de données**. Tout reste sur le téléphone.
 
@@ -12,6 +14,7 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 - **Prier autrement** : chapelet guidé, Angélus (*Regina Caeli* au temps pascal), examen du soir, prière en famille, louange (liens vers Spotify, YouTube ou Deezer), oraison, psaumes, adoration, prière du couple, prière aux anges gardiens (matin et soir).
 - **Calendrier liturgique** : fête du jour, temps liturgique et couleur, et la bonne neuvaine proposée au bon moment.
 - **Saint patron** au choix (liste ou saint ajouté soi-même) avec sa prière de dévotion, carnet d'intentions, « Ce qu'il m'a dit », médailles, jour de grâce. Les points peuvent être masqués.
+- **Couleur de fond** au choix : bleu nuit, bordeaux, forêt, prune, bleu canard, encre, ou parchemin clair.
 - **Rappels** (notifications locales), **sauvegarde et restauration** par fichier, **partage** d'une neuvaine ou d'une parole.
 
 ## Vie privée
@@ -40,7 +43,7 @@ Après une modification de `www/index.html`, lancer `npx cap sync`. Pour publier
 
 - **Code** : MIT (voir [LICENSE](LICENSE)).
 - **Textes originaux** (méditations, neuvaines rédigées pour l'app) : CC BY-SA 4.0.
-- **Bible** : traduction Louis Segond 1910, domaine public. **Prières traditionnelles** (*Notre Père*, *Je vous salue Marie*, *Souvenez-vous*, Angélus, prière de Léon XIII à saint Joseph…) : domaine public.
+- **Bible** : d'après la traduction Louis Segond 1910 (domaine public), où « l'Éternel » est rendu par « le Seigneur ». Les quelques versets des livres deutérocanoniques (Tobie, Sagesse, Maccabées) sont traduits pour l'app. **Prières traditionnelles** (*Notre Père*, *Je vous salue Marie*, *Souvenez-vous*, Angélus, prière de Léon XIII à saint Joseph…) : domaine public.
 - **Polices** : Cinzel, EB Garamond et Jost, sous licence SIL Open Font License.
 - **Musique** : aucune n'est intégrée. L'app ouvre seulement une recherche dans l'application de musique choisie par l'utilisateur.
 

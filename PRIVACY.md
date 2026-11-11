@@ -1,10 +1,10 @@
-# Politique de confidentialité de Cœur à Cœur
+# Politique de confidentialité de Manete
 
 *Dernière mise à jour : 11 novembre 2026*
 
 ## En bref
 
-Cœur à Cœur ne collecte, ne transmet et ne vend **aucune donnée**. L'app ne demande ni compte, ni adresse email, ni numéro de téléphone. Elle n'a pas de serveur et ne contient aucun outil de mesure d'audience ni de publicité.
+Manete ne collecte, ne transmet et ne vend **aucune donnée**. L'app ne demande ni compte, ni adresse email, ni numéro de téléphone. Elle n'a pas de serveur et ne contient aucun outil de mesure d'audience ni de publicité.
 
 ## Ce qui est enregistré, et où
 
@@ -38,4 +38,4 @@ Pour toute question, ouvre une *issue* sur le dépôt GitHub du projet.
 
 # Privacy policy (English)
 
-Cœur à Cœur collects, transmits and sells **no data**. There is no account, no server, no analytics and no advertising. Everything you enter (intentions, journal, novenas, progress, settings) is stored **only on your device**. Backups are files you choose where to send. Reminders are local notifications. Links to music services (Spotify, YouTube, Deezer) or to Google Play open only when you tap them. These services have their own privacy policies, and the app sends them no information about you.
+Manete collects, transmits and sells **no data**. There is no account, no server, no analytics and no advertising. Everything you enter (intentions, journal, novenas, progress, settings) is stored **only on your device**. Backups are files you choose where to send. Reminders are local notifications. Links to music services (Spotify, YouTube, Deezer) or to Google Play open only when you tap them. These services have their own privacy policies, and the app sends them no information about you.

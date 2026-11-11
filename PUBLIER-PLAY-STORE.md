@@ -1,4 +1,4 @@
-# Publier Cœur à Cœur sur Google Play
+# Publier Manete sur Google Play
 
 Ce guide va du code jusqu'à la publication. Compte environ 3 semaines, dont 14 jours de test obligatoire.
 
@@ -24,7 +24,7 @@ Ce guide va du code jusqu'à la publication. Compte environ 3 semaines, dont 14 
 
 ## 4. Créer l'app dans la Play Console
 
-1. **Créer une application** : nom « Cœur à Cœur », langue par défaut français, application, **gratuite**.
+1. **Créer une application** : nom « Manete : prière catholique » (le sous-titre aide à être trouvé), langue par défaut français, application, **gratuite**.
 2. **Configurer l'application** (tableau de bord), section par section :
    - **Règles de confidentialité** : l'URL de ta page de confidentialité (voir l'étape 6).
    - **Accès à l'application** : tout est accessible sans identifiant.
@@ -61,5 +61,7 @@ Pour un compte personnel récent, Google exige un **test fermé avec au moins 12
 
 ## Après la publication
 
-- Le lien de la fiche est `https://play.google.com/store/apps/details?id=be.coeuracoeur.priere`. Il est déjà utilisé par les boutons « Partager » de l'app.
-- L'identifiant `be.coeuracoeur.priere` (dans `capacitor.config.json`) **ne peut plus changer** après le premier envoi. Si l'app doit s'appeler autrement (par exemple Manete), décide-le **avant**.
+- Le lien de la fiche est `https://play.google.com/store/apps/details?id=app.manete.priere`.
+- Dans `www/index.html`, passe `APP_LIVE` à `true` : les boutons « Partager » ajoutent alors le lien de la fiche. Tant que l'app n'est pas publiée, ce lien n'est pas ajouté.
+- L'identifiant `app.manete.priere` (dans `capacitor.config.json`) **ne peut plus changer** après le premier envoi.
+- **Marque** : avant la mise en production, vérifie que « MANETE » est libre dans les registres [EUIPO](https://euipo.europa.eu/eSearch/) et [BOIP](https://www.boip.int/fr), classes 9 et 41.

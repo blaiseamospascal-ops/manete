@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0e1a36">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Cœur à Cœur</title>
+<title>Manete</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 
 <style>
@@ -13,12 +13,22 @@
 :root{
   --lapis:#0e1a36; --lapis-2:#16264a; --lapis-3:#203462;
   --gold:#d9ad55; --gold-soft:#b8913f; --vermilion:#c2492f;
-  --parchment:#efe5cf; --mute:#a9a68f; --line:rgba(217,173,85,.22);
+  --parchment:#efe5cf; --mute:#a9a68f; --line:color-mix(in srgb,var(--gold) 22%,transparent);
+  --panel:rgba(14,26,54,.55); --nav:rgba(10,19,40,.94);
   --f-display:"Cinzel","Trajan Pro",Georgia,serif;
   --f-body:"EB Garamond",Garamond,"Times New Roman",serif;
   --f-ui:"Jost","Avenir Next","Segoe UI",system-ui,sans-serif;
   color-scheme:dark;
 }
+/* Fonds au choix (Réglages) : seuls les jetons changent */
+:root[data-fond="bordeaux"]{--lapis:#2b0f19;--lapis-2:#3b1824;--lapis-3:#5a2636;--panel:rgba(43,15,25,.55);--nav:rgba(31,10,18,.94)}
+:root[data-fond="foret"]{--lapis:#0e2a22;--lapis-2:#16392f;--lapis-3:#215343;--panel:rgba(14,42,34,.55);--nav:rgba(9,30,24,.94)}
+:root[data-fond="prune"]{--lapis:#221433;--lapis-2:#2f1d46;--lapis-3:#472c66;--panel:rgba(34,20,51,.55);--nav:rgba(25,14,38,.94)}
+:root[data-fond="canard"]{--lapis:#0a2a35;--lapis-2:#103a48;--lapis-3:#1a5567;--panel:rgba(10,42,53,.55);--nav:rgba(7,31,39,.94)}
+:root[data-fond="encre"]{--lapis:#14130f;--lapis-2:#201e18;--lapis-3:#353126;--panel:rgba(20,19,15,.6);--nav:rgba(14,13,10,.94)}
+:root[data-fond="parchemin"]{color-scheme:light;--lapis:#f1e7d0;--lapis-2:#faf4e6;--lapis-3:#fffaf0;--gold:#86621c;--gold-soft:#a67c2c;--parchment:#2b2415;--mute:#6a6049;--vermilion:#a63a22;--panel:rgba(255,252,243,.62);--nav:rgba(241,231,208,.96)}
+:root[data-fond="parchemin"] .btn[style*="--tone"],:root[data-fond="parchemin"] .session.nov .btn{color:#2b2415}
+:root[data-fond="parchemin"] :is(.nov-card,.side-card,.session.nov) .icon,:root[data-fond="parchemin"] :is(.pill,.candles,.nov-candles){filter:brightness(.62) saturate(1.5)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
@@ -36,7 +46,7 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px sol
 .btn:active{transform:scale(.97)}
 .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--line)}
 .btn.block{width:100%}
-.panel{border:1px solid var(--line);border-radius:18px;padding:18px;background:rgba(14,26,54,.55)}
+.panel{border:1px solid var(--line);border-radius:18px;padding:18px;background:var(--panel)}
 .row{display:flex;gap:12px;align-items:center}
 .between{justify-content:space-between}
 .wrap{flex-wrap:wrap}
@@ -44,9 +54,9 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px sol
 /* header */
 .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .lvl{display:flex;align-items:center;gap:10px;min-width:0}
-.lvl-badge{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--f-display);color:var(--gold);font-size:1.1rem;background:radial-gradient(circle,rgba(217,173,85,.18),transparent 70%)}
+.lvl-badge{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--gold);display:grid;place-items:center;font-family:var(--f-display);color:var(--gold);font-size:1.1rem;background:radial-gradient(circle,color-mix(in srgb,var(--gold) 18%,transparent),transparent 70%)}
 .lvl-name{font-family:var(--f-display);font-size:.95rem;color:var(--parchment)}
-.bar{height:6px;border-radius:6px;background:rgba(239,229,207,.1);overflow:hidden;width:100%}
+.bar{height:6px;border-radius:6px;background:color-mix(in srgb,var(--parchment) 10%,transparent);overflow:hidden;width:100%}
 .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:6px;transition:width .8s ease}
 .chips{display:flex;gap:8px}
 .chip{font-family:var(--f-ui);font-size:.85rem;padding:6px 11px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -64,7 +74,7 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px sol
 .dur[aria-pressed="true"]{background:var(--gold);color:var(--lapis);border-color:var(--gold)}
 .dur[aria-pressed="true"] small{color:var(--lapis)}
 .toggle{display:flex;align-items:center;gap:10px;font-family:var(--f-ui);font-size:.92rem}
-.switch{width:44px;height:26px;border-radius:26px;background:rgba(239,229,207,.15);position:relative;flex:none;transition:background .2s}
+.switch{width:44px;height:26px;border-radius:26px;background:color-mix(in srgb,var(--parchment) 15%,transparent);position:relative;flex:none;transition:background .2s}
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--parchment);transition:transform .2s}
 .switch[aria-checked="true"]{background:var(--gold)}
 .switch[aria-checked="true"]::after{transform:translateX(18px);background:var(--lapis)}
@@ -75,11 +85,11 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px sol
 .gallery{display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center}
 .gallery .icon{width:96px}
 .dots{display:flex;gap:6px;margin-top:8px}
-.dots i{width:6px;height:6px;border-radius:50%;background:rgba(239,229,207,.2)}
+.dots i{width:6px;height:6px;border-radius:50%;background:color-mix(in srgb,var(--parchment) 20%,transparent)}
 .dots i.on{background:var(--gold)}
 
 /* nav */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:rgba(10,19,40,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--nav);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 nav.tabs .in{max-width:540px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
 nav.tabs button{padding:10px 0 12px;font-family:var(--f-ui);font-size:.75rem;letter-spacing:.06em;color:var(--mute);display:flex;flex-direction:column;align-items:center;gap:4px}
 nav.tabs button svg{width:22px;height:22px}
@@ -106,7 +116,7 @@ nav.tabs button[aria-current="page"]{color:var(--gold)}
 .ladder div.current{color:var(--gold)}
 
 /* carnet */
-textarea{width:100%;min-height:90px;resize:vertical;border-radius:14px;border:1px solid var(--line);background:rgba(239,229,207,.05);color:var(--parchment);font-family:var(--f-body);font-size:1.05rem;padding:12px 14px;line-height:1.4}
+textarea{width:100%;min-height:90px;resize:vertical;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--parchment) 5%,transparent);color:var(--parchment);font-family:var(--f-body);font-size:1.05rem;padding:12px 14px;line-height:1.4}
 textarea::placeholder{color:var(--mute);font-style:italic}
 .intent{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
 .intent:first-child{border-top:0}
@@ -123,7 +133,7 @@ textarea::placeholder{color:var(--mute);font-style:italic}
 .s-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .s-top .chip{cursor:pointer}
 .steps{display:flex;gap:6px}
-.steps i{flex:1;height:3px;border-radius:3px;background:rgba(239,229,207,.14)}
+.steps i{flex:1;height:3px;border-radius:3px;background:color-mix(in srgb,var(--parchment) 14%,transparent)}
 .steps i.on{background:var(--gold)}
 .stage{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;flex:1;animation:rise .7s ease both}
 @keyframes rise{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -141,8 +151,8 @@ textarea::placeholder{color:var(--mute);font-style:italic}
 .small-link{font-family:var(--f-ui);font-size:.85rem;color:var(--mute);text-decoration:underline;text-underline-offset:3px;align-self:center}
 
 /* silence */
-.silence{position:fixed;inset:0;z-index:30;background:#05080f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:24px;color:var(--parchment);transition:background 2s}
-.breath{width:160px;height:160px;border-radius:50%;border:1px solid rgba(217,173,85,.35);display:grid;place-items:center;animation:breathe 10s ease-in-out infinite;box-shadow:0 0 60px rgba(217,173,85,.12) inset}
+.silence{--parchment:#efe5cf;--mute:#a9a68f;--gold:#d9ad55;position:fixed;inset:0;z-index:30;background:#05080f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:24px;color:var(--parchment);transition:background 2s}
+.breath{width:160px;height:160px;border-radius:50%;border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);display:grid;place-items:center;animation:breathe 10s ease-in-out infinite;box-shadow:0 0 60px color-mix(in srgb,var(--gold) 12%,transparent) inset}
 .breath i{width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 24px var(--gold)}
 @keyframes breathe{0%,100%{transform:scale(.72)}50%{transform:scale(1)}}
 .sil-text{font-size:1.25rem;font-style:italic;max-width:24ch;transition:opacity 2.5s}
@@ -163,7 +173,7 @@ textarea::placeholder{color:var(--mute);font-style:italic}
 /* neuvaines */
 .field{display:flex;flex-direction:column;gap:8px}
 .field>label,.field>.lbl{font-family:var(--f-ui);font-size:.8rem;color:var(--mute);letter-spacing:.06em}
-input[type="text"]{width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(239,229,207,.05);color:var(--parchment);font-family:var(--f-body);font-size:1.05rem;padding:11px 14px}
+input[type="text"]{width:100%;border-radius:14px;border:1px solid var(--line);background:color-mix(in srgb,var(--parchment) 5%,transparent);color:var(--parchment);font-family:var(--f-body);font-size:1.05rem;padding:11px 14px}
 input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .chipbtn{font-family:var(--f-ui);font-size:.8rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--gold)}
 .hint{font-family:var(--f-ui);font-size:.8rem;color:var(--mute);line-height:1.45}
@@ -173,7 +183,7 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .check ol{margin:6px 0 0;padding-left:20px;color:var(--mute)}
 .imgpick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .imgpick button{aspect-ratio:1;max-width:100%;border:1px solid var(--line);border-radius:12px;padding:8px;color:var(--mute)}
-.imgpick button[aria-pressed="true"]{border-color:var(--tone,var(--gold));color:var(--tone,var(--gold));background:rgba(239,229,207,.06)}
+.imgpick button[aria-pressed="true"]{border-color:var(--tone,var(--gold));color:var(--tone,var(--gold));background:color-mix(in srgb,var(--parchment) 6%,transparent)}
 .imgpick svg{width:100%;height:100%}
 .tones{display:flex;gap:8px;flex-wrap:wrap}
 .tones button{font-family:var(--f-ui);font-size:.8rem;padding:7px 12px 7px 9px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;gap:7px}
@@ -199,12 +209,12 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .nov-intent-box{width:100%;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-style:italic;text-align:left}
 .divider{display:flex;align-items:center;gap:10px;width:100%;font-family:var(--f-ui);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line)}
-.litu{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(14,26,54,.55)}
-.ldot{width:12px;height:12px;border-radius:50%;background:var(--lc);flex:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--lc) 22%,transparent)}
+.litu{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel)}
+.ldot{border:1px solid var(--line);width:12px;height:12px;border-radius:50%;background:var(--lc);flex:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--lc) 22%,transparent)}
 .litu b{font-family:var(--f-display);font-weight:500;font-size:.98rem;display:block;line-height:1.3;text-wrap:balance}
 .litu small{font-family:var(--f-ui);font-size:.76rem;color:var(--mute)}
 .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.tile{border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0;background:rgba(14,26,54,.55);transition:border-color .2s}
+.tile{border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--panel);transition:border-color .2s}
 .tile:active{border-color:var(--gold)}
 .tile .icon{width:46px;color:var(--gold)}
 .tile b{font-family:var(--f-display);font-weight:500;font-size:.95rem;color:var(--parchment)}
@@ -220,11 +230,11 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .setrow .lab{flex:1;min-width:0}
 .setrow .lab b{display:block;font-family:var(--f-ui);font-weight:500;font-size:.95rem}
 .setrow .lab small{font-family:var(--f-ui);font-size:.76rem;color:var(--mute)}
-input[type="time"]{background:rgba(239,229,207,.06);border:1px solid var(--line);border-radius:10px;color:var(--parchment);font-family:var(--f-ui);font-size:.95rem;padding:6px 8px}
+input[type="time"]{background:color-mix(in srgb,var(--parchment) 6%,transparent);border:1px solid var(--line);border-radius:10px;color:var(--parchment);font-family:var(--f-ui);font-size:.95rem;padding:6px 8px}
 .saints{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .saints button{border:1px solid var(--line);border-radius:12px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--f-ui);font-size:.66rem;line-height:1.2;color:var(--mute);min-width:0;overflow-wrap:anywhere}
 .saints button svg{width:34px;height:34px;color:var(--gold)}
-.saints button[aria-pressed="true"]{border-color:var(--gold);color:var(--parchment);background:rgba(217,173,85,.1)}
+.saints button[aria-pressed="true"]{border-color:var(--gold);color:var(--parchment);background:color-mix(in srgb,var(--gold) 10%,transparent)}
 .praise-list{display:flex;flex-direction:column;width:100%;border:1px solid var(--line);border-radius:14px;padding:4px 14px;text-align:left}
 .praise-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);width:100%}
 .praise-row:first-child{border-top:0}
@@ -244,6 +254,14 @@ details.addlink .field{gap:8px}
 .grace-text{white-space:pre-line;font-size:1.15rem;line-height:1.55;max-width:34ch;margin:0}
 .grace-text.kid{font-size:1.35rem}
 select{width:100%;border-radius:14px;border:1px solid var(--line);background:var(--lapis-2);color:var(--parchment);font-family:var(--f-ui);font-size:.95rem;padding:10px 12px}
+.fonds{display:flex;flex-wrap:wrap;gap:8px}
+.fonds button{font-family:var(--f-ui);font-size:.8rem;padding:7px 12px 7px 8px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.fonds button i{width:18px;height:18px;border-radius:50%;background:var(--c);border:1px solid color-mix(in srgb,var(--parchment) 45%,transparent)}
+.fonds button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+.brand{display:flex;align-items:center;gap:12px;justify-content:center}
+.brand svg{width:46px;height:46px;color:var(--gold)}
+.brand b{font-family:var(--f-display);font-weight:500;font-size:1.5rem;letter-spacing:.14em;color:var(--gold);display:block;line-height:1.1}
+.brand small{font-family:var(--f-ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mute);flex:none}
 .iconbtn svg{width:18px;height:18px}
 .flame{transform-origin:60px 46px;animation:flick 2.6s ease-in-out infinite}
@@ -268,7 +286,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
 
 <main class="app">
   <header class="top">
-    <div class="lvl-name" id="appName" hidden style="font-size:1.15rem;color:var(--gold)">Cœur à Cœur</div>
+    <div class="lvl-name" id="appName" hidden style="font-size:1.15rem;color:var(--gold)">Manete</div>
     <div class="lvl" id="lvlBlock">
       <div class="lvl-badge" id="lvlNum">I</div>
       <div style="min-width:0;flex:1">
@@ -286,6 +304,8 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
   <!-- PRIER -->
   <section id="view-pray" class="view">
     <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="brand"><svg viewBox="0 0 200 200"><defs><radialGradient id="lgGlow" cx="100" cy="46" r="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="currentColor" stop-opacity=".5"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="46" r="52" fill="url(#lgGlow)"/><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M100 176 C 60 146, 26 116, 27 84 C 28 56, 48 42, 68 44 C 84 45, 94 54, 100 68"/><path d="M100 176 C 140 146, 174 116, 173 84 C 172 56, 152 42, 132 44 C 116 45, 106 54, 100 68"/></g><path d="M33 118 C 17 124, 4 116, 0 100 C 16 96, 29 104, 33 118 Z" fill="currentColor"/><path d="M31 115 C 22 112, 12 108, 5 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M167 118 C 183 124, 196 116, 200 100 C 184 96, 171 104, 167 118 Z" fill="currentColor"/><path d="M169 115 C 178 112, 188 108, 195 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M100 74 C 84 64, 84 42, 100 8 C 116 42, 116 64, 100 74 Z" fill="currentColor"/><path d="M100 68 C 93 61, 93 50, 100 36 C 107 50, 107 61, 100 68 Z" fill="var(--lapis)" opacity=".5"/></svg>
+<div><b>MANETE</b><small>Cœur à Cœur · Demeurez en moi</small></div></div>
       <div class="litu" id="litu"></div>
       <div class="panel side-card" id="novSuggest" hidden></div>
       <div class="hero">
@@ -427,7 +447,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
           <button class="btn" type="button" id="gfAdd" style="padding:9px 18px">Ajouter</button>
         </div>
       </details>
-      <p class="hint">Tous les bénédicités proposés ici sont libres de droits : textes traditionnels anciens, versets de la Bible Segond 1910, ou textes écrits pour l'app et publiés sous licence libre.</p>
+      <p class="hint">Tous les bénédicités proposés ici sont libres de droits : textes traditionnels anciens, versets d'après la Bible Segond 1910, ou textes écrits pour l'app et publiés sous licence libre.</p>
     </div>
   </section>
 
@@ -453,6 +473,10 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
             <button class="btn" type="button" id="csSave" style="padding:9px 18px">Choisir ce saint patron</button>
           </div>
         </details>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:12px">
+        <h2>Couleur de fond</h2>
+        <div class="fonds" id="fondPick"></div>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:4px">
         <h2 style="margin-bottom:6px">Le jeu</h2>
@@ -557,7 +581,7 @@ const VERSES=[
 ["Venez à moi, vous tous qui êtes fatigués et chargés, et je vous donnerai du repos.","Matthieu 11,28"],
 ["Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi.","Jean 14,6"],
 ["Arrêtez, et sachez que je suis Dieu.","Psaume 46,11"],
-["L'Éternel est mon berger : je ne manquerai de rien.","Psaume 23,1"],
+["Le Seigneur est mon berger : je ne manquerai de rien.","Psaume 23,1"],
 ["Voici, je me tiens à la porte, et je frappe. Si quelqu'un entend ma voix et ouvre la porte, j'entrerai chez lui, je souperai avec lui, et lui avec moi.","Apocalypse 3,20"],
 ["Je vous laisse la paix, je vous donne ma paix. Que votre cœur ne se trouble point, et ne s'alarme point.","Jean 14,27"],
 ["Demeurez en moi, et je demeurerai en vous.","Jean 15,4"],
@@ -568,7 +592,7 @@ const VERSES=[
 ["Je puis tout par celui qui me fortifie.","Philippiens 4,13"],
 ["Ma grâce te suffit, car ma puissance s'accomplit dans la faiblesse.","2 Corinthiens 12,9"],
 ["Et voici, je suis avec vous tous les jours, jusqu'à la fin du monde.","Matthieu 28,20"],
-["L'Éternel est près de tous ceux qui l'invoquent.","Psaume 145,18"],
+["Le Seigneur est près de tous ceux qui l'invoquent.","Psaume 145,18"],
 ["Je suis le bon berger. Le bon berger donne sa vie pour ses brebis.","Jean 10,11"],
 ["Mes brebis entendent ma voix ; je les connais, et elles me suivent.","Jean 10,27"],
 ["Heureux ceux qui ont le cœur pur, car ils verront Dieu !","Matthieu 5,8"],
@@ -592,7 +616,7 @@ const VERSES=[
 ["Et la Parole a été faite chair, et elle a habité parmi nous, pleine de grâce et de vérité.","Jean 1,14"],
 ["Après le feu, un murmure doux et léger.","1 Rois 19,12"],
 ["C'est dans la tranquillité et la confiance que sera votre force.","Isaïe 30,15"],
-["Goûtez et voyez combien l'Éternel est bon ! Heureux l'homme qui cherche en lui son refuge !","Psaume 34,9"],
+["Goûtez et voyez combidans le Seigneur est bon ! Heureux l'homme qui cherche en lui son refuge !","Psaume 34,9"],
 ["Priez sans cesse. Rendez grâces en toutes choses.","1 Thessaloniciens 5,17-18"],
 ["Jésus, souviens-toi de moi, quand tu viendras dans ton règne.","Luc 23,42"],
 ["Seigneur, enseigne-nous à prier.","Luc 11,1"]
@@ -628,7 +652,7 @@ const DURS=[5,10,15,20,30];
 /* ---------- Images saintes (SVG dessinés) ---------- */
 function rays(n,r1,r2,cx=60,cy=60){let s='<g class="rays">';for(let i=0;i<n;i++){const a=i/n*Math.PI*2;s+=`<line x1="${cx+Math.cos(a)*r1}" y1="${cy+Math.sin(a)*r1}" x2="${cx+Math.cos(a)*r2}" y2="${cy+Math.sin(a)*r2}"/>`}return s+'</g>'}
 const ICONS={
- cierge:{t:"Le cierge",d:"La flamme dit la présence du Christ ressuscité, lumière qui ne s'éteint pas.",svg:()=>`<svg viewBox="0 0 120 120"><defs><radialGradient id="hl"><stop offset="0" stop-color="#d9ad55" stop-opacity=".55"/><stop offset="1" stop-color="#d9ad55" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="36" r="30" fill="url(#hl)"/>${rays(32,24,44,60,36)}<rect x="50" y="52" width="20" height="56" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M50 58c4 0 4 8 7 8s2-6 13-6" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="60" y1="46" x2="60" y2="52" stroke="currentColor" stroke-width="1.4"/><path class="flame" d="M60 20C67 31 69 38 60 46 51 38 53 31 60 20Z" fill="currentColor"/><path class="flame" d="M60 32c3 4 3 8 0 11-3-3-3-7 0-11Z" fill="#0e1a36" opacity=".55"/><path d="M38 108h44" stroke="currentColor" stroke-width="1.6"/></svg>`},
+ cierge:{t:"Le cierge",d:"La flamme dit la présence du Christ ressuscité, lumière qui ne s'éteint pas.",svg:()=>`<svg viewBox="0 0 120 120"><defs><radialGradient id="hl"><stop offset="0" stop-color="#d9ad55" stop-opacity=".55"/><stop offset="1" stop-color="#d9ad55" stop-opacity="0"/></radialGradient></defs><circle cx="60" cy="36" r="30" fill="url(#hl)"/>${rays(32,24,44,60,36)}<rect x="50" y="52" width="20" height="56" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M50 58c4 0 4 8 7 8s2-6 13-6" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="60" y1="46" x2="60" y2="52" stroke="currentColor" stroke-width="1.4"/><path class="flame" d="M60 20C67 31 69 38 60 46 51 38 53 31 60 20Z" fill="currentColor"/><path class="flame" d="M60 32c3 4 3 8 0 11-3-3-3-7 0-11Z" fill="var(--lapis)" opacity=".55"/><path d="M38 108h44" stroke="currentColor" stroke-width="1.6"/></svg>`},
  croix:{t:"La croix glorieuse",d:"Signe de l'amour qui va jusqu'au bout : la mort vaincue rayonne.",svg:()=>`<svg viewBox="0 0 120 120">${rays(36,30,56)}<circle cx="60" cy="60" r="28" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/><path d="M55 16h10v28h20v10H65v52H55V54H35V44h20z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="60" cy="49" r="3" fill="currentColor"/></svg>`},
  colombe:{t:"La colombe",d:"L'Esprit Saint descend : c'est lui qui prie en nous quand nous ne savons pas prier.",svg:()=>`<svg viewBox="0 0 120 120">${(()=>{let s='<g class="rays">';for(let i=0;i<13;i++){const a=Math.PI*(.15+.7*i/12);s+=`<line x1="${60+Math.cos(a)*22}" y1="${74+Math.sin(a)*22}" x2="${60+Math.cos(a)*50}" y2="${74+Math.sin(a)*50}"/>`}return s+'</g>'})()}<path d="M60 56C46 38 26 34 10 40c16 3 28 12 40 22M60 56c14-18 34-22 50-16-16 3-28 12-40 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M18 42c10 0 20 6 28 14M102 42c-10 0-20 6-28 14" fill="none" stroke="currentColor" stroke-width="1" opacity=".6"/><path d="M53 36 60 18 67 36Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M50 62c0-10 4-24 10-24s10 14 10 24-4 12-10 12-10-2-10-12Z" fill="currentColor" opacity=".9"/><circle cx="60" cy="80" r="6" fill="currentColor"/><path d="M57 86 60 92 63 86" fill="currentColor"/></svg>`},
  coeur:{t:"Le Sacré-Cœur",d:"Un cœur couronné d'épines et brûlant d'amour : « Voici ce Cœur qui a tant aimé les hommes. »",svg:()=>{let th='';for(let i=0;i<=16;i++){const x=34+i*3.25,y=60+(i%2?-3:3);th+=`${i?'L':'M'}${x} ${y}`}return `<svg viewBox="0 0 120 120">${rays(30,40,58,60,66)}<path d="M60 104C30 84 22 66 30 54c8-12 24-10 30 2 6-12 22-14 30-2 8 12 0 30-30 50Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="${th}" fill="none" stroke="currentColor" stroke-width="1.4"/><path class="flame" style="transform-origin:60px 52px" d="M60 52c-7-9-4-17 0-26 4 9 7 17 0 26Z" fill="currentColor"/><path d="M50 50c-4-4-3-8 0-12 1 5 4 7 3 11M70 50c4-4 3-8 0-12-1 5-4 7-3 11" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M60 8v16M54 13h12" stroke="currentColor" stroke-width="1.6"/><path d="M60 72v10" stroke="currentColor" stroke-width="1.4" opacity=".7"/></svg>`}},
@@ -689,10 +713,10 @@ const BADGES=[
 ];
 
 /* ---------- État ---------- */
-const KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const KEY="manete-v1",OLD_KEY="coeur-a-coeur-v1";
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
-try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
+try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const dayKey=(d=new Date())=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 const yesterday=()=>{const d=new Date();d.setDate(d.getDate()-1);return dayKey(d)};
@@ -782,7 +806,7 @@ function renderProgress(){
  $("#pLvlBar").style.width=L.pct+"%";$("#pLvlQuote").textContent=L.quote;
  const wk=$("#week");wk.innerHTML="";const names=["D","L","M","M","J","V","S"];
  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dayKey(d),m=S.days[k]||0,lit=m>0;
-  wk.insertAdjacentHTML("beforeend",`<div class="day ${i===0?"today":""}"><svg viewBox="0 0 26 38">${lit?'<ellipse cx="13" cy="9" rx="9" ry="9" fill="#d9ad55" opacity=".18"/><path d="M13 2c3 4 4 7 0 10-4-3-3-6 0-10z" fill="#d9ad55"/>':''}<line x1="13" y1="12" x2="13" y2="15" stroke="${lit?"#d9ad55":"#a9a68f"}" stroke-width="1"/><rect x="8" y="15" width="10" height="21" rx="1.5" fill="none" stroke="${lit?"#d9ad55":"rgba(169,166,143,.5)"}" stroke-width="1.2"/></svg>${names[d.getDay()]}<span style="font-variant-numeric:tabular-nums">${lit?m+"′":"·"}</span></div>`)}
+  wk.insertAdjacentHTML("beforeend",`<div class="day ${i===0?"today":""}"><svg viewBox="0 0 26 38">${lit?'<ellipse cx="13" cy="9" rx="9" ry="9" fill="#d9ad55" opacity=".18"/><path d="M13 2c3 4 4 7 0 10-4-3-3-6 0-10z" fill="#d9ad55"/>':''}<line x1="13" y1="12" x2="13" y2="15" stroke="${lit?"#d9ad55":"#a9a68f"}" stroke-width="1"/><rect x="8" y="15" width="10" height="21" rx="1.5" fill="none" stroke="${lit?"#d9ad55":"color-mix(in srgb,var(--mute) 50%,transparent)"}" stroke-width="1.2"/></svg>${names[d.getDay()]}<span style="font-variant-numeric:tabular-nums">${lit?m+"′":"·"}</span></div>`)}
  $("#sStreak").textContent=liveStreak();$("#sMin").textContent=S.totalMin;$("#sSil").textContent=S.silences;
  $("#badges").innerHTML=BADGES.map(b=>`<div class="badge ${S.badges[b.id]?"":"locked"}">${BADGE_ICON[b.i]}<b>${b.n}</b><small>${b.d}</small></div>`).join("");
  ["#pLevelPanel","#pLadder","#pPoints"].forEach(id=>$(id).hidden=!!S.hidePoints);
@@ -1037,7 +1061,7 @@ Je confie à Marie ma pureté et mon cœur. Merci, Seigneur, pour ces neuf jours
 {key:"deuil",type:"deuil",img:"cierge",tone:"#b88ac4",aves:1,when:"Neuf jours après un décès, avant un anniversaire, ou à tout moment",blurb:"Pour un défunt, avec le psaume « Du fond de l'abîme » et la prière « Donne-lui, Seigneur, le repos éternel ». Écris son prénom comme intention.",text:`NEUVAINE : Neuvaine pour un défunt
 
 PRIÈRE DE CHAQUE JOUR :
-Du fond de l'abîme je t'invoque, ô Éternel ! Seigneur, écoute ma voix ! Que tes oreilles soient attentives à la voix de mes supplications ! Si tu gardais le souvenir des iniquités, Éternel, Seigneur, qui pourrait subsister ? Mais le pardon se trouve auprès de toi, afin qu'on te craigne. J'espère en l'Éternel, mon âme espère, et j'attends sa promesse. Mon âme compte sur le Seigneur, plus que les gardes ne comptent sur le matin. (Ps 130)
+Du fond de l'abîme je t'invoque, Seigneur ! Seigneur, écoute ma voix ! Que tes oreilles soient attentives à la voix de mes supplications ! Si tu gardais le souvenir des iniquités, Seigneur, qui pourrait subsister ? Mais le pardon se trouve auprès de toi, afin qu'on te craigne. J'espère dans le Seigneur, mon âme espère, et j'attends sa promesse. Mon âme compte sur le Seigneur, plus que les gardes ne comptent sur le matin. (Ps 130)
 
 Donne-lui, Seigneur, le repos éternel,
 et que brille sur lui la lumière sans fin.
@@ -1089,7 +1113,7 @@ Viens, Seigneur Jésus ! (Ap 22,20)
 Notre Père… Je vous salue Marie… Gloire au Père…
 
 JOUR 1 : 16 décembre · Préparez le chemin
-« Préparez au désert le chemin de l'Éternel. » (Is 40,3)
+« Préparez au désert le chemin du Seigneur. » (Is 40,3)
 Quel encombrement puis-je ôter de mon cœur cette semaine pour lui faire de la place ?
 
 JOUR 2 : 17 décembre · Ô Sagesse
@@ -1141,7 +1165,7 @@ JOUR 4 : Pardonner
 Je nomme une personne à qui je veux pardonner, et je prie pour elle.
 
 JOUR 5 : Déchirer son cœur
-« Déchirez vos cœurs et non vos vêtements, et revenez à l'Éternel. » (Jl 2,13)
+« Déchirez vos cœurs et non vos vêtements, et revenez au Seigneur. » (Jl 2,13)
 Je choisis un petit jeûne ou un renoncement pour aujourd'hui.
 
 JOUR 6 : La charité
@@ -1179,7 +1203,7 @@ JOUR 1 : La promesse
 Comme les apôtres au Cénacle, j'attends avec Marie. Je n'ai rien à prouver : je demande.
 
 JOUR 2 : Le don de sagesse
-« L'Esprit de l'Éternel reposera sur lui : esprit de sagesse et d'intelligence. » (Is 11,2)
+« L'Esprit du Seigneur reposera sur lui : esprit de sagesse et d'intelligence. » (Is 11,2)
 Donne-moi de goûter les choses de Dieu et de voir ma vie avec ton regard.
 
 JOUR 3 : Le don d'intelligence
@@ -1187,7 +1211,7 @@ JOUR 3 : Le don d'intelligence
 Ouvre mon esprit à ta Parole. Que je comprenne de l'intérieur ce que je crois.
 
 JOUR 4 : Le don de conseil
-« L'Esprit de l'Éternel reposera sur lui : esprit de conseil et de force. » (Is 11,2)
+« L'Esprit du Seigneur reposera sur lui : esprit de conseil et de force. » (Is 11,2)
 Éclaire la décision que je porte. Montre-moi le chemin à prendre.
 
 JOUR 5 : Le don de force
@@ -1203,7 +1227,7 @@ JOUR 7 : Le don de piété
 Donne-moi un cœur d'enfant qui aime prier son Père, simplement.
 
 JOUR 8 : Le don de crainte de Dieu
-« La crainte de l'Éternel est le commencement de la sagesse. » (Pr 9,10)
+« La crainte du Seigneur est le commencement de la sagesse. » (Pr 9,10)
 Non pas la peur, mais le respect émerveillé : que je ne veuille jamais te blesser.
 
 JOUR 9 : Les fruits de l'Esprit
@@ -1314,7 +1338,7 @@ function saveNovena(){
  S.novenas.push({id:Date.now(),name,intention:$("#novIntent").value.trim(),img:NF.img,tone:NF.tone,daily:p.daily,days:p.days.slice(0,9),progress:Array(9).fill(null),created:Date.now(),completedAt:null});
  save();closeNovForm();renderNovenas();syncReminders();toast("Neuvaine ajoutée. Tu peux prier le jour 1.");
 }
-const candle=(lit,extra="")=>`<svg viewBox="0 0 14 24" class="${extra}">${lit?'<ellipse cx="7" cy="5" rx="6" ry="6" fill="var(--tone)" opacity=".18"/><path class="fl" d="M7 1c2 3 3 5 0 7-3-2-2-4 0-7z" fill="var(--tone)"/>':''}<rect x="4" y="9" width="6" height="14" rx="1" fill="none" stroke="${lit?"var(--tone)":"rgba(169,166,143,.45)"}" stroke-width="1"/></svg>`;
+const candle=(lit,extra="")=>`<svg viewBox="0 0 14 24" class="${extra}">${lit?'<ellipse cx="7" cy="5" rx="6" ry="6" fill="var(--tone)" opacity=".18"/><path class="fl" d="M7 1c2 3 3 5 0 7-3-2-2-4 0-7z" fill="var(--tone)"/>':''}<rect x="4" y="9" width="6" height="14" rx="1" fill="none" stroke="${lit?"var(--tone)":"color-mix(in srgb,var(--mute) 45%,transparent)"}" stroke-width="1"/></svg>`;
 function novState(n){
  const today=dayKey(),done=n.progress.filter(Boolean).length,next=n.progress.findIndex(p=>!p);
  const last=n.progress.filter(Boolean).sort().pop()||null;
@@ -1622,7 +1646,7 @@ const FLOWS={
     btn:s.announce?"Commencer la dizaine":s.label==="Salve Regina"?"Amen · Terminer":"Suivant",tapAdvance:!s.announce}))}},
  angelus:()=>{const ps=liturgy().season==="paques";return{eyebrow:ps?"Temps pascal":"Midi",bonus:["Angélus",10],count:"angelus",icon:"marie",title:"Va en paix",text:"« Et le Verbe s'est fait chair, et il a habité parmi nous. »",
   steps:[{html:()=>`<p class="eyebrow">${ps?"Regina Caeli · temps pascal":"L'Angélus"}</p><div class="icon">${ICONS.marie.svg()}</div><h2>${ps?"Reine du ciel, réjouis-toi":"L'ange du Seigneur"}</h2><p class="text" style="color:var(--mute);font-size:1rem">Trois fois par jour, le matin, à midi et le soir, l'Église s'arrête pour se souvenir que Dieu s'est fait homme.</p><p class="prayer">${esc(ps?REGINA:ANGELUS)}</p>`,btn:"Amen"}]}},
- examen:()=>({eyebrow:"Examen du soir",bonus:["Examen du soir",20],count:"examen",icon:"cierge",title:"Bonne nuit dans sa paix",text:"« Je me couche et je m'endors en paix, car toi seul, ô Éternel, tu me donnes la sécurité dans ma demeure. » (Ps 4,9)",
+ examen:()=>({eyebrow:"Examen du soir",bonus:["Examen du soir",20],count:"examen",icon:"cierge",title:"Bonne nuit dans sa paix",text:"« Je me couche et je m'endors en paix, car toi seul, Seigneur, tu me donnes la sécurité dans ma demeure. » (Ps 4,9)",
   steps:[
    {html:()=>`<p class="eyebrow">1 · Merci</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Rendre grâce</h2><p class="text">Remercie pour un don de cette journée : une rencontre, un moment de beauté, une force reçue. Prends le temps de le savourer.</p>`},
    {html:()=>`<p class="eyebrow">2 · Lumière</p><div class="icon">${ICONS.colombe.svg()}</div><h2>Demander la lumière</h2><p class="text"><em>« Viens, Esprit Saint, éclaire-moi. »</em><br>Demande de voir ta journée avec le regard de Dieu, sans complaisance et sans dureté.</p>`},
@@ -1700,21 +1724,21 @@ function bindPraise(){
  st.querySelectorAll("[data-dellink]").forEach(b=>b.onclick=()=>{S.myLinks.splice(+b.dataset.dellink,1);save();renderFlow()});
  const add=$("#lkAdd");if(add)add.onclick=()=>{const n=$("#lkName").value.trim(),u=$("#lkUrl").value.trim();if(!/^https:\/\/\S+$/i.test(u)){toast("Colle un lien qui commence par https://");return}S.myLinks=S.myLinks||[];S.myLinks.unshift({name:n||"Ma louange",url:u});save();renderFlow();toast("Lien ajouté")}}
 const PSALMS=[
- {n:23,t:"Le Seigneur est mon berger",th:"Confiance",x:"L'Éternel est mon berger : je ne manquerai de rien.\nIl me fait reposer dans de verts pâturages,\nIl me dirige près des eaux paisibles.\nIl restaure mon âme,\nIl me conduit dans les sentiers de la justice, à cause de son nom.\nQuand je marche dans la vallée de l'ombre de la mort,\nJe ne crains aucun mal, car tu es avec moi :\nTa houlette et ton bâton me rassurent.\nTu dresses devant moi une table,\nEn face de mes adversaires ;\nTu oins d'huile ma tête,\nEt ma coupe déborde.\nOui, le bonheur et la grâce m'accompagneront\nTous les jours de ma vie,\nEt j'habiterai dans la maison de l'Éternel\nJusqu'à la fin de mes jours."},
+ {n:23,t:"Le Seigneur est mon berger",th:"Confiance",x:"Le Seigneur est mon berger : je ne manquerai de rien.\nIl me fait reposer dans de verts pâturages,\nIl me dirige près des eaux paisibles.\nIl restaure mon âme,\nIl me conduit dans les sentiers de la justice, à cause de son nom.\nQuand je marche dans la vallée de l'ombre de la mort,\nJe ne crains aucun mal, car tu es avec moi :\nTa houlette et ton bâton me rassurent.\nTu dresses devant moi une table,\nEn face de mes adversaires ;\nTu oins d'huile ma tête,\nEt ma coupe déborde.\nOui, le bonheur et la grâce m'accompagneront\nTous les jours de ma vie,\nEt j'habiterai dans la maison du Seigneur\nJusqu'à la fin de mes jours."},
  {n:63,t:"Mon âme a soif de toi",th:"Désir de Dieu · le matin",x:"Ô Dieu ! tu es mon Dieu, je te cherche ;\nMon âme a soif de toi, mon corps soupire après toi,\nDans une terre aride, desséchée, sans eau.\nAinsi je te contemple dans le sanctuaire,\nPour voir ta puissance et ta gloire.\nCar ta bonté vaut mieux que la vie :\nMes lèvres célèbrent tes louanges.\nJe te bénirai donc toute ma vie,\nJ'élèverai mes mains en ton nom.\nLorsque je pense à toi sur ma couche,\nJe médite sur toi pendant les veilles de la nuit.\nCar tu es mon secours,\nEt je suis dans la joie à l'ombre de tes ailes.\nMon âme est attachée à toi ;\nTa droite me soutient.",ref:"versets 2 à 9, extraits"},
- {n:103,t:"Bénis le Seigneur, ô mon âme",th:"Action de grâce",x:"Mon âme, bénis l'Éternel !\nQue tout ce qui est en moi bénisse son saint nom !\nMon âme, bénis l'Éternel,\nEt n'oublie aucun de ses bienfaits !\nC'est lui qui pardonne toutes tes iniquités,\nQui guérit toutes tes maladies ;\nC'est lui qui délivre ta vie de la fosse,\nQui te couronne de bonté et de miséricorde.\nL'Éternel est miséricordieux et compatissant,\nLent à la colère et riche en bonté.\nAutant l'orient est éloigné de l'occident,\nAutant il éloigne de nous nos transgressions.\nComme un père a compassion de ses enfants,\nL'Éternel a compassion de ceux qui le craignent.",ref:"extraits"},
- {n:121,t:"Je lève les yeux vers les montagnes",th:"Protection · un voyage, une épreuve",x:"Je lève mes yeux vers les montagnes…\nD'où me viendra le secours ?\nLe secours me vient de l'Éternel,\nQui a fait les cieux et la terre.\nIl ne permettra point que ton pied chancelle ;\nCelui qui te garde ne sommeillera point.\nL'Éternel est celui qui te garde,\nL'Éternel est ton ombre à ta main droite.\nPendant le jour le soleil ne te frappera point,\nNi la lune pendant la nuit.\nL'Éternel te gardera de tout mal,\nIl gardera ton âme ;\nL'Éternel gardera ton départ et ton arrivée,\nDès maintenant et à jamais."},
- {n:131,t:"Comme un enfant contre sa mère",th:"Abandon · paix intérieure",x:"Éternel ! je n'ai ni un cœur qui s'enfle, ni des regards hautains ;\nJe ne m'occupe pas de choses trop grandes et trop relevées pour moi.\nLoin de là, j'ai l'âme calme et tranquille,\nComme un enfant sevré qui est auprès de sa mère ;\nJ'ai l'âme comme un enfant sevré.\nIsraël, mets ton espoir en l'Éternel,\nDès maintenant et à jamais !"},
- {n:139,t:"Tu me sondes et tu me connais",th:"Être connu et aimé",x:"Éternel ! tu me sondes et tu me connais,\nTu sais quand je m'assieds et quand je me lève,\nTu pénètres de loin ma pensée ;\nTu sais quand je marche et quand je me couche,\nEt tu pénètres toutes mes voies.\nTu m'entoures par derrière et par devant,\nEt tu mets ta main sur moi.\nOù irais-je loin de ton esprit,\nEt où fuirais-je loin de ta face ?\nSi je prends les ailes de l'aurore,\nEt que j'aille habiter à l'extrémité de la mer,\nLà aussi ta main me conduira,\nEt ta droite me saisira.\nC'est toi qui as formé mes reins,\nQui m'as tissé dans le sein de ma mère.\nJe te loue de ce que je suis une créature si merveilleuse.",ref:"extraits"},
- {n:150,t:"Que tout ce qui respire loue le Seigneur",th:"Louange",x:"Louez l'Éternel !\nLouez Dieu dans son sanctuaire !\nLouez-le dans l'étendue, où éclate sa puissance !\nLouez-le pour ses hauts faits !\nLouez-le selon l'immensité de sa grandeur !\nLouez-le au son de la trompette !\nLouez-le avec le luth et la harpe !\nLouez-le avec le tambourin et avec des danses !\nLouez-le avec les instruments à cordes et le chalumeau !\nLouez-le avec les cymbales sonores !\nLouez-le avec les cymbales retentissantes !\nQue tout ce qui respire loue l'Éternel !\nLouez l'Éternel !"}
+ {n:103,t:"Bénis le Seigneur, ô mon âme",th:"Action de grâce",x:"Mon âme, bénis le Seigneur !\nQue tout ce qui est en moi bénisse son saint nom !\nMon âme, bénis le Seigneur,\nEt n'oublie aucun de ses bienfaits !\nC'est lui qui pardonne toutes tes iniquités,\nQui guérit toutes tes maladies ;\nC'est lui qui délivre ta vie de la fosse,\nQui te couronne de bonté et de miséricorde.\nLe Seigneur est miséricordieux et compatissant,\nLent à la colère et riche en bonté.\nAutant l'orient est éloigné de l'occident,\nAutant il éloigne de nous nos transgressions.\nComme un père a compassion de ses enfants,\nLe Seigneur a compassion de ceux qui le craignent.",ref:"extraits"},
+ {n:121,t:"Je lève les yeux vers les montagnes",th:"Protection · un voyage, une épreuve",x:"Je lève mes yeux vers les montagnes…\nD'où me viendra le secours ?\nLe secours me vient du Seigneur,\nQui a fait les cieux et la terre.\nIl ne permettra point que ton pied chancelle ;\nCelui qui te garde ne sommeillera point.\nLe Seigneur est celui qui te garde,\nLe Seigneur est ton ombre à ta main droite.\nPendant le jour le soleil ne te frappera point,\nNi la lune pendant la nuit.\nLe Seigneur te gardera de tout mal,\nIl gardera ton âme ;\nLe Seigneur gardera ton départ et ton arrivée,\nDès maintenant et à jamais."},
+ {n:131,t:"Comme un enfant contre sa mère",th:"Abandon · paix intérieure",x:"Seigneur ! je n'ai ni un cœur qui s'enfle, ni des regards hautains ;\nJe ne m'occupe pas de choses trop grandes et trop relevées pour moi.\nLoin de là, j'ai l'âme calme et tranquille,\nComme un enfant sevré qui est auprès de sa mère ;\nJ'ai l'âme comme un enfant sevré.\nIsraël, mets ton espoir dans le Seigneur,\nDès maintenant et à jamais !"},
+ {n:139,t:"Tu me sondes et tu me connais",th:"Être connu et aimé",x:"Seigneur ! tu me sondes et tu me connais,\nTu sais quand je m'assieds et quand je me lève,\nTu pénètres de loin ma pensée ;\nTu sais quand je marche et quand je me couche,\nEt tu pénètres toutes mes voies.\nTu m'entoures par derrière et par devant,\nEt tu mets ta main sur moi.\nOù irais-je loin de ton esprit,\nEt où fuirais-je loin de ta face ?\nSi je prends les ailes de l'aurore,\nEt que j'aille habiter à l'extrémité de la mer,\nLà aussi ta main me conduira,\nEt ta droite me saisira.\nC'est toi qui as formé mes reins,\nQui m'as tissé dans le sein de ma mère.\nJe te loue de ce que je suis une créature si merveilleuse.",ref:"extraits"},
+ {n:150,t:"Que tout ce qui respire loue le Seigneur",th:"Louange",x:"Louez le Seigneur !\nLouez Dieu dans son sanctuaire !\nLouez-le dans l'étendue, où éclate sa puissance !\nLouez-le pour ses hauts faits !\nLouez-le selon l'immensité de sa grandeur !\nLouez-le au son de la trompette !\nLouez-le avec le luth et la harpe !\nLouez-le avec le tambourin et avec des danses !\nLouez-le avec les instruments à cordes et le chalumeau !\nLouez-le avec les cymbales sonores !\nLouez-le avec les cymbales retentissantes !\nQue tout ce qui respire loue le Seigneur !\nLouez le Seigneur !"}
 ];
 const COMMUNION_SPIR="Mon Jésus, je crois que vous êtes présent dans le très saint Sacrement. Je vous aime plus que tout, et je désire vous recevoir dans mon âme. Puisque je ne puis maintenant vous recevoir sacramentellement, venez au moins spirituellement dans mon cœur. Je vous embrasse comme si vous étiez déjà venu, et je m'unis tout entier à vous. Ne permettez pas que je me sépare jamais de vous. Amen.\n(Saint Alphonse de Liguori)";
 function silenceStepHTML(min,label){return `<button class="btn block" type="button" id="flowSil">${label||"Fermer les yeux"} · ${min} min</button>`}
 function bindSilence(min,after){const b=$("#flowSil");if(b)b.onclick=()=>startSilence(min*60,()=>{FL.data.silDone=true;S.silences++},()=>{after?after():null;FL.i++;renderFlow()})}
 Object.assign(FLOWS,{
- louange:()=>({eyebrow:"Louange",bonus:["Louange",15],count:"louange",icon:"soleil",title:"Gloire à Dieu",text:"« Que tout ce qui respire loue l'Éternel ! » (Ps 150,6)",
+ louange:()=>({eyebrow:"Louange",bonus:["Louange",15],count:"louange",icon:"soleil",title:"Gloire à Dieu",text:"« Que tout ce qui respire loue le Seigneur ! » (Ps 150,6)",
   steps:[
-   {html:()=>`<p class="eyebrow">1 · Entrer dans la louange</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Louer, c'est regarder Dieu</h2><p class="text">Demander, c'est parler de nos besoins. Remercier, c'est parler de ses dons. Louer, c'est le regarder lui, simplement parce qu'il est Dieu.<br><br><em>« Je bénirai l'Éternel en tout temps ; sa louange sera toujours dans ma bouche. »</em> (Ps 34,2)</p>`},
+   {html:()=>`<p class="eyebrow">1 · Entrer dans la louange</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Louer, c'est regarder Dieu</h2><p class="text">Demander, c'est parler de nos besoins. Remercier, c'est parler de ses dons. Louer, c'est le regarder lui, simplement parce qu'il est Dieu.<br><br><em>« Je bénirai le Seigneur en tout temps ; sa louange sera toujours dans ma bouche. »</em> (Ps 34,2)</p>`},
    {html:()=>`<p class="eyebrow">2 · Chanter</p><h2>Choisis un chant</h2>${praiseListHTML()}`,onRender:bindPraise,btn:"J'ai chanté · Continuer"},
    {html:()=>`<p class="eyebrow">3 · À toi la gloire</p><div class="icon">${ICONS.etoile.svg()}</div><h2>Je te loue pour…</h2><p class="text">Dis-lui trois raisons de le louer : pour qui il est, pas seulement pour ce qu'il donne. « Tu es fidèle. Tu es lumière. Tu es patient avec moi… »</p><div class="field" style="width:100%;text-align:left"><label for="fPraise">Ma louange (facultatif)</label><input type="text" id="fPraise" placeholder="Seigneur, tu es…"></div><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen · Terminer",onNext:()=>{const v=$("#fPraise");if(v)FL.data.praise=v.value}}
   ],onFinish:()=>addWord(FL.data.praise&&("Louange : "+FL.data.praise),"Louange")}),
@@ -1727,7 +1751,7 @@ Object.assign(FLOWS,{
  psaume:()=>({eyebrow:"Psaume",bonus:["Psaume",15],count:"psaume",icon:"chirho",title:"Que ta parole demeure en moi",text:"« Ta parole est une lampe à mes pieds, et une lumière sur mon sentier. » (Ps 119,105)",
   steps:[
    {html:()=>`<p class="eyebrow">Prier un psaume</p><div class="icon">${ICONS.chirho.svg()}</div><h2>Les psaumes, prière de Jésus</h2><p class="text" style="font-size:1rem">Jésus les priait, et l'Église les prie chaque jour. Choisis celui qui correspond à ton cœur aujourd'hui.</p><div class="praise-list" id="psList">${PSALMS.map((p,i)=>`<button type="button" class="praise-row ps" data-ps="${i}"><div style="min-width:0;text-align:left"><b>Psaume ${p.n} · ${p.t}</b><small>${p.th}</small></div><span style="color:var(--gold)">›</span></button>`).join("")}</div>`,onRender:()=>$("#psList").querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{FL.data.ps=PSALMS[+b.dataset.ps];FL.i++;renderFlow();$("#session").scrollTop=0}),btn:"Au hasard",onNext:()=>{FL.data.ps=FL.data.ps||rnd(PSALMS)}},
-   {html:()=>{const p=FL.data.ps||(FL.data.ps=rnd(PSALMS));return `<p class="eyebrow">Psaume ${p.n}${p.ref?` · ${p.ref}`:""}</p><h2>${p.t}</h2><p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, à mi-voix si tu peux. Arrête-toi sur le verset qui te touche.</p><p class="prayer">${esc(p.x)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p><p class="hint">Traduction Louis Segond, 1910.</p>`}},
+   {html:()=>{const p=FL.data.ps||(FL.data.ps=rnd(PSALMS));return `<p class="eyebrow">Psaume ${p.n}${p.ref?` · ${p.ref}`:""}</p><h2>${p.t}</h2><p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, à mi-voix si tu peux. Arrête-toi sur le verset qui te touche.</p><p class="prayer">${esc(p.x)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p><p class="hint">D'après la traduction Louis Segond (1910).</p>`}},
    {html:()=>`<p class="eyebrow">Garder un verset</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Quel verset emporter ?</h2><p class="text">Recopie le verset qui t'a touché. Redis-le plusieurs fois dans la journée.</p><div class="field" style="width:100%;text-align:left"><label for="fVerse">Mon verset (facultatif)</label><input type="text" id="fVerse" placeholder="Copie ici le verset…"></div>`,btn:"Amen · Terminer",onNext:()=>{const v=$("#fVerse");if(v)FL.data.word=v.value}}
   ],onFinish:()=>addWord(FL.data.word&&(FL.data.word+` (Ps ${FL.data.ps.n})`),"Psaume")}),
  adoration:()=>({eyebrow:"Adoration",bonus:["Adoration",25],count:"adoration",icon:"calice",title:"Il est là",text:"« Je suis le pain vivant qui est descendu du ciel. » (Jn 6,51)",
@@ -1823,7 +1847,11 @@ function renderToday(){
 const REM_DEF={daily:{on:false,t:"07:30"},novena:{on:false,t:"20:30"},angelus:{on:false,t:"12:00"},examen:{on:false,t:"21:30"},saint:{on:true,t:"09:00"},angeMatin:{on:false,t:"07:00"},angeSoir:{on:false,t:"21:00"}};
 const REM_LBL={daily:["Prière avec Jésus","Un rappel doux chaque jour"],novena:["Neuvaine en cours","Seulement s'il y a une neuvaine en cours"],angelus:["Angélus","Chaque jour à midi"],examen:["Examen du soir","Relire la journée avant de dormir"],saint:["Fête de mon saint patron","Le matin de sa fête"],angeMatin:["Ange gardien, le matin","Lui confier la journée"],angeSoir:["Ange gardien, le soir","Lui confier la nuit"]};
 function LN(){try{const C=window.Capacitor;return C&&C.isNativePlatform&&C.isNativePlatform()&&C.Plugins&&C.Plugins.LocalNotifications}catch(e){return null}}
+const FONDS=[["nuit","Bleu nuit","#0e1a36"],["bordeaux","Bordeaux","#2b0f19"],["foret","Forêt","#0e2a22"],["prune","Prune","#221433"],["canard","Bleu canard","#0a2a35"],["encre","Encre","#14130f"],["parchemin","Parchemin (clair)","#f1e7d0"]];
+function applyFond(){const f=FONDS.some(x=>x[0]===S.fond)?S.fond:"nuit";if(f==="nuit")document.documentElement.removeAttribute("data-fond");else document.documentElement.setAttribute("data-fond",f)}
 function renderSettings(){
+ $("#fondPick").innerHTML=FONDS.map(([k,n,c])=>`<button type="button" aria-pressed="${(S.fond||"nuit")===k}" data-f="${k}" style="--c:${c}"><i></i>${n}</button>`).join("");
+ $("#fondPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fond=b.dataset.f;save();applyFond();renderSettings()});
  S.rem=Object.assign(JSON.parse(JSON.stringify(REM_DEF)),S.rem||{});
  $("#remList").innerHTML=Object.keys(REM_DEF).map(k=>`<div class="setrow"><div class="lab"><b>${REM_LBL[k][0]}</b><small>${REM_LBL[k][1]}</small></div>${k==="angelus"||k==="saint"?"":`<input type="time" id="rt-${k}" value="${S.rem[k].t}" aria-label="Heure du rappel ${REM_LBL[k][0]}">`}<button class="switch" role="switch" type="button" id="rs-${k}" aria-checked="${S.rem[k].on}" aria-label="${REM_LBL[k][0]}"></button></div>`).join("");
  Object.keys(REM_DEF).forEach(k=>{$("#rs-"+k).onclick=()=>{S.rem[k].on=!S.rem[k].on;save();renderSettings();syncReminders()};const ti=$("#rt-"+k);if(ti)ti.onchange=()=>{S.rem[k].t=ti.value||REM_DEF[k].t;save();syncReminders()}});
@@ -1841,9 +1869,9 @@ async function syncReminders(){
   const R=Object.assign(JSON.parse(JSON.stringify(REM_DEF)),S.rem||{}),any=Object.values(R).some(x=>x.on);
   const pend=await ln.getPending();if(pend.notifications.length)await ln.cancel({notifications:pend.notifications.map(n=>({id:n.id}))});
   if(!any){if(note)note.textContent="Aucun rappel actif.";return}
-  const perm=await ln.requestPermissions();if(perm.display!=="granted"){if(note)note.textContent="Autorise les notifications de Cœur à Cœur dans les réglages du téléphone.";return}
+  const perm=await ln.requestPermissions();if(perm.display!=="granted"){if(note)note.textContent="Autorise les notifications de Manete dans les réglages du téléphone.";return}
   const list=[],at=(id,t,title,body,extra={})=>{const [h,m]=t.split(":").map(Number);list.push({id,title,body,schedule:{on:Object.assign({hour:h,minute:m},extra),allowWhileIdle:true},extra:{kind:id}})};
-  if(R.daily.on)at(1,R.daily.t,"Cœur à Cœur","Jésus t'attend. Quelques minutes avec lui ?");
+  if(R.daily.on)at(1,R.daily.t,"Manete","Jésus t'attend. Quelques minutes avec lui ?");
   const nv=S.novenas.find(n=>!n.completedAt);if(R.novena.on&&nv)at(2,R.novena.t,"Ta neuvaine",`C'est le moment de prier : ${nv.name}`);
   if(R.angelus.on)at(3,"12:00","Angélus","L'ange du Seigneur apporta l'annonce à Marie…");
   if(R.examen.on)at(4,R.examen.t,"Examen du soir","Relis ta journée avec le Seigneur, en cinq minutes.");
@@ -1856,8 +1884,9 @@ async function syncReminders(){
 function initNative(){const ln=LN();if(!ln)return;try{ln.addListener("localNotificationActionPerformed",e=>{const k=e&&e.notification&&e.notification.id;if(k===6||k===7)startFlow("anges");else if(k===5&&getSaint())startFlow("saint");else if(k===3)startFlow("angelus");else if(k===4)startFlow("examen");else if(k===2)show("novena")})}catch(e){}syncReminders()}
 
 /* ---------- Partage & sauvegarde ---------- */
-const APP_NAME="Cœur à Cœur",APP_ID="be.coeuracoeur.priere",APP_URL=`https://play.google.com/store/apps/details?id=${APP_ID}`;
-const SHARE_FOOT=`\n\n——\nPartagé avec ${APP_NAME}, une app de prière gratuite, sans pub et sans collecte de données :\n${APP_URL}`;
+/* Passer APP_LIVE à true une fois la fiche Google Play en ligne : le lien est alors ajouté aux partages. */
+const APP_NAME="Manete",APP_ID="app.manete.priere",APP_LIVE=false,APP_URL=`https://play.google.com/store/apps/details?id=${APP_ID}`;
+const SHARE_FOOT=`\n\n——\nPartagé avec ${APP_NAME}, une app de prière gratuite, sans pub et sans collecte de données${APP_LIVE?" :\n"+APP_URL:"."}`;
 const nativeApp=()=>{try{const C=window.Capacitor;return !!(C&&C.isNativePlatform&&C.isNativePlatform())}catch(e){return false}};
 const plug=n=>{try{return window.Capacitor.Plugins[n]}catch(e){return null}};
 function showBox(title,hint,text){$("#sbTitle").textContent=title;$("#sbHint").textContent=hint||"";$("#sbText").value=text;$("#shareBox").hidden=false}
@@ -1905,7 +1934,7 @@ const GRACES=[
  {id:"pain",cat:"adultes",t:"Du pain et la faim de toi",x:"Seigneur, tu nous rassembles autour de cette table.\nBénis ce repas, ceux qui l'ont préparé\net ceux qui le partagent.\nDonne du pain à ceux qui ont faim,\net faim de toi à ceux qui ont du pain.\nAmen."},
  {id:"invites",cat:"adultes",t:"Avec nos invités",x:"Seigneur, merci pour l'amitié\nqui nous réunit ce soir.\nQue ce repas soit un moment de joie et de paix,\net que notre table reste ouverte\nà celui qui frappe à la porte.\nAmen."},
  {id:"travail",cat:"adultes",t:"Pour ceux qui ont travaillé",x:"Merci pour la terre qui a porté ces fruits,\npour ceux qui ont semé, récolté,\ntransporté et cuisiné.\nBénis leur travail et ce repas.\nAmen."},
- {id:"dimanche",cat:"adultes",t:"Repas de fête",x:"« C'est ici la journée que l'Éternel a faite :\nqu'elle soit pour nous un sujet d'allégresse et de joie ! » (Ps 118,24)\nBénis, Seigneur, ce repas de fête,\net la joie d'être ensemble.\nAmen."},
+ {id:"dimanche",cat:"adultes",t:"Repas de fête",x:"« C'est ici la journée que le Seigneur a faite :\nqu'elle soit pour nous un sujet d'allégresse et de joie ! » (Ps 118,24)\nBénis, Seigneur, ce repas de fête,\net la joie d'être ensemble.\nAmen."},
  {id:"emmaus",cat:"adultes",t:"Reste avec nous (le soir)",x:"« Reste avec nous, car le soir approche,\nle jour est sur son déclin. » (Lc 24,29)\nSeigneur, assieds-toi à notre table\ncomme à Emmaüs,\net fais brûler nos cœurs de ta présence.\nAmen."},
  {id:"careme",cat:"adultes",t:"Repas simple (Carême, vendredi)",x:"Seigneur, tu as eu faim au désert.\nQue ce repas simple nous rende attentifs\nà ceux qui manquent de tout,\net nous apprenne à partager.\nAmen."},
  {id:"agimus",cat:"apres",t:"Agimus tibi gratias",x:"Agimus tibi gratias, omnipotens Deus,\npro universis beneficiis tuis,\nqui vivis et regnas in saecula saeculorum. Amen.\n\nNous te rendons grâce, Dieu tout-puissant,\npour tous tes bienfaits,\ntoi qui vis et règnes pour les siècles des siècles. Amen.",g:"Action de grâce traditionnelle après le repas, avec sa traduction."},
@@ -1982,7 +2011,7 @@ $("#resetBtn").onclick=()=>{$("#resetBtn").hidden=true;$("#resetConfirm").hidden
 $("#resetNo").onclick=()=>{$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true};
 $("#resetYes").onclick=()=>{S=blank();save();$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true;renderAll();renderProgress();toast("Progression remise à zéro")};
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&SS&&navigator.wakeLock){navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}});
-function renderAll(){renderHeader();renderHome();renderToday()}
+function renderAll(){applyFond();renderHeader();renderHome();renderToday()}
 renderAll();showVerse();renderGallery();initNative();
 </script>
 

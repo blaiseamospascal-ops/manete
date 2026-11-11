@@ -1,4 +1,4 @@
-package be.coeuracoeur.priere;
+package app.manete.priere;
 
 import com.getcapacitor.BridgeActivity;
 

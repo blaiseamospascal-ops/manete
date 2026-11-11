@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Cœur à Cœur</string>
-    <string name="title_activity_main">Cœur à Cœur</string>
-    <string name="package_name">be.coeuracoeur.priere</string>
-    <string name="custom_url_scheme">be.coeuracoeur.priere</string>
+    <string name="app_name">Manete</string>
+    <string name="title_activity_main">Manete</string>
+    <string name="package_name">app.manete.priere</string>
+    <string name="custom_url_scheme">app.manete.priere</string>
 </resources>
