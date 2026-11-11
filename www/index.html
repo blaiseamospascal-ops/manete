@@ -239,6 +239,11 @@ details.addlink .field{gap:8px}
 .modal{position:fixed;inset:0;z-index:50;background:rgba(5,8,15,.72);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 .modal-in{width:100%;max-width:540px;background:var(--lapis-2);display:flex;flex-direction:column;gap:12px}
 .modal textarea{font-family:var(--f-ui);font-size:.85rem}
+.tile.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:14px}
+.tile.wide .icon{width:54px;flex:none}
+.grace-text{white-space:pre-line;font-size:1.15rem;line-height:1.55;max-width:34ch;margin:0}
+.grace-text.kid{font-size:1.35rem}
+select{width:100%;border-radius:14px;border:1px solid var(--line);background:var(--lapis-2);color:var(--parchment);font-family:var(--f-ui);font-size:.95rem;padding:10px 12px}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mute);flex:none}
 .iconbtn svg{width:18px;height:18px}
 .flame{transform-origin:60px 46px;animation:flick 2.6s ease-in-out infinite}
@@ -307,6 +312,7 @@ details.addlink .field{gap:8px}
       <div style="display:flex;flex-direction:column;gap:12px">
         <h2>Prier autrement</h2>
         <div class="tiles">
+          <button class="tile wide" type="button" id="tileTable"><div class="icon" data-icon="calice"></div><div style="min-width:0"><b>Bénédicités</b><small>Avant et après le repas : pour les enfants, entre adultes, et les vôtres</small></div></button>
           <button class="tile" type="button" data-flow="chapelet"><div class="icon" data-icon="chapelet"></div><b>Chapelet</b><small id="tileRosary">≈ 20 min</small></button>
           <button class="tile" type="button" data-flow="angelus"><div class="icon" data-icon="marie"></div><b>Angélus</b><small id="tileAngelus">2 min · à midi</small></button>
           <button class="tile" type="button" data-flow="examen"><div class="icon" data-icon="cierge"></div><b>Examen du soir</b><small>5 min · relire sa journée</small></button>
@@ -392,6 +398,34 @@ details.addlink .field{gap:8px}
       <div class="panel" id="intentList"></div>
       <h2>Ce qu'il m'a dit</h2>
       <div class="panel" id="wordList"></div>
+    </div>
+  </section>
+
+  <!-- BÉNÉDICITÉS -->
+  <section id="view-table" class="view" hidden>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="row between"><h1>Bénédicités</h1><button class="small-link" id="tbBack" type="button">Fermer</button></div>
+      <p class="icon-cap" style="text-align:left">« Soit donc que vous mangiez, soit que vous buviez, soit que vous fassiez quelque autre chose, faites tout pour la gloire de Dieu. » (1 Co 10,31)</p>
+      <div class="tones" id="tbCats"></div>
+      <div class="panel" style="display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center">
+        <div class="icon" id="tbIcon" style="width:84px"></div>
+        <div id="tbCard" style="display:flex;flex-direction:column;align-items:center;gap:12px;width:100%"></div>
+        <div class="row" id="tbNav" style="gap:10px;justify-content:center">
+          <button class="chipbtn" type="button" id="tbPrev">‹ Précédent</button>
+          <button class="chipbtn" type="button" id="tbRand">Au hasard</button>
+          <button class="chipbtn" type="button" id="tbNext">Suivant ›</button>
+        </div>
+      </div>
+      <details class="addlink panel" id="graceForm"><summary class="ui">+ Ajouter notre bénédicité</summary>
+        <div class="field" style="margin-top:12px">
+          <label for="gfTitle">Titre</label><input type="text" id="gfTitle" placeholder="Le bénédicité de la famille">
+          <label for="gfCat">Pour</label><select id="gfCat"><option value="enfants">Les enfants</option><option value="adultes">Les adultes</option><option value="apres">Après le repas</option></select>
+          <label for="gfText">Texte</label><textarea id="gfText" placeholder="Bénis, Seigneur…"></textarea>
+          <p class="hint">Il reste sur ce téléphone. Tu peux y mettre n'importe quel texte pour ton usage personnel. Si tu le partages, assure-toi qu'il est de toi ou libre de droits : beaucoup de bénédicités chantés connus ont un auteur.</p>
+          <button class="btn" type="button" id="gfAdd" style="padding:9px 18px">Ajouter</button>
+        </div>
+      </details>
+      <p class="hint">Tous les bénédicités proposés ici sont libres de droits : textes traditionnels anciens, versets de la Bible Segond 1910, ou textes écrits pour l'app et publiés sous licence libre.</p>
     </div>
   </section>
 
@@ -636,12 +670,13 @@ const BADGES=[
  {id:"louange",n:"Alléluia",d:"Une louange chantée",i:"sun",ok:s=>((s.counts||{}).louange||0)>=1},
  {id:"oraison",n:"Oraison",d:"7 temps d'oraison",i:"eye",ok:s=>((s.counts||{}).oraison||0)>=7},
  {id:"psaume",n:"Psalmiste",d:"10 psaumes priés",i:"book",ok:s=>((s.counts||{}).psaume||0)>=10},
+ {id:"table",n:"Table bénie",d:"7 bénédicités dits",i:"heart",ok:s=>((s.counts||{}).benedicite||0)>=7},
  {id:"adoration",n:"Adorateur",d:"Une visite au Saint-Sacrement",i:"cross",ok:s=>((s.counts||{}).adoration||0)>=1}
 ];
 
 /* ---------- État ---------- */
 const KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -1778,9 +1813,59 @@ function askRestore(text){
   $("#rsNo").onclick=()=>{pendingRestore=null;el.hidden=true}}
  catch(e){el.hidden=false;el.textContent="Ce texte n'est pas une sauvegarde valide de l'app. Vérifie que tu as copié tout le contenu, de la première à la dernière accolade."}}
 
+/* ---------- Bénédicités ---------- */
+const GRACE_CATS={enfants:"Avec les enfants",adultes:"Entre adultes",apres:"Après le repas",miens:"Les miens"};
+const GRACES=[
+ {id:"oiseaux",cat:"enfants",t:"Les petits oiseaux",x:"Les petits oiseaux ont leurs graines,\nles écureuils ont leurs noisettes,\net nous, Seigneur, la table est pleine :\nmerci pour ce repas de fête !\nAmen.",g:"Battre des ailes avec les bras, puis joindre les mains."},
+ {id:"champignons",cat:"enfants",t:"Les champignons",x:"Champignons du sous-bois,\ncarottes du potager,\ntout vient de toi, Seigneur, je crois :\nmerci de nous les donner !\nAmen.",g:"Faire un petit chapeau de champignon avec la main sur la tête."},
+ {id:"marmite",cat:"enfants",t:"La soupe dans la marmite",x:"Dans la marmite, la soupe chante,\nblop, blop, blop, elle est fumante !\nMerci, Jésus, pour ce repas,\net pour les mains qui l'ont fait là.\nAmen.",g:"Tourner une grande cuillère imaginaire à chaque « blop »."},
+ {id:"abeille",cat:"enfants",t:"L'abeille et la brebis",x:"Bzz, bzz, l'abeille fait son miel,\nbêê, la brebis donne son lait.\nMerci, Seigneur du ciel,\npour tout ce que tu as fait !\nAmen.",g:"Faire « bzz » puis « bêê » tous ensemble."},
+ {id:"soleil",cat:"enfants",t:"Le soleil et la pluie",x:"Le soleil a chauffé le blé,\nla pluie a fait pousser les fruits,\nle boulanger a fait le pain :\nmerci, mon Dieu, pour tout ceci !\nAmen.",g:"Bras en rond pour le soleil, doigts qui tombent pour la pluie."},
+ {id:"cuillere",cat:"enfants",t:"Une cuillère pour…",x:"Une cuillère pour papa,\nune cuillère pour maman,\net un grand merci pour toi,\nJésus qui aimes les enfants !\nAmen.",g:"Chacun montre sa cuillère."},
+ {id:"mains",cat:"enfants",t:"Mes deux mains",x:"Une main pour dire merci,\nune main pour partager.\nJésus, bénis ce repas,\net ceux qui n'ont pas à manger.\nAmen.",g:"Lever une main, puis l'autre, puis les joindre."},
+ {id:"anges",cat:"enfants",t:"Bon appétit les anges",x:"Que les anges du ciel\nviennent à table avec nous !\nMerci, Seigneur, pour ce repas,\net bon appétit à tous !\nAmen.",g:"Se donner la main autour de la table."},
+ {id:"court",cat:"enfants",t:"Le tout petit",x:"Merci, Jésus, pour ce repas,\net pour tous ceux qui sont là.\nAmen.",g:"Le plus court, pour les tout-petits ou les soirs pressés."},
+ {id:"benedic",cat:"adultes",t:"Benedic, Domine",x:"Benedic, Domine, nos et haec tua dona,\nquae de tua largitate sumus sumpturi.\nPer Christum Dominum nostrum. Amen.\n\nBénis-nous, Seigneur, ainsi que ces dons\nque nous allons recevoir de ta générosité.\nPar le Christ, notre Seigneur. Amen.",g:"Bénédicité traditionnel de l'Église latine, avec sa traduction."},
+ {id:"ps145",cat:"adultes",t:"Les yeux de tous espèrent en toi",x:"Les yeux de tous espèrent en toi,\net tu leur donnes la nourriture en son temps ;\ntu ouvres ta main,\net tu rassasies à souhait tout ce qui a vie. (Ps 145,15-16)\n\nGloire au Père, et au Fils, et au Saint-Esprit. Amen.",g:"Le psaume que les moines chantent avant le repas."},
+ {id:"pain",cat:"adultes",t:"Du pain et la faim de toi",x:"Seigneur, tu nous rassembles autour de cette table.\nBénis ce repas, ceux qui l'ont préparé\net ceux qui le partagent.\nDonne du pain à ceux qui ont faim,\net faim de toi à ceux qui ont du pain.\nAmen."},
+ {id:"invites",cat:"adultes",t:"Avec nos invités",x:"Seigneur, merci pour l'amitié\nqui nous réunit ce soir.\nQue ce repas soit un moment de joie et de paix,\net que notre table reste ouverte\nà celui qui frappe à la porte.\nAmen."},
+ {id:"travail",cat:"adultes",t:"Pour ceux qui ont travaillé",x:"Merci pour la terre qui a porté ces fruits,\npour ceux qui ont semé, récolté,\ntransporté et cuisiné.\nBénis leur travail et ce repas.\nAmen."},
+ {id:"dimanche",cat:"adultes",t:"Repas de fête",x:"« C'est ici la journée que l'Éternel a faite :\nqu'elle soit pour nous un sujet d'allégresse et de joie ! » (Ps 118,24)\nBénis, Seigneur, ce repas de fête,\net la joie d'être ensemble.\nAmen."},
+ {id:"emmaus",cat:"adultes",t:"Reste avec nous (le soir)",x:"« Reste avec nous, car le soir approche,\nle jour est sur son déclin. » (Lc 24,29)\nSeigneur, assieds-toi à notre table\ncomme à Emmaüs,\net fais brûler nos cœurs de ta présence.\nAmen."},
+ {id:"careme",cat:"adultes",t:"Repas simple (Carême, vendredi)",x:"Seigneur, tu as eu faim au désert.\nQue ce repas simple nous rende attentifs\nà ceux qui manquent de tout,\net nous apprenne à partager.\nAmen."},
+ {id:"agimus",cat:"apres",t:"Agimus tibi gratias",x:"Agimus tibi gratias, omnipotens Deus,\npro universis beneficiis tuis,\nqui vivis et regnas in saecula saeculorum. Amen.\n\nNous te rendons grâce, Dieu tout-puissant,\npour tous tes bienfaits,\ntoi qui vis et règnes pour les siècles des siècles. Amen.",g:"Action de grâce traditionnelle après le repas, avec sa traduction."},
+ {id:"ventre",cat:"apres",t:"Le ventre rond",x:"Le ventre est rond,\nle cœur est content :\nmerci, Seigneur,\npour ce bon moment !\nAmen.",g:"Se tapoter le ventre en riant."},
+ {id:"merciapres",cat:"apres",t:"Merci pour ce repas",x:"Merci, Seigneur, pour ce repas partagé.\nQue la force qu'il nous donne\nserve à aimer et à servir.\nAmen."}
+];
+let TB={cat:"enfants",i:0,form:false};
+function graceList(cat){return cat==="miens"?(S.myGraces||[]).map(g=>({id:g.id,cat:"miens",t:g.t,x:g.x,mine:1,ocat:g.cat})):GRACES.filter(g=>g.cat===cat)}
+function renderTable(){
+ const list=graceList(TB.cat);if(TB.i>=list.length)TB.i=0;const g=list[TB.i];
+ $("#tbCats").innerHTML=Object.entries(GRACE_CATS).map(([k,v])=>`<button type="button" aria-pressed="${TB.cat===k}" data-c="${k}" style="--c:var(--gold)">${v}</button>`).join("");
+ $("#tbCats").querySelectorAll("button").forEach(b=>b.onclick=()=>{TB.cat=b.dataset.c;TB.i=0;renderTable()});
+ const card=$("#tbCard");
+ if(!g){card.innerHTML=`<p class="empty">Tu n'as pas encore ajouté de bénédicité. Celui de ta famille, de ton enfance, de ton mouvement scout… Ajoute-le ci-dessous.</p>`;$("#tbNav").hidden=true}
+ else{$("#tbNav").hidden=false;
+  card.innerHTML=`<p class="eyebrow">${GRACE_CATS[TB.cat]} · ${TB.i+1}/${list.length}</p><h2>${esc(g.t)}</h2><p class="grace-text${TB.cat==="enfants"?" kid":""}">${esc(g.x)}</p>${g.g?`<p class="hint" style="text-align:center">${esc(g.g)}</p>`:""}<div class="row" style="justify-content:center;gap:16px;flex-wrap:wrap"><button class="btn" type="button" id="tbSaid" style="padding:10px 22px">Amen · Bon appétit !</button><button class="small-link" type="button" id="tbShare">Partager</button>${g.mine?`<button class="small-link" type="button" id="tbDel">Retirer</button>`:""}</div>`;
+  $("#tbSaid").onclick=graceSaid;
+  $("#tbShare").onclick=()=>shareText(g.t,g.x);
+  const d=$("#tbDel");if(d)d.onclick=()=>{S.myGraces=S.myGraces.filter(x=>x.id!==g.id);save();renderTable();toast("Bénédicité retiré")}}
+ $("#tbIcon").innerHTML=ICONS[TB.cat==="enfants"?"soleil":TB.cat==="apres"?"coeur":"calice"].svg();
+}
+function graceSaid(){
+ const k=dayKey();S.graceDays=S.graceDays||{};S.counts=S.counts||{};S.counts.benedicite=(S.counts.benedicite||0)+1;
+ const n=S.graceDays[k]||0;S.graceDays={[k]:n+1};
+ if(n<3)S.xp+=5;const fresh=checkBadges();save();renderHeader();
+ bell();toast(n<3?"Bon appétit !"+xpTxt(5):"Bon appétit !");if(fresh.length)setTimeout(()=>toast("Médaille : "+fresh[0].n),2700)}
+function addGrace(){
+ const t=$("#gfTitle").value.trim(),x=$("#gfText").value.trim(),c=$("#gfCat").value;
+ if(!x){toast("Écris le texte du bénédicité");return}
+ S.myGraces=S.myGraces||[];S.myGraces.push({id:"g"+Date.now(),t:t||"Notre bénédicité",x,cat:c});save();
+ $("#gfTitle").value="";$("#gfText").value="";$("#graceForm").open=false;TB.cat="miens";TB.i=S.myGraces.length-1;renderTable();toast("Bénédicité ajouté")}
+
 /* ---------- Navigation & événements ---------- */
 let lastView="pray";
-function show(v){if(v!=="settings")lastView=v;document.querySelectorAll(".view").forEach(s=>s.hidden=s.id!=="view-"+v);document.querySelectorAll("nav.tabs button").forEach(b=>{if(b.dataset.view===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});window.scrollTo(0,0);if(v==="progress")renderProgress();if(v==="journal")renderJournal();if(v==="novena")renderNovenas();if(v==="settings")renderSettings();if(v==="pray")renderToday()}
+function show(v){if(v!=="settings"&&v!=="table")lastView=v;document.querySelectorAll(".view").forEach(s=>s.hidden=s.id!=="view-"+v);document.querySelectorAll("nav.tabs button").forEach(b=>{if(b.dataset.view===v)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});window.scrollTo(0,0);if(v==="progress")renderProgress();if(v==="journal")renderJournal();if(v==="novena")renderNovenas();if(v==="settings")renderSettings();if(v==="table")renderTable();if(v==="pray")renderToday()}
 document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dataset.view));
 $("#startBtn").onclick=startSession;
 $("#musicToggle").onclick=()=>{S.music=!S.music;save();renderHome()};
@@ -1791,6 +1876,12 @@ $("#quitBtn").onclick=()=>{if(!SS)return closeSession();$("#quitConfirm").hidden
 document.querySelectorAll("[data-flow]").forEach(b=>b.onclick=()=>startFlow(b.dataset.flow));
 document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=ICONS[el.dataset.icon].svg());
 $("#gearBtn").onclick=()=>show("settings");
+$("#tileTable").onclick=()=>show("table");
+$("#tbBack").onclick=()=>show(lastView);
+$("#tbPrev").onclick=()=>{const n=graceList(TB.cat).length;if(n){TB.i=(TB.i-1+n)%n;renderTable()}};
+$("#tbNext").onclick=()=>{const n=graceList(TB.cat).length;if(n){TB.i=(TB.i+1)%n;renderTable()}};
+$("#tbRand").onclick=()=>{const n=graceList(TB.cat).length;if(n>1){let k;do{k=Math.floor(Math.random()*n)}while(k===TB.i);TB.i=k;renderTable()}};
+$("#gfAdd").onclick=addGrace;
 $("#shareVerseBtn").onclick=()=>curVerse&&shareVerse(curVerse);
 $("#sbClose").onclick=()=>$("#shareBox").hidden=true;
 $("#sbCopy").onclick=()=>{const t=$("#sbText");try{navigator.clipboard.writeText(t.value).then(()=>{toast("Copié");$("#shareBox").hidden=true}).catch(()=>{t.focus();t.select();toast("Sélectionne le texte puis copie-le")})}catch(e){t.focus();t.select();toast("Sélectionne le texte puis copie-le")}};
