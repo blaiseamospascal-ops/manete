@@ -321,6 +321,8 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
           <button class="tile" type="button" data-flow="oraison"><div class="icon" data-icon="cierge"></div><b>Oraison</b><small>10 à 30 min de cœur à cœur silencieux</small></button>
           <button class="tile" type="button" data-flow="psaume"><div class="icon" data-icon="chirho"></div><b>Psaume</b><small>5 min · 7 psaumes à prier</small></button>
           <button class="tile" type="button" data-flow="adoration"><div class="icon" data-icon="calice"></div><b>Adoration</b><small>10 min · devant le Saint-Sacrement</small></button>
+          <button class="tile" type="button" data-flow="couple"><div class="icon" data-icon="coeur"></div><b>En couple</b><small>5 min · merci, pardon, prier à deux</small></button>
+          <button class="tile" type="button" data-flow="anges"><div class="icon" data-icon="ailes"></div><b>Anges gardiens</b><small>2 min · matin ou soir</small></button>
         </div>
       </div>
 
@@ -439,9 +441,18 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
         <p class="hint" id="notifNote"></p>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:12px">
-        <h2>Mon saint compagnon</h2>
+        <h2>Mon saint patron</h2>
         <div class="saints" id="saintPick"></div>
         <p style="font-size:.98rem" id="saintInfo"></p>
+        <details class="addlink" id="csForm"><summary class="ui">+ Un autre saint patron</summary>
+          <div class="field" style="margin-top:12px">
+            <label for="csName">Nom du saint</label><input type="text" id="csName" placeholder="Sainte Rita, saint Martin, bienheureux Carlo Acutis…">
+            <span class="lbl">Jour de sa fête (facultatif)</span>
+            <div class="row" style="gap:8px"><input type="text" id="csDay" inputmode="numeric" placeholder="Jour" style="max-width:90px" aria-label="Jour de la fête"><select id="csMonth" aria-label="Mois de la fête"><option value="">Mois</option></select></div>
+            <label for="csPrayer">Prière de dévotion (facultatif)</label><textarea id="csPrayer" placeholder="Colle ou écris ici ta prière à ce saint. Sinon, l'app en propose une."></textarea>
+            <button class="btn" type="button" id="csSave" style="padding:9px 18px">Choisir ce saint patron</button>
+          </div>
+        </details>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:4px">
         <h2 style="margin-bottom:6px">Le jeu</h2>
@@ -670,13 +681,16 @@ const BADGES=[
  {id:"louange",n:"Alléluia",d:"Une louange chantée",i:"sun",ok:s=>((s.counts||{}).louange||0)>=1},
  {id:"oraison",n:"Oraison",d:"7 temps d'oraison",i:"eye",ok:s=>((s.counts||{}).oraison||0)>=7},
  {id:"psaume",n:"Psalmiste",d:"10 psaumes priés",i:"book",ok:s=>((s.counts||{}).psaume||0)>=10},
+ {id:"couple",n:"Deux en un",d:"3 prières en couple",i:"heart",ok:s=>((s.counts||{}).couple||0)>=3},
+ {id:"anges",n:"Bien gardé",d:"7 prières à son ange",i:"star",ok:s=>((s.counts||{}).anges||0)>=7},
+ {id:"patron",n:"Ami des saints",d:"Prier avec son saint patron",i:"star",ok:s=>((s.counts||{}).saint||0)>=1},
  {id:"table",n:"Table bénie",d:"7 bénédicités dits",i:"heart",ok:s=>((s.counts||{}).benedicite||0)>=7},
  {id:"adoration",n:"Adorateur",d:"Une visite au Saint-Sacrement",i:"cross",ok:s=>((s.counts||{}).adoration||0)>=1}
 ];
 
 /* ---------- État ---------- */
 const KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -1530,7 +1544,7 @@ const SAINTS=[
  {k:"foucauld",n:"Saint Charles de Foucauld",f:"12-01",icon:"coeur",inv:"Saint Charles de Foucauld, priez pour nous.",bio:"Officier devenu ermite au Sahara, « frère universel », mort en 1916. On lui doit la prière d'abandon."}
 ];
 const MOIS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
-function feastInfo(f){const [m,d]=f.split("-").map(Number),t=new Date();let nx=LD(t.getFullYear(),m,d);if(diffD(nx,t)<0)nx=LD(t.getFullYear()+1,m,d);return{label:`${d===1?"1er":d} ${MOIS[m-1]}`,days:diffD(nx,t)}}
+function feastInfo(f){if(!f)return{label:"",days:-1};const [m,d]=f.split("-").map(Number),t=new Date();let nx=LD(t.getFullYear(),m,d);if(diffD(nx,t)<0)nx=LD(t.getFullYear()+1,m,d);return{label:`${d===1?"1er":d} ${MOIS[m-1]}`,days:diffD(nx,t)}}
 
 /* ---------- Textes de prière ---------- */
 const AVE=PRAYERS["Je vous salue Marie"],PATER=PRAYERS["Notre Père"],GLORIA=PRAYERS["Gloire au Père"];
@@ -1725,11 +1739,68 @@ Object.assign(FLOWS,{
   ]})
 });
 
+/* ---------- Saint patron, couple, anges ---------- */
+ICONS.ailes={t:"Les ailes de l'ange",d:"« Il ordonnera à ses anges de te garder dans toutes tes voies. » Chacun a un ange qui veille sur lui.",svg:()=>`<svg viewBox="0 0 120 120">${rays(24,18,30,60,24)}<ellipse cx="60" cy="24" rx="14" ry="5" fill="none" stroke="currentColor" stroke-width="1.8"/><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M56 46C40 30 18 32 8 50c13-2 23 3 29 12-10-2-19 2-23 12 12-2 23 1 31 8-7 0-13 4-15 11 10-3 20-2 26 5"/><path d="M64 46c16-16 38-14 48 4-13-2-23 3-29 12 10-2 19 2 23 12-12-2-23 1-31 8 7 0 13 4 15 11-10-3-20-2-26 5"/><path d="M60 42v60"/></g><circle cx="60" cy="38" r="5" fill="currentColor"/></svg>`};
+GALLERY.push("ailes");
+const SAINT_PRAYERS={
+ marie:"Sous ta protection nous cherchons refuge, sainte Mère de Dieu. Ne repousse pas nos prières quand nous sommes dans l'épreuve, mais de tous les dangers délivre-nous toujours, Vierge glorieuse et bénie. Amen.\n(D'après le Sub tuum praesidium, IIIe siècle)",
+ joseph:"Saint Joseph, toi qui as veillé sur Jésus et Marie, veille sur ma famille et sur mon travail. Apprends-moi le silence, la fidélité et la confiance, pour faire sans bruit ce que Dieu me demande. Amen.",
+ thomas:"Saint Thomas d'Aquin, toi qui as cherché la vérité toute ta vie, obtiens-moi une intelligence droite et un cœur pur. Que j'étudie pour mieux aimer, et que tout mon savoir me conduise à Dieu. Amen.",
+ therese:"Sainte Thérèse, toi qui as promis de passer ton ciel à faire du bien sur la terre, apprends-moi ta petite voie. Que je fasse les petites choses avec un grand amour, et que je me jette avec confiance dans les bras du Père. Amen.",
+ francois:"Saint François, pauvre et joyeux, apprends-moi à me détacher de ce qui m'encombre. Fais de moi un artisan de paix, un frère pour tous, et quelqu'un qui s'émerveille de la création. Amen.",
+ vianney:"Saint curé d'Ars, toi qui as tant aimé le pardon de Dieu, donne-moi le goût de la confession et de l'Eucharistie. Prie pour les prêtres, et pour celui de ma paroisse. Amen.",
+ benoit:"Saint Benoît, apprends-moi à ne rien préférer à l'amour du Christ. Mets de l'ordre et de la paix dans mes journées, entre la prière, le travail et le repos. Amen.",
+ augustin:"Saint Augustin, toi dont le cœur est resté sans repos jusqu'à ce qu'il repose en Dieu, guide ceux qui cherchent. Obtiens-moi la grâce de la conversion, aujourd'hui encore. Amen.",
+ monique:"Sainte Monique, toi qui as prié et pleuré si longtemps pour ton fils, porte avec moi ceux que j'aime et qui sont loin de Dieu. Donne-moi ta persévérance et ton espérance. Amen.",
+ jp2:"Saint Jean-Paul II, toi qui as dit au monde « N'ayez pas peur », chasse mes craintes. Aide-moi à ouvrir toutes grandes les portes de ma vie au Christ, et veille sur ma famille. Amen.",
+ pio:"Saint Pio, apprends-moi à prier, à espérer et à ne pas m'inquiéter. Obtiens-moi de porter mes épreuves uni à Jésus, et prie pour les malades que je te confie. Amen.",
+ antoine:"Saint Antoine, toi qui aides à retrouver ce qui est perdu, aide-moi à retrouver ce qui compte : la foi quand elle faiblit, la paix quand elle s'en va, et Jésus quand je l'ai perdu de vue. Amen.",
+ michel:"Saint Michel Archange, défendez-nous dans le combat ; soyez notre secours contre la malice et les embûches du démon. Que Dieu exerce sur lui son empire, nous vous le demandons en suppliant. Et vous, Prince de la milice céleste, repoussez en enfer, par la force divine, Satan et les autres esprits mauvais qui rôdent dans le monde en vue de perdre les âmes. Amen.\n(Léon XIII)",
+ damien:"Saint Damien, toi qui t'es fait lépreux parmi les lépreux, ouvre mes yeux sur ceux que l'on met à l'écart. Donne-moi le courage de m'approcher, de toucher et de servir. Amen.",
+ ignace:"Saint Ignace, apprends-moi à chercher et à trouver Dieu en toutes choses. Obtiens-moi de discerner ce qui me rapproche de lui, et de tout faire pour sa plus grande gloire. Amen.",
+ foucauld:"Saint Charles de Foucauld, frère universel, apprends-moi à crier l'Évangile par toute ma vie. Que je sache m'abandonner au Père, sans mesure, avec une infinie confiance. Amen."
+};
+function getSaint(){
+ if(S.saint==="custom"&&S.customSaint&&S.customSaint.n){const c=S.customSaint;return{k:"custom",n:c.n,f:c.f||null,icon:"etoile",inv:`${c.n}, priez pour nous.`,bio:"Le saint patron que tu as choisi.",p:c.p||`${c.n}, toi qui as suivi le Christ jusqu'au bout, prie pour moi. Obtiens-moi la grâce d'aimer Dieu comme tu l'as aimé, et de marcher à ta suite, là où je suis. Amen.`}}
+ const s=SAINTS.find(x=>x.k===S.saint);return s?Object.assign({p:SAINT_PRAYERS[s.k]},s):null}
+const ANGE_DEI="Ange de Dieu, qui es mon gardien,\net à qui j'ai été confié par la bonté divine,\néclaire-moi, garde-moi,\ndirige-moi et gouverne-moi.\nAmen.";
+const COUPLE_PRAYERS={
+ "Prière des époux":"Seigneur, tu nous as donnés l'un à l'autre.\nMerci pour notre amour, et pour le chemin déjà parcouru.\nGarde-nous unis dans la joie comme dans l'épreuve.\nApprends-nous à nous écouter, à nous pardonner,\net à nous choisir chaque jour.\nSois le troisième dans notre couple,\net fais de notre maison un lieu de paix.\nAmen.",
+ "Tobie et Sara":"Béni sois-tu, Dieu de nos pères,\net béni soit ton nom dans tous les siècles.\nC'est toi qui as fait Adam, et qui lui as donné Ève\npour aide et pour soutien.\nTu as dit : « Il n'est pas bon que l'homme soit seul. »\nSeigneur, ce n'est pas pour nous-mêmes\nque nous nous sommes choisis, mais d'un cœur sincère.\nAie pitié de nous,\net fais-nous parvenir ensemble à la vieillesse.\nAmen.\n(D'après la prière de Tobie et Sara, Tb 8,5-7)",
+ "L'hymne à la charité":"La charité est patiente, elle est pleine de bonté ;\nla charité n'est point envieuse ;\nla charité ne se vante point, elle ne s'enfle point d'orgueil,\nelle ne cherche point son intérêt, elle ne s'irrite point,\nelle ne soupçonne point le mal ;\nelle excuse tout, elle croit tout,\nelle espère tout, elle supporte tout.\nLa charité ne périt jamais.\n(1 Co 13,4-8)\n\nSeigneur, donne-nous de nous aimer ainsi."
+};
+Object.assign(FLOWS,{
+ saint:()=>{const s=getSaint(),fi=feastInfo(s.f);return{eyebrow:"Mon saint patron",bonus:["Prière à mon saint patron",15],count:"saint",icon:s.icon,title:"Avec les saints, vers Jésus",text:"« Nous sommes environnés d'une si grande nuée de témoins. » (He 12,1)",
+  steps:[
+   {html:()=>`<p class="eyebrow">${fi.days===0?"C'est sa fête aujourd'hui !":"Mon saint patron"}</p><div class="icon">${ICONS[s.icon].svg()}</div><h2>${esc(s.n)}</h2><p class="text">${esc(s.bio)}</p>${fi.label?`<p class="ref">Fête le ${fi.label}</p>`:""}<p class="text" style="color:var(--mute);font-size:1rem">On ne prie pas un saint à la place de Jésus : on lui demande de prier avec nous et pour nous, comme on le demande à un ami.</p>`},
+   {html:()=>`<p class="eyebrow">Prière de dévotion</p><div class="icon">${ICONS[s.icon].svg()}</div><p class="prayer">${esc(s.p)}</p><p class="text" style="color:var(--mute);font-size:1rem">Confie-lui maintenant ton intention, en silence.</p><p class="prayer-label" style="font-size:1.1rem">${esc(s.inv)}</p><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen · Terminer"}
+  ]}},
+ couple:()=>({eyebrow:"Prière du couple",bonus:["Prière en couple",25],count:"couple",icon:"coeur",title:"Que Dieu garde votre amour",text:"« Que l'homme donc ne sépare pas ce que Dieu a joint. » (Mt 19,6)",
+  steps:[
+   {html:()=>`<p class="eyebrow">1 · Ensemble</p><div class="icon">${ICONS.cierge.svg()}</div><h2>À deux devant Dieu</h2><p class="text">Asseyez-vous côte à côte, et prenez-vous la main. Quelques secondes de silence, puis faites ensemble le signe de croix.<br><br><em>« Là où deux ou trois sont assemblés en mon nom, je suis au milieu d'eux. »</em> (Mt 18,20)</p>`},
+   {html:()=>`<p class="eyebrow">2 · Merci</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Merci pour toi</h2><p class="text">Chacun à son tour dit à voix haute un merci à Dieu pour l'autre : un geste, une attention, une qualité remarquée aujourd'hui.<br><br><em>« Seigneur, merci pour… »</em></p>`},
+   {html:()=>`<p class="eyebrow">3 · Pardon</p><div class="icon">${ICONS.croix.svg()}</div><h2>Pardon</h2><p class="text">Si quelque chose a blessé aujourd'hui, c'est le moment de se le dire simplement : <em>« Pardon pour… »</em><br><br><em>« Que le soleil ne se couche pas sur votre colère. »</em> (Ep 4,26)</p>`},
+   {html:()=>{const names=[...Object.keys(COUPLE_PRAYERS),"La nôtre"];FL.data.cp=FL.data.cp||(S.couplePrayer?"La nôtre":names[0]);const own=FL.data.cp==="La nôtre";return `<p class="eyebrow">4 · Prier d'une seule voix</p><div class="icon">${ICONS.coeur.svg()}</div><div class="ptabs" id="cpTabs">${names.map(k=>`<button type="button" aria-pressed="${k===FL.data.cp}" data-p="${k}">${k}</button>`).join("")}</div>${own?`<div class="field" style="width:100%;text-align:left"><label for="cpOwn">Notre prière, écrite à deux. Elle est gardée sur ce téléphone.</label><textarea id="cpOwn" style="min-height:170px" placeholder="Seigneur, nous te confions notre couple…">${esc(S.couplePrayer||"")}</textarea></div>`:`<p class="prayer">${esc(COUPLE_PRAYERS[FL.data.cp])}</p>`}`},
+    onRender:()=>{$("#cpTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{FL.data.cp=b.dataset.p;renderFlow()});const o=$("#cpOwn");if(o)o.oninput=()=>{S.couplePrayer=o.value;save()}}},
+   {html:()=>`<p class="eyebrow">5 · Confier et bénir</p><div class="icon">${ICONS.marie.svg()}</div><h2>Se bénir l'un l'autre</h2><p class="text">Confiez ensemble vos enfants, vos proches, vos projets. Puis chacun trace une petite croix sur le front de l'autre :<br><em>« Que le Seigneur te bénisse et te garde. »</em></p><p class="prayer">${esc(AVE)}</p>`,btn:"Amen · Terminer"}
+  ]}),
+ anges:()=>{FL.data.soir=FL.data.soir??(new Date().getHours()>=17);return{eyebrow:"Anges gardiens",bonus:["Prière aux anges",10],count:"anges",icon:"ailes",title:"Sous la garde des anges",text:"« Il ordonnera à ses anges de te garder dans toutes tes voies. » (Ps 91,11)",
+  steps:[
+   {html:()=>{const soir=FL.data.soir;return `<p class="eyebrow">${soir?"Prière du soir":"Prière du matin"}</p><div class="icon">${ICONS.ailes.svg()}</div><div class="ptabs" id="agTabs"><button type="button" aria-pressed="${!soir}" data-s="0">Matin</button><button type="button" aria-pressed="${soir}" data-s="1">Soir</button></div><h2>À mon ange gardien</h2><p class="prayer">${esc(ANGE_DEI)}</p><p class="text">${soir?"<em>Mon bon ange, merci de m'avoir gardé aujourd'hui. Veille sur mon sommeil et sur ma maison cette nuit, et présente à Dieu ma journée, avec ce qu'elle a eu de beau et de pauvre.</em>":"<em>Mon bon ange, marche devant moi aujourd'hui. Garde mes pas, mes paroles et mes rencontres, et rappelle-moi la présence de Dieu au milieu de mes occupations.</em>"}</p><p class="ref">${soir?"« Je me couche et je m'endors en paix. » Ps 4,9":"« Voici, j'envoie un ange devant toi, pour te protéger en chemin. » Ex 23,20"}</p>`},onRender:()=>$("#agTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{FL.data.soir=b.dataset.s==="1";renderFlow()})},
+   {html:()=>`<p class="eyebrow">Avec tous les anges</p><div class="icon">${ICONS.etoile.svg()}</div><h2>Aux saints archanges</h2><p class="prayer">Saint Michel, défends-nous dans le combat.\nSaint Gabriel, apprends-nous à accueillir la Parole.\nSaint Raphaël, guide-nous sur la route et guéris-nous.\n\nSaints anges gardiens de ceux que j'aime,\nveillez sur eux ${FL.data.soir?"cette nuit":"aujourd'hui"}.</p><p class="text" style="color:var(--mute);font-size:1rem">Nomme en silence ceux que tu confies à leur ange : ton conjoint, tes enfants, un ami.</p><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen · Terminer"}
+  ]}}
+});
+function saveCustomSaint(){
+ const n=$("#csName").value.trim();if(!n){toast("Écris le nom du saint");return}
+ const d=parseInt($("#csDay").value,10),m=parseInt($("#csMonth").value,10);
+ const f=(d>=1&&d<=31&&m>=1&&m<=12)?String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0"):null;
+ S.customSaint={n,f,p:$("#csPrayer").value.trim()};S.saint="custom";save();renderSettings();syncReminders();renderToday();toast(`${n} est ton saint patron`)}
+
 /* ---------- Accueil : liturgie, suggestions, saint ---------- */
 function renderToday(){
  const L=liturgy(),t=new Date();
  const date=t.toLocaleDateString("fr-BE",{weekday:"long",day:"numeric",month:"long"});
- const mySaint=SAINTS.find(x=>x.k===S.saint);const feastDay=mySaint&&feastInfo(mySaint.f).days===0;
+ const mySaint=getSaint();const feastDay=mySaint&&feastInfo(mySaint.f).days===0;
  $("#litu").style.setProperty("--lc",L.color[1]);
  $("#litu").innerHTML=`<span class="ldot" title="Couleur liturgique : ${L.color[0]}"></span><div style="min-width:0"><div class="eyebrow">${date}</div><b>${L.feast||L.label}</b><small>${L.feast?L.label+" · ":""}${L.color[0]}</small></div>`;
  const sg=novSuggestion(),box=$("#novSuggest");
@@ -1743,14 +1814,14 @@ function renderToday(){
  $("#tileAngelus").textContent=L.season==="paques"?"2 min · Regina Caeli":"2 min · à midi";
  const sc=$("#saintCard");
  if(mySaint){const fi=feastInfo(mySaint.f);
-  sc.innerHTML=`<div class="icon">${ICONS[mySaint.icon].svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${feastDay?"C'est sa fête aujourd'hui !":"Mon saint compagnon"}</span><b style="font-family:var(--f-display);font-weight:500">${mySaint.n}</b><p style="font-size:.98rem;color:var(--mute)">${mySaint.bio}</p><p style="font-style:italic">${mySaint.inv}</p><span class="nov-status">Fête : ${fi.label}${fi.days?` · dans ${fi.days} jour${fi.days>1?"s":""}`:""}</span></div>`}
- else sc.innerHTML=`<div class="icon">${ICONS.etoile.svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><span class="eyebrow">Saint compagnon</span><p>Choisis un saint pour t'accompagner : sa vie, son invocation, et un rappel le jour de sa fête.</p><div><button class="btn ghost" style="padding:8px 16px" type="button" id="pickSaint">Choisir mon saint</button></div></div>`;
+  sc.innerHTML=`<div class="icon">${ICONS[mySaint.icon].svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:6px"><span class="eyebrow">${feastDay?"C'est sa fête aujourd'hui !":"Mon saint patron"}</span><b style="font-family:var(--f-display);font-weight:500">${esc(mySaint.n)}</b><p style="font-size:.98rem;color:var(--mute)">${mySaint.bio}</p><p style="font-style:italic">${mySaint.inv}</p>${fi.label?`<span class="nov-status">Fête : ${fi.label}${fi.days?` · dans ${fi.days} jour${fi.days>1?"s":""}`:""}</span>`:""}<div><button class="btn ghost" style="padding:8px 16px" type="button" id="saintPray">Prier avec mon saint patron</button></div></div>`;$("#saintPray").onclick=()=>startFlow("saint")}
+ else sc.innerHTML=`<div class="icon">${ICONS.etoile.svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><span class="eyebrow">Saint patron</span><p>Choisis ton saint patron, dans la liste ou celui que tu veux : une prière de dévotion, son invocation, et un rappel le jour de sa fête.</p><div><button class="btn ghost" style="padding:8px 16px" type="button" id="pickSaint">Choisir mon saint</button></div></div>`;
  const ps=$("#pickSaint");if(ps)ps.onclick=()=>show("settings");
 }
 
 /* ---------- Réglages & rappels ---------- */
-const REM_DEF={daily:{on:false,t:"07:30"},novena:{on:false,t:"20:30"},angelus:{on:false,t:"12:00"},examen:{on:false,t:"21:30"},saint:{on:true,t:"09:00"}};
-const REM_LBL={daily:["Prière avec Jésus","Un rappel doux chaque jour"],novena:["Neuvaine en cours","Seulement s'il y a une neuvaine en cours"],angelus:["Angélus","Chaque jour à midi"],examen:["Examen du soir","Relire la journée avant de dormir"],saint:["Fête de mon saint","Le matin de sa fête"]};
+const REM_DEF={daily:{on:false,t:"07:30"},novena:{on:false,t:"20:30"},angelus:{on:false,t:"12:00"},examen:{on:false,t:"21:30"},saint:{on:true,t:"09:00"},angeMatin:{on:false,t:"07:00"},angeSoir:{on:false,t:"21:00"}};
+const REM_LBL={daily:["Prière avec Jésus","Un rappel doux chaque jour"],novena:["Neuvaine en cours","Seulement s'il y a une neuvaine en cours"],angelus:["Angélus","Chaque jour à midi"],examen:["Examen du soir","Relire la journée avant de dormir"],saint:["Fête de mon saint patron","Le matin de sa fête"],angeMatin:["Ange gardien, le matin","Lui confier la journée"],angeSoir:["Ange gardien, le soir","Lui confier la nuit"]};
 function LN(){try{const C=window.Capacitor;return C&&C.isNativePlatform&&C.isNativePlatform()&&C.Plugins&&C.Plugins.LocalNotifications}catch(e){return null}}
 function renderSettings(){
  S.rem=Object.assign(JSON.parse(JSON.stringify(REM_DEF)),S.rem||{});
@@ -1758,8 +1829,10 @@ function renderSettings(){
  Object.keys(REM_DEF).forEach(k=>{$("#rs-"+k).onclick=()=>{S.rem[k].on=!S.rem[k].on;save();renderSettings();syncReminders()};const ti=$("#rt-"+k);if(ti)ti.onchange=()=>{S.rem[k].t=ti.value||REM_DEF[k].t;save();syncReminders()}});
  $("#saintPick").innerHTML=SAINTS.map(x=>`<button type="button" aria-pressed="${S.saint===x.k}" data-s="${x.k}">${ICONS[x.icon].svg()}<span>${x.n.replace(/^(Saint|Sainte) /,"").replace("La Vierge Marie","Vierge Marie")}</span></button>`).join("");
  $("#saintPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.saint=S.saint===b.dataset.s?null:b.dataset.s;save();renderSettings();syncReminders();renderToday()});
- const ms=SAINTS.find(x=>x.k===S.saint);$("#saintInfo").innerHTML=ms?`<b style="font-family:var(--f-display);font-weight:500;color:var(--gold)">${ms.n}</b> · fête le ${feastInfo(ms.f).label}<br><span style="color:var(--mute)">${ms.bio}</span>`:"Aucun saint choisi pour l'instant.";
+ const ms=getSaint();$("#saintInfo").innerHTML=ms?`<b style="font-family:var(--f-display);font-weight:500;color:var(--gold)">${esc(ms.n)}</b>${ms.f?` · fête le ${feastInfo(ms.f).label}`:""}<br><span style="color:var(--mute)">${ms.bio}</span>`:"Aucun saint choisi pour l'instant.";
  $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);
+ const cm=$("#csMonth");if(cm.options.length<2)MOIS.forEach((m,i)=>cm.add(new Option(m,i+1)));
+ if(S.customSaint&&!$("#csName").value){$("#csName").value=S.customSaint.n||"";$("#csPrayer").value=S.customSaint.p||"";if(S.customSaint.f){const [mm,dd]=S.customSaint.f.split("-").map(Number);$("#csDay").value=dd;cm.value=mm}}
  if(!LN())$("#notifNote").textContent="Les rappels s'activent dans l'application installée sur le téléphone. Ici, tes choix sont enregistrés.";
 }
 async function syncReminders(){
@@ -1774,11 +1847,13 @@ async function syncReminders(){
   const nv=S.novenas.find(n=>!n.completedAt);if(R.novena.on&&nv)at(2,R.novena.t,"Ta neuvaine",`C'est le moment de prier : ${nv.name}`);
   if(R.angelus.on)at(3,"12:00","Angélus","L'ange du Seigneur apporta l'annonce à Marie…");
   if(R.examen.on)at(4,R.examen.t,"Examen du soir","Relis ta journée avec le Seigneur, en cinq minutes.");
-  const ms=SAINTS.find(x=>x.k===S.saint);if(R.saint.on&&ms){const [mo,da]=ms.f.split("-").map(Number);at(5,"09:00",`Fête de ${ms.n}`,ms.inv,{month:mo,day:da})}
+  if(R.angeMatin.on)at(6,R.angeMatin.t,"Ange de Dieu","Confie ta journée à ton ange gardien.");
+  if(R.angeSoir.on)at(7,R.angeSoir.t,"Ange de Dieu","Confie ta nuit à ton ange gardien.");
+  const ms=getSaint();if(R.saint.on&&ms&&ms.f){const [mo,da]=ms.f.split("-").map(Number);at(5,"09:00",`Fête de ${ms.n}`,ms.inv,{month:mo,day:da})}
   if(list.length)await ln.schedule({notifications:list});
   if(note)note.textContent=`${list.length} rappel${list.length>1?"s":""} programmé${list.length>1?"s":""} ✓`;
  }catch(e){if(note)note.textContent="Impossible de programmer les rappels sur cet appareil."}}
-function initNative(){const ln=LN();if(!ln)return;try{ln.addListener("localNotificationActionPerformed",e=>{const k=e&&e.notification&&e.notification.id;if(k===3)startFlow("angelus");else if(k===4)startFlow("examen");else if(k===2)show("novena")})}catch(e){}syncReminders()}
+function initNative(){const ln=LN();if(!ln)return;try{ln.addListener("localNotificationActionPerformed",e=>{const k=e&&e.notification&&e.notification.id;if(k===6||k===7)startFlow("anges");else if(k===5&&getSaint())startFlow("saint");else if(k===3)startFlow("angelus");else if(k===4)startFlow("examen");else if(k===2)show("novena")})}catch(e){}syncReminders()}
 
 /* ---------- Partage & sauvegarde ---------- */
 const APP_NAME="Cœur à Cœur",APP_ID="be.coeuracoeur.priere",APP_URL=`https://play.google.com/store/apps/details?id=${APP_ID}`;
@@ -1882,6 +1957,7 @@ $("#tbPrev").onclick=()=>{const n=graceList(TB.cat).length;if(n){TB.i=(TB.i-1+n)
 $("#tbNext").onclick=()=>{const n=graceList(TB.cat).length;if(n){TB.i=(TB.i+1)%n;renderTable()}};
 $("#tbRand").onclick=()=>{const n=graceList(TB.cat).length;if(n>1){let k;do{k=Math.floor(Math.random()*n)}while(k===TB.i);TB.i=k;renderTable()}};
 $("#gfAdd").onclick=addGrace;
+$("#csSave").onclick=saveCustomSaint;
 $("#shareVerseBtn").onclick=()=>curVerse&&shareVerse(curVerse);
 $("#sbClose").onclick=()=>$("#shareBox").hidden=true;
 $("#sbCopy").onclick=()=>{const t=$("#sbText");try{navigator.clipboard.writeText(t.value).then(()=>{toast("Copié");$("#shareBox").hidden=true}).catch(()=>{t.focus();t.select();toast("Sélectionne le texte puis copie-le")})}catch(e){t.focus();t.select();toast("Sélectionne le texte puis copie-le")}};

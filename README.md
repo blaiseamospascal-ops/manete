@@ -9,9 +9,9 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 - **Prière guidée** de 5 à 30 minutes : entrer en présence, une Parole, un temps de silence les yeux fermés, un cœur à cœur avec Jésus, une prière de l'Église.
 - **Neuvaines** : une bibliothèque (Marie, saint Joseph, saint Thomas d'Aquin, défunts, Noël, Esprit Saint, miséricorde), ou n'importe quelle neuvaine que l'on colle soi-même. Un cierge s'allume par jour.
 - **Bénédicités** : avant et après le repas, pour les enfants (avec des gestes) et entre adultes, plus ceux que l'on ajoute soi-même.
-- **Prier autrement** : chapelet guidé, Angélus (*Regina Caeli* au temps pascal), examen du soir, prière en famille, louange (liens vers Spotify, YouTube ou Deezer), oraison, psaumes, adoration.
+- **Prier autrement** : chapelet guidé, Angélus (*Regina Caeli* au temps pascal), examen du soir, prière en famille, louange (liens vers Spotify, YouTube ou Deezer), oraison, psaumes, adoration, prière du couple, prière aux anges gardiens (matin et soir).
 - **Calendrier liturgique** : fête du jour, temps liturgique et couleur, et la bonne neuvaine proposée au bon moment.
-- **Saint compagnon**, carnet d'intentions, « Ce qu'il m'a dit », médailles, jour de grâce. Les points peuvent être masqués.
+- **Saint patron** au choix (liste ou saint ajouté soi-même) avec sa prière de dévotion, carnet d'intentions, « Ce qu'il m'a dit », médailles, jour de grâce. Les points peuvent être masqués.
 - **Rappels** (notifications locales), **sauvegarde et restauration** par fichier, **partage** d'une neuvaine ou d'une parole.
 
 ## Vie privée
