@@ -20,6 +20,20 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 - **Couleur de fond** au choix : bleu nuit, bordeaux, forêt, prune, bleu canard, encre, ou parchemin clair.
 - **Rappels** (notifications locales), **sauvegarde et restauration** par fichier, **partage** d'une neuvaine ou d'une parole.
 
+## Images saintes
+
+L'app peut afficher de vraies peintures et icônes anciennes (Fra Angelico, Murillo, Sassoferrato, Rembrandt, Holman Hunt, l'icône du Christ du Sinaï…), toutes du **domaine public**.
+
+1. Lance **une fois** `npm run images` (connexion internet nécessaire). Le script cherche chaque œuvre sur Wikimedia Commons, **ne garde que les fichiers marqués domaine public ou CC0**, et les range dans `www/images/` avec leurs crédits (`credits.json`).
+2. Vérifie chaque image : le lien vers sa page Commons est dans `credits.json` et dans l'app (Réglages › Images saintes). Si une image ne convient pas, indique le fichier exact dans `scripts/fetch-images.mjs` (champ `file`) et relance.
+3. Lance `npm run sync`.
+
+Les images sont ensuite intégrées à l'app : aucune connexion n'est faite pendant la prière. Sans elles, l'app garde ses dessins dorés.
+
+## Liens vers l'Église
+
+L'app renvoie vers les sites de référence plutôt que de recopier leurs textes : AELF (lectures du jour, liturgie des heures, Bible), Nominis (saints du jour), Hozana (prière en communauté), Messes.info (horaires de messes). Chaque référence biblique est cliquable et ouvre le chapitre sur AELF.
+
 ## Vie privée
 
 L'app n'a pas de serveur. Elle n'envoie rien, à personne : pas d'analytics, pas de publicité, pas de compte. Les polices sont intégrées, sans Google Fonts. Voir [PRIVACY.md](PRIVACY.md).

@@ -283,6 +283,20 @@ textarea,input[type="text"],input[type="time"],select,.btn.ghost,.dur,.chipbtn,.
 .help b{color:var(--parchment);font-weight:500}
 button.ui{min-height:32px}
 details.addlink summary{min-height:32px;display:flex;align-items:center}
+.art{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;max-width:100%}
+.art img{display:block;max-height:min(42vh,380px);max-width:100%;width:auto;height:auto;border-radius:14px;border:1px solid var(--line);box-shadow:0 12px 32px rgba(0,0,0,.35)}
+.art figcaption{font-family:var(--f-ui);font-size:.74rem;color:var(--mute);text-align:center}
+.reflink{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+a.ref{display:inline-flex;min-height:32px;align-items:center}
+.litu-links{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:4px}
+.litu-links a{font-family:var(--f-ui);font-size:.8rem;color:var(--gold);text-decoration:underline;text-underline-offset:3px;min-height:28px;display:inline-flex;align-items:center}
+.eco-list{display:flex;flex-direction:column}
+.eco{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);color:var(--parchment);text-decoration:none;min-height:44px}
+.eco:first-child{border-top:0}
+.eco>span:first-child{flex:1;min-width:0}
+.eco b{display:block;font-family:var(--f-ui);font-weight:500;font-size:.95rem}
+.eco small{font-family:var(--f-ui);font-size:.78rem;color:var(--mute)}
+.eco>span[aria-hidden]{color:var(--gold)}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mute);flex:none}
 .iconbtn svg{width:18px;height:18px}
 .flame{transform-origin:60px 46px;animation:flick 2.6s ease-in-out infinite}
@@ -377,6 +391,11 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
         <div class="row between"><span class="eyebrow">Une Parole pour toi</span><span class="row" style="gap:14px"><button class="ui" id="shareVerseBtn" type="button" style="color:var(--mute);font-size:.85rem">Partager</button><button class="ui" id="newVerse" type="button" style="color:var(--gold);font-size:.85rem">Autre parole ↻</button></span></div>
         <p class="verse" id="homeVerse" style="margin-top:10px"></p>
         <p class="ref" id="homeRef"></p>
+      </div>
+
+      <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+        <h2>Avec l'Église aujourd'hui</h2>
+        <div id="ecoList" class="eco-list"></div>
       </div>
 
       <div class="panel">
@@ -507,6 +526,12 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
         <div class="setrow"><div class="lab"><b>Réduire les animations</b><small>Flammes fixes, pas de fondus ni de cercle qui respire</small></div><button class="switch" role="switch" type="button" id="calmeSw" aria-checked="false" aria-label="Réduire les animations"></button></div>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+        <h2>Images saintes</h2>
+        <div class="setrow" id="artRow"><div class="lab"><b>Afficher les peintures</b><small>Sinon, l'app utilise ses dessins dorés</small></div><button class="switch" role="switch" type="button" id="artSw" aria-checked="true" aria-label="Afficher les peintures"></button></div>
+        <p class="hint">Peintures et icônes anciennes du domaine public, issues de Wikimedia Commons. Elles sont enregistrées dans l'app : aucune connexion n'est nécessaire.</p>
+        <div id="artCredits"></div>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:10px">
         <h2>Comment ça marche</h2>
         <ul class="help">
           <li><b>Prier</b> : choisis une durée et laisse-toi guider. Tu peux revenir en arrière ou arrêter à tout moment : le temps prié est compté.</li>
@@ -517,6 +542,7 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
           <li><b>Neuvaines</b> : un jour par jour. Si tu en manques un, tu reprends là où tu en étais.</li>
           <li><b>Musique</b> : le bouton ♪ en haut de chaque prière la coupe ou la remet.</li>
           <li><b>Série de jours</b> : un jour manqué par semaine est pardonné (jour de grâce).</li>
+          <li><b>Liens</b> : les références bibliques et « Avec l'Église aujourd'hui » ouvrent AELF, Nominis, Hozana ou Messes.info dans ton navigateur.</li>
           <li><b>Tes données</b> restent sur ce téléphone. Pense à exporter une sauvegarde.</li>
         </ul>
       </div>
@@ -575,6 +601,7 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
         <p class="hint">Un parcours guidé, un jour à la fois : une parole, une méditation courte et un pas concret pour la journée.</p>
         <div id="retreatList" style="display:flex;flex-direction:column;gap:12px"></div>
         <h2 style="margin-top:12px">Bibliothèque de neuvaines</h2>
+        <p class="hint">Envie de prier une neuvaine avec d'autres ? <a class="reflink" href="https://www.hozana.org/" target="_blank" rel="noopener">Les communautés de prière Hozana ↗</a></p>
         <p class="hint">Des neuvaines éprouvées, écrites à partir de prières de tradition. Aucune ne dépasse la longueur quotidienne de celle de saint Thomas d'Aquin.</p>
         <div class="tones" id="libFilter"></div>
         <div class="check" id="libType" hidden></div>
@@ -843,9 +870,11 @@ function renderHome(){
 }
 const silenceMin=d=>Math.max(2,Math.round(d*.4));
 let curVerse=null;
-function showVerse(){const v=rnd(VERSES);curVerse=v;$("#homeVerse").textContent=`« ${v[0]} »`;$("#homeRef").textContent=v[1]}
+function showVerse(){const v=rnd(VERSES);curVerse=v;$("#homeVerse").textContent=`« ${v[0]} »`;$("#homeRef").outerHTML=refHTML(v[1]).replace('class="ref','id="homeRef" class="ref')}
 let gi=0;
-function renderGallery(){const k=GALLERY[gi],I=ICONS[k];$("#galIcon").innerHTML=I.svg();$("#galTitle").textContent=I.t;$("#galText").textContent=I.d;$("#galDots").innerHTML=GALLERY.map((_,j)=>`<i class="${j===gi?"on":""}"></i>`).join("")}
+function renderGallery(){
+ if(artOn()){const ids=Object.keys(ART);gi=gi%ids.length;const a=ART[ids[gi]];$("#galIcon").innerHTML=`<img src="${a.src}" alt="${esc(a.title)}, ${esc(a.artist)}" style="width:96px;height:120px;object-fit:cover;border-radius:10px;border:1px solid var(--line)">`;$("#galTitle").textContent=a.title;$("#galText").textContent=`${a.artist}${a.date?", "+a.date:""}. ${a.desc||""}`;$("#galDots").innerHTML=ids.map((_,j)=>`<i class="${j===gi?"on":""}"></i>`).join("");return}
+ const k=GALLERY[gi],I=ICONS[k];$("#galIcon").innerHTML=I.svg();$("#galTitle").textContent=I.t;$("#galText").textContent=I.d;$("#galDots").innerHTML=GALLERY.map((_,j)=>`<i class="${j===gi?"on":""}"></i>`).join("")}
 
 /* ---------- Progrès ---------- */
 function renderProgress(){
@@ -897,7 +926,7 @@ function renderStep(){
   st.innerHTML=`<p class="eyebrow">1 · Entrer en présence</p><div class="icon">${ICONS.cierge.svg()}</div><h2>Il est là, il t'attendait</h2><p class="text">Installe-toi. Pose ce qui t'occupe. Respire trois fois lentement.<br><br>Fais le signe de croix :<br><em>Au nom du Père, et du Fils, et du Saint-Esprit. Amen.</em></p>`;
   ft.innerHTML=next("Je suis prêt");
  }else if(id==="parole"){
-  st.innerHTML=`<p class="eyebrow">2 · Écouter la Parole</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« ${SS.verse[0]} »</p><p class="ref">${SS.verse[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, deux fois. Quel mot te touche ? Garde-le dans ton cœur pour le silence.</p><button class="small-link" id="otherV" type="button">Recevoir une autre parole</button>`;
+  st.innerHTML=`<p class="eyebrow">2 · Écouter la Parole</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« ${SS.verse[0]} »</p>${refHTML(SS.verse[1])}<p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, deux fois. Quel mot te touche ? Garde-le dans ton cœur pour le silence.</p><button class="small-link" id="otherV" type="button">Recevoir une autre parole</button>`;
   ft.innerHTML=next("Garder ce mot et entrer dans le silence");
   $("#otherV").onclick=()=>{SS.verse=rnd(VERSES);renderStep()};
  }else if(id==="silence"){
@@ -916,6 +945,7 @@ function renderStep(){
   st.querySelectorAll("#ptabs button").forEach(b=>b.onclick=()=>{SS.prayer=b.dataset.p;st.querySelectorAll("#ptabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ptext").textContent=PRAYERS[SS.prayer]});
  }
  if(SS.step>0){ft.insertAdjacentHTML("beforeend",'<button class="small-link" id="stepBack" type="button">Retour</button>');$("#stepBack").onclick=()=>{SS.step--;renderStep();$("#session").scrollTop=0}}
+ artify(st);
  const nb=$("#nextBtn");if(nb)nb.onclick=()=>{if(SS.step<STEPS.length-1){SS.step++;if(SS.step===1)chime(587.33,.08);renderStep();$("#session").scrollTop=0}else finishSession()};
 }
 let silInt=null,silDeep=null;
@@ -944,7 +974,7 @@ function finishSession(early){
  musicStop();bell();try{wake&&wake.release()}catch(e){}
  const carry=SS.verse;
  $("#stepsBar").innerHTML=STEPS.map(()=>'<i class="on"></i>').join("");
- $("#stage").innerHTML=rewardHTML(r,{eyebrow:"Envoi",icon:ICONS.croix.svg(),title:"Va en paix"})+`<div class="panel" style="width:100%"><p class="eyebrow">Parole à garder aujourd'hui</p><p class="verse" style="margin-top:8px;font-size:1.08rem">« ${carry[0]} »</p><p class="ref">${carry[1]}</p><button class="small-link" type="button" id="shareCarry" style="margin-top:8px">Partager cette parole</button></div>`;
+ $("#stage").innerHTML=rewardHTML(r,{eyebrow:"Envoi",icon:ICONS.croix.svg(),title:"Va en paix"})+`<div class="panel" style="width:100%"><p class="eyebrow">Parole à garder aujourd'hui</p><p class="verse" style="margin-top:8px;font-size:1.08rem">« ${carry[0]} »</p>${refHTML(carry[1])}<button class="small-link" type="button" id="shareCarry" style="margin-top:8px">Partager cette parole</button></div>`;
  $("#shareCarry").onclick=()=>shareVerse(carry);
  $("#sFoot").innerHTML=`<button class="btn block" id="doneBtn" type="button">Revenir à l'accueil</button>`;
  $("#doneBtn").onclick=closeSession;$("#session").scrollTop=0;SS.finished=true;
@@ -1431,7 +1461,7 @@ function renderNovena(){
  $("#stepsBar").innerHTML=`<div class="nov-candles" role="img" aria-label="${n.progress.filter(Boolean).length} jours priés sur 9">${n.progress.map(p=>candle(!!p)).join("")}</div>`;
  $("#stage").innerHTML=`<p class="eyebrow">${esc(n.name)}</p><div class="icon">${(ICONS[n.img]||ICONS.croix).svg()}</div><h2>Jour ${NS.idx+1}${d.title?` · ${esc(d.title)}`:""}</h2>${n.intention?`<div class="nov-intent-box"><span class="eyebrow">Mon intention</span><br>${esc(n.intention)}</div>`:""}<p class="prayer">${esc(d.text)}</p>${n.daily?`<div class="divider">Prière de chaque jour</div><p class="prayer">${esc(n.daily)}</p>`:""}`;
  $("#sFoot").innerHTML=NS.reread?`<button class="btn block" id="novDone" type="button">Fermer</button>`:`<button class="btn block" id="novDone" type="button">Amen · J'ai prié le jour ${NS.idx+1}</button>`;
- $("#novDone").onclick=NS.reread?closeSession:finishNovenaDay;
+ $("#novDone").onclick=NS.reread?closeSession:finishNovenaDay;artify($("#stage"));
 }
 function finishNovenaDay(){
  const n=S.novenas.find(x=>x.id===NS.id);if(!n)return closeSession();
@@ -1695,7 +1725,7 @@ const FLOWS={
     return `<p class="eyebrow">${MYST[set].n}</p>${rosarySVG(s.bead,lastDone)}${s.myst?`<div style="display:flex;flex-direction:column;gap:2px"><p class="ref" style="margin:0">${ordFr(s.j+1).replace("re","er")} mystère · ${s.myst[1]}</p><h2>${s.myst[0]}</h2><p class="ui" style="font-size:.85rem;color:var(--mute)">Fruit du mystère : ${s.myst[2]}</p></div>`:""}${s.announce?`<p class="text">Prends un instant pour imaginer la scène. Où es-tu ? Que vois-tu ? Que dit Jésus, que fait Marie ?</p>`:`<p class="prayer-label">${s.label}${s.sub?` <span class="ui" style="font-size:.9rem;color:var(--mute)">${s.sub}</span>`:""}</p>${S.showText!==false?`<p class="prayer">${esc(s.text)}</p>`:""}<button class="small-link" type="button" data-toggle-text>${S.showText!==false?"Masquer le texte":"Afficher le texte"}</button>`}`},
     btn:s.announce?"Commencer la dizaine":s.label==="Salve Regina"?"Amen · Terminer":"Suivant",tapAdvance:!s.announce,pausePoint:s.label==="Ô mon Jésus"&&s.j<4}))}},
  angelus:()=>{const ps=liturgy().season==="paques";return{eyebrow:ps?"Temps pascal":"Midi",bonus:["Angélus",10],count:"angelus",icon:"marie",title:"Va en paix",text:"« Et le Verbe s'est fait chair, et il a habité parmi nous. »",
-  steps:[{html:()=>`<p class="eyebrow">${ps?"Regina Caeli · temps pascal":"L'Angélus"}</p><div class="icon">${ICONS.marie.svg()}</div><h2>${ps?"Reine du ciel, réjouis-toi":"L'ange du Seigneur"}</h2><p class="text" style="color:var(--mute);font-size:1rem">Trois fois par jour, le matin, à midi et le soir, l'Église s'arrête pour se souvenir que Dieu s'est fait homme.</p><p class="prayer">${esc(ps?REGINA:ANGELUS)}</p>`,btn:"Amen"}]}},
+  steps:[{html:()=>`<p class="eyebrow">${ps?"Regina Caeli · temps pascal":"L'Angélus"}</p><div class="icon">${artOr(ps?"immaculee":"annonciation","marie")}</div><h2>${ps?"Reine du ciel, réjouis-toi":"L'ange du Seigneur"}</h2><p class="text" style="color:var(--mute);font-size:1rem">Trois fois par jour, le matin, à midi et le soir, l'Église s'arrête pour se souvenir que Dieu s'est fait homme.</p><p class="prayer">${esc(ps?REGINA:ANGELUS)}</p>`,btn:"Amen"}]}},
  examen:()=>({eyebrow:"Examen du soir",bonus:["Examen du soir",20],count:"examen",icon:"cierge",title:"Bonne nuit dans sa paix",text:"« Je me couche et je m'endors en paix, car toi seul, Seigneur, tu me donnes la sécurité dans ma demeure. » (Ps 4,9)",
   steps:[
    {html:()=>`<p class="eyebrow">1 · Merci</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Rendre grâce</h2><p class="text">Remercie pour un don de cette journée : une rencontre, un moment de beauté, une force reçue. Prends le temps de le savourer.</p>`},
@@ -1706,12 +1736,12 @@ const FLOWS={
   ],onFinish:()=>{addWord(FL.data.word,"Examen du soir");addWord(FL.data.res&&("Résolution : "+FL.data.res),"Examen du soir")}}),
  famille:()=>{const v=rnd(KID_VERSES);return{eyebrow:"Prière en famille",bonus:["Prière en famille",15],count:"famille",icon:"coeur",title:"Que Dieu bénisse votre famille",text:"« Là où deux ou trois sont assemblés en mon nom, je suis au milieu d'eux. » (Mt 18,20)",kids:1,
   steps:[
-   {html:()=>`<p class="eyebrow">On se rassemble</p><div class="icon">${ICONS.cierge.svg()}</div><h2>Jésus est avec nous</h2><p class="text">Allumez une bougie si vous pouvez. Faisons ensemble le signe de croix :<br><em>Au nom du Père, et du Fils, et du Saint-Esprit. Amen.</em></p>`},
+   {html:()=>`<p class="eyebrow">On se rassemble</p><div class="icon">${artOr("famille","cierge")}</div><h2>Jésus est avec nous</h2><p class="text">Allumez une bougie si vous pouvez. Faisons ensemble le signe de croix :<br><em>Au nom du Père, et du Fils, et du Saint-Esprit. Amen.</em></p>`},
    {html:()=>`<p class="eyebrow">Merci</p><div class="icon">${ICONS.soleil.svg()}</div><h2>Merci, Jésus !</h2><p class="text">Chacun dit un merci pour aujourd'hui.<br><em>« Merci Jésus pour… »</em></p>`},
    {html:()=>`<p class="eyebrow">Pardon</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Pardon, Jésus</h2><p class="text">Dans son cœur, chacun peut dire pardon pour une bêtise ou un mot méchant. Jésus nous aime toujours, et il nous pardonne.</p>`},
    {html:()=>`<p class="eyebrow">S'il te plaît</p><div class="icon">${ICONS.colombe.svg()}</div><h2>Jésus, prends soin de…</h2><p class="text">Pour qui voulons-nous prier ? Un grand-parent, un ami, quelqu'un de malade ou de triste.</p>`},
-   {html:()=>`<p class="eyebrow">Une parole de Jésus</p><div class="icon">${ICONS.etoile.svg()}</div><p class="verse" style="font-size:1.5rem">« ${v[0]} »</p><p class="ref">${v[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Répétons-la ensemble deux fois.</p>`},
-   {html:()=>`<p class="eyebrow">Avec Marie</p><div class="icon">${ICONS.marie.svg()}</div><p class="prayer">${esc(AVE)}</p>`},
+   {html:()=>`<p class="eyebrow">Une parole de Jésus</p><div class="icon">${artOr("enfants","etoile")}</div><p class="verse" style="font-size:1.5rem">« ${v[0]} »</p><p class="ref">${v[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Répétons-la ensemble deux fois.</p>`},
+   {html:()=>`<p class="eyebrow">Avec Marie</p><div class="icon">${artOr("vladimir","marie")}</div><p class="prayer">${esc(AVE)}</p>`},
    {html:()=>`<p class="eyebrow">Bénédiction</p><div class="icon">${ICONS.croix.svg()}</div><h2>Que Jésus te bénisse</h2><p class="text">Les parents peuvent tracer une petite croix sur le front de chaque enfant :<br><em>« Que Jésus te bénisse et te garde. »</em></p>`,btn:"Amen · Terminer"}
   ]}}
 };
@@ -1733,6 +1763,7 @@ function renderFlow(){
  $("#flowNext").onclick=flowNext;
  const bk=$("#flowBack");if(bk)bk.onclick=()=>{FL.i--;renderFlow()};
  const tg=st.querySelector("[data-toggle-text]");if(tg)tg.onclick=e=>{e.stopPropagation();S.showText=S.showText===false;save();renderFlow()};
+ artify(st);
  if(s.pausePoint){$("#sFoot").insertAdjacentHTML("beforeend",'<button class="small-link" id="flowPause" type="button">Dizaine terminée : faire une pause et continuer plus tard</button>');$("#flowPause").onclick=pauseFlow}
  if(s.onRender)s.onRender();
  st.onclick=s.tapAdvance?(e=>{if(e.target.closest("button,input,textarea"))return;flowNext()}):null;
@@ -1797,13 +1828,13 @@ Object.assign(FLOWS,{
  oraison:()=>({eyebrow:"Oraison",bonus:["Oraison",30],count:"oraison",icon:"cierge",title:"Demeure en lui",text:"« Demeurez en moi, et je demeurerai en vous. » (Jn 15,4)",
   steps:[
    {html:()=>{FL.data.min=FL.data.min||S.oraisonMin||10;FL.data.verse=FL.data.verse||rnd(VERSES);return `<p class="eyebrow">1 · Se mettre en présence</p><div class="icon">${ICONS.cierge.svg()}</div><h2>Un cœur à cœur silencieux</h2><p class="text">Pour sainte Thérèse d'Avila, l'oraison est une relation d'amitié : passer du temps seul à seul avec Celui dont on se sait aimé. Ce n'est pas réfléchir beaucoup, c'est aimer beaucoup.</p><p class="text">Installe-toi, le dos droit. Dis-lui : <em>« Jésus, je suis là pour toi. »</em></p><div class="durations" style="grid-template-columns:repeat(4,1fr);width:100%" id="orDur">${[10,15,20,30].map(m=>`<button type="button" class="dur" aria-pressed="${FL.data.min===m}" data-m="${m}">${m}<small>MIN</small></button>`).join("")}</div>`},onRender:()=>$("#orDur").querySelectorAll("button").forEach(b=>b.onclick=()=>{FL.data.min=+b.dataset.m;S.oraisonMin=FL.data.min;save();renderFlow()})},
-   {html:()=>`<p class="eyebrow">2 · Une parole pour commencer</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« ${FL.data.verse[0]} »</p><p class="ref">${FL.data.verse[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Lis-la deux fois. Puis laisse-la, et regarde Jésus qui te regarde. Si tu te distrais, reviens doucement en disant son nom.</p>${silenceStepHTML(FL.data.min,"Entrer dans le silence")}`,onRender:()=>bindSilence(FL.data.min),btn:"Passer le silence"},
+   {html:()=>`<p class="eyebrow">2 · Une parole pour commencer</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« ${FL.data.verse[0]} »</p>${refHTML(FL.data.verse[1])}<p class="text" style="color:var(--mute);font-size:1rem">Lis-la deux fois. Puis laisse-la, et regarde Jésus qui te regarde. Si tu te distrais, reviens doucement en disant son nom.</p>${silenceStepHTML(FL.data.min,"Entrer dans le silence")}`,onRender:()=>bindSilence(FL.data.min),btn:"Passer le silence"},
    {html:()=>`<p class="eyebrow">3 · Conclure</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Merci, Seigneur</h2><p class="text">Remercie-le pour ce temps, même s'il t'a semblé sec : l'oraison se juge à la fidélité, pas aux sentiments.</p><div class="field" style="width:100%;text-align:left"><label for="fWord2">Ce qu'il m'a dit (facultatif)</label><input type="text" id="fWord2" placeholder="Un mot, une image, une paix…"></div><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen · Terminer",onNext:()=>{const v=$("#fWord2");if(v)FL.data.word=v.value}}
   ],onFinish:()=>addWord(FL.data.word,"Oraison")}),
  psaume:()=>({eyebrow:"Psaume",bonus:["Psaume",15],count:"psaume",icon:"chirho",title:"Que ta parole demeure en moi",text:"« Ta parole est une lampe à mes pieds, et une lumière sur mon sentier. » (Ps 119,105)",
   steps:[
    {html:()=>`<p class="eyebrow">Prier un psaume</p><div class="icon">${ICONS.chirho.svg()}</div><h2>Les psaumes, prière de Jésus</h2><p class="text" style="font-size:1rem">Jésus les priait, et l'Église les prie chaque jour. Choisis celui qui correspond à ton cœur aujourd'hui.</p><div class="praise-list" id="psList">${PSALMS.map((p,i)=>`<button type="button" class="praise-row ps" data-ps="${i}"><div style="min-width:0;text-align:left"><b>Psaume ${p.n} · ${p.t}</b><small>${p.th}</small></div><span style="color:var(--gold)">›</span></button>`).join("")}</div>`,onRender:()=>$("#psList").querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{FL.data.ps=PSALMS[+b.dataset.ps];FL.i++;renderFlow();$("#session").scrollTop=0}),btn:"Au hasard",onNext:()=>{FL.data.ps=FL.data.ps||rnd(PSALMS)}},
-   {html:()=>{const p=FL.data.ps||(FL.data.ps=rnd(PSALMS));return `<p class="eyebrow">Psaume ${p.n}${p.ref?` · ${p.ref}`:""}</p><h2>${p.t}</h2><p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, à mi-voix si tu peux. Arrête-toi sur le verset qui te touche.</p><p class="prayer">${esc(p.x)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p><p class="hint">D'après la traduction Louis Segond (1910).</p>`}},
+   {html:()=>{const p=FL.data.ps||(FL.data.ps=rnd(PSALMS));return `<p class="eyebrow">Psaume ${p.n}${p.ref?` · ${p.ref}`:""}</p><h2>${p.t}</h2>${refHTML("Ps "+p.n,"ref")}<p class="text" style="color:var(--mute);font-size:1rem">Lis lentement, à mi-voix si tu peux. Arrête-toi sur le verset qui te touche.</p><p class="prayer">${esc(p.x)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p><p class="hint">D'après la traduction Louis Segond (1910).</p>`}},
    {html:()=>`<p class="eyebrow">Garder un verset</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Quel verset emporter ?</h2><p class="text">Recopie le verset qui t'a touché. Redis-le plusieurs fois dans la journée.</p><div class="field" style="width:100%;text-align:left"><label for="fVerse">Mon verset (facultatif)</label><input type="text" id="fVerse" placeholder="Copie ici le verset…"></div>`,btn:"Amen · Terminer",onNext:()=>{const v=$("#fVerse");if(v)FL.data.word=v.value}}
   ],onFinish:()=>addWord(FL.data.word&&(FL.data.word+` (Ps ${FL.data.ps.n})`),"Psaume")}),
  adoration:()=>({eyebrow:"Adoration",bonus:["Adoration",25],count:"adoration",icon:"calice",title:"Il est là",text:"« Je suis le pain vivant qui est descendu du ciel. » (Jn 6,51)",
@@ -1858,7 +1889,7 @@ Object.assign(FLOWS,{
    {html:()=>`<p class="eyebrow">3 · Pardon</p><div class="icon">${ICONS.croix.svg()}</div><h2>Pardon</h2><p class="text">Si quelque chose a blessé aujourd'hui, c'est le moment de se le dire simplement : <em>« Pardon pour… »</em><br><br><em>« Que le soleil ne se couche pas sur votre colère. »</em> (Ep 4,26)</p>`},
    {html:()=>{const names=[...Object.keys(COUPLE_PRAYERS),"La nôtre"];FL.data.cp=FL.data.cp||(S.couplePrayer?"La nôtre":names[0]);const own=FL.data.cp==="La nôtre";return `<p class="eyebrow">4 · Prier d'une seule voix</p><div class="icon">${ICONS.coeur.svg()}</div><div class="ptabs" id="cpTabs">${names.map(k=>`<button type="button" aria-pressed="${k===FL.data.cp}" data-p="${k}">${k}</button>`).join("")}</div>${own?`<div class="field" style="width:100%;text-align:left"><label for="cpOwn">Notre prière, écrite à deux. Elle est gardée sur ce téléphone.</label><textarea id="cpOwn" style="min-height:170px" placeholder="Seigneur, nous te confions notre couple…">${esc(S.couplePrayer||"")}</textarea></div>`:`<p class="prayer">${esc(COUPLE_PRAYERS[FL.data.cp])}</p>`}`},
     onRender:()=>{$("#cpTabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{FL.data.cp=b.dataset.p;renderFlow()});const o=$("#cpOwn");if(o)o.oninput=()=>{S.couplePrayer=o.value;save()}}},
-   {html:()=>`<p class="eyebrow">5 · Confier et bénir</p><div class="icon">${ICONS.marie.svg()}</div><h2>Se bénir l'un l'autre</h2><p class="text">Confiez ensemble vos enfants, vos proches, vos projets. Puis chacun trace une petite croix sur le front de l'autre :<br><em>« Que le Seigneur te bénisse et te garde. »</em></p><p class="prayer">${esc(AVE)}</p>`,btn:"Amen · Terminer"}
+   {html:()=>`<p class="eyebrow">5 · Confier et bénir</p><div class="icon">${artOr("famille","marie")}</div><h2>Se bénir l'un l'autre</h2><p class="text">Confiez ensemble vos enfants, vos proches, vos projets. Puis chacun trace une petite croix sur le front de l'autre :<br><em>« Que le Seigneur te bénisse et te garde. »</em></p><p class="prayer">${esc(AVE)}</p>`,btn:"Amen · Terminer"}
   ]}),
  anges:()=>{FL.data.soir=FL.data.soir??(new Date().getHours()>=17);return{eyebrow:"Anges gardiens",bonus:["Prière aux anges",10],count:"anges",icon:"ailes",title:"Sous la garde des anges",text:"« Il ordonnera à ses anges de te garder dans toutes tes voies. » (Ps 91,11)",
   steps:[
@@ -2158,7 +2189,7 @@ Object.assign(FLOWS,{
  express:()=>{const v=rnd(VERSES);return{eyebrow:"Une minute avec Jésus",bonus:["Prière express",5],count:"express",icon:"cierge",title:"Va, il marche avec toi",text:"« Je suis avec vous tous les jours. » (Mt 28,20)",
   steps:[
    {html:()=>`<p class="eyebrow">1 · Respirer</p><div class="icon">${ICONS.cierge.svg()}</div><h2>Arrête-toi un instant</h2><p class="text">Respire lentement, trois fois. Jésus est là, même au milieu de ta journée.<br><br><em>Au nom du Père, et du Fils, et du Saint-Esprit.</em></p>`},
-   {html:()=>`<p class="eyebrow">2 · Une parole</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:30ch">« ${v[0]} »</p><p class="ref">${v[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Redis-la une fois, lentement.</p>`},
+   {html:()=>`<p class="eyebrow">2 · Une parole</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:30ch">« ${v[0]} »</p>${refHTML(v[1])}<p class="text" style="color:var(--mute);font-size:1rem">Redis-la une fois, lentement.</p>`},
    {html:()=>`<p class="eyebrow">3 · Lui confier</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Une phrase pour lui</h2><div class="field" style="width:100%;text-align:left"><label for="fExp">Jésus, je te confie… (facultatif)</label><input type="text" id="fExp" placeholder="ce rendez-vous, cette personne, cette fatigue…"></div><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen",onNext:()=>{const x=$("#fExp");if(x&&x.value.trim())addIntention(x.value)}}
   ]}}
 });
@@ -2195,7 +2226,7 @@ Object.assign(FLOWS,{
    {html:()=>`<p class="eyebrow">3 · Les psaumes du soir</p><p class="prayer">${esc(PS4)}</p><p class="prayer">${esc(PS134)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p>`},
    {html:()=>`<p class="eyebrow">4 · Parole et répons</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« Tu es au milieu de nous, Seigneur, et ton nom est invoqué sur nous : ne nous abandonne pas ! »</p><p class="ref">Jr 14,9</p><p class="prayer" style="text-align:center">En tes mains, Seigneur, je remets mon esprit.\n(Ps 31,6)</p>`},
    {html:()=>`<p class="eyebrow">5 · Cantique de Syméon</p><div class="icon">${ICONS.cierge.svg()}</div><p class="text"><em>Sauve-nous, Seigneur, quand nous veillons ; garde-nous quand nous dormons : que nous veillions avec le Christ et que nous reposions en paix.</em></p><p class="prayer">${esc(NUNC)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p>`},
-   {html:()=>`<p class="eyebrow">6 · Bénédiction</p><div class="icon">${ICONS.marie.svg()}</div><p class="prayer" style="text-align:center">Que le Seigneur tout-puissant\nnous accorde une nuit tranquille\net une fin parfaite. Amen.</p><p class="eyebrow" style="margin-top:6px">${ps?"Regina Caeli":"Salve Regina"}</p><p class="prayer">${esc(ps?REGINA:SALVE)}</p>`,btn:"Amen · Bonne nuit"}
+   {html:()=>`<p class="eyebrow">6 · Bénédiction</p><div class="icon">${ICONS.marie.svg()}</div><p class="text" style="font-size:.95rem"><a class="reflink" href="https://www.aelf.org/${isoDay()}/romain/complies" target="_blank" rel="noopener">L'office complet des complies du jour, sur AELF ↗</a></p><p class="prayer" style="text-align:center">Que le Seigneur tout-puissant\nnous accorde une nuit tranquille\net une fin parfaite. Amen.</p><p class="eyebrow" style="margin-top:6px">${ps?"Regina Caeli":"Salve Regina"}</p><p class="prayer">${esc(ps?REGINA:SALVE)}</p>`,btn:"Amen · Bonne nuit"}
   ]}}
 });
 PAUSABLE.push("complies");FLOW_NAMES.complies="Complies";
@@ -2246,11 +2277,56 @@ function startRetreat(k,reread){const r=RETREATS.find(x=>x.key===k),st=S.retreat
 function retreatDef(r,d,idx,reread){const st=S.retreats[r.key];
  return{eyebrow:r.n,bonus:[`Jour ${idx+1} de retraite`,20],count:"retraite",icon:r.img,title:idx===6?"Retraite achevée":`Jour ${idx+1} vécu`,text:idx===6?"« Je suis avec vous tous les jours. » (Mt 28,20)":`À demain pour le jour ${idx+2}.`,
   steps:[
-   {html:()=>`<p class="eyebrow">${esc(r.n)} · jour ${idx+1} sur 7</p><div class="nov-candles" role="img" aria-label="${st.progress.filter(Boolean).length} jours vécus sur 7">${st.progress.map(p=>candle(!!p)).join("")}</div><div class="icon">${ICONS[r.img].svg()}</div><h2>${esc(d[0])}</h2><p class="verse" style="max-width:32ch">« ${esc(d[1])} »</p><p class="ref">${esc(d[2])}</p><p class="text">${esc(d[3])}</p>`},
+   {html:()=>`<p class="eyebrow">${esc(r.n)} · jour ${idx+1} sur 7</p><div class="nov-candles" role="img" aria-label="${st.progress.filter(Boolean).length} jours vécus sur 7">${st.progress.map(p=>candle(!!p)).join("")}</div><div class="icon">${ICONS[r.img].svg()}</div><h2>${esc(d[0])}</h2><p class="verse" style="max-width:32ch">« ${esc(d[1])} »</p>${refHTML(d[2])}<p class="text">${esc(d[3])}</p>`},
    {html:()=>`<p class="eyebrow">Pour aujourd'hui</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Un pas concret</h2><p class="text"><em>${esc(d[4])}</em></p><p class="text" style="color:var(--mute);font-size:1rem">Prends un moment de silence pour le confier à Jésus.</p><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:reread?"Fermer":"Amen · Jour vécu"}
   ],
   onFinish:()=>{if(!reread)st.progress[idx]=dayKey();if(st.progress.every(Boolean)&&!st.done){st.done=true;S.retreatCount=(S.retreatCount||0)+1}}}}
 FLOWS.retraite=()=>({eyebrow:"",bonus:["",0],count:"retraite",icon:"cierge",title:"",steps:[{html:()=>""}]});
+
+/* ---------- Écosystème : liens vers AELF, Nominis, Hozana, Messes.info ---------- */
+const BIBLE_CODES={"Matthieu":"Mt","Mt":"Mt","Marc":"Mc","Mc":"Mc","Luc":"Lc","Lc":"Lc","Jean":"Jn","Jn":"Jn","Ac":"Ac","Actes":"Ac","Romains":"Rm","Rm":"Rm","Corinthiens":"Co","Co":"Co","Ga":"Ga","Galates":"Ga","Ep":"Ep","Éphésiens":"Ep","Philippiens":"Ph","Ph":"Ph","Col":"Col","Thessaloniciens":"Th","Th":"Th","Tm":"Tm","Timothée":"Tm","He":"He","Hébreux":"He","Jc":"Jc","Jacques":"Jc","P":"P","Pierre":"P","Apocalypse":"Ap","Ap":"Ap","Psaume":"Ps","Psaumes":"Ps","Ps":"Ps","Isaïe":"Is","Is":"Is","Jérémie":"Jr","Jr":"Jr","Rois":"R","R":"R","Proverbes":"Pr","Pr":"Pr","Sagesse":"Sg","Sg":"Sg","Tobie":"Tb","Tb":"Tb","Maccabées":"M","M":"M","Exode":"Ex","Ex":"Ex","Jl":"Jl","Joël":"Jl","Genèse":"Gn","Gn":"Gn","Ez":"Ez","Os":"Os"};
+function psGreek(n){if(n>=11&&n<=113)return n-1;if(n>=117&&n<=146)return n-1;if(n===10)return 9;if(n===114||n===115)return 113;if(n===116)return 114;if(n===147)return 146;return n}
+function bibleUrl(ref){
+ const m=String(ref||"").match(/^\s*(\d)?\s*([A-Za-zÀ-ÿ]+)\s+(\d+)/);if(!m)return null;
+ let code=BIBLE_CODES[m[2]];if(!code)return null;
+ if(m[2]==="Jean"&&m[1])code="Jn";
+ if(["Co","Th","Tm","P","R","M","Jn"].includes(code)&&m[1])code=m[1]+code;
+ if(["Co","Th","Tm","P","R","M"].includes(code))return null;
+ let ch=+m[3];if(code==="Ps")ch=psGreek(ch);
+ return `https://www.aelf.org/bible/${code}/${ch}`}
+function refHTML(ref,cls="ref"){const u=bibleUrl(ref);return u?`<a class="${cls} reflink" href="${u}" target="_blank" rel="noopener" aria-label="${esc(ref)} : lire le passage sur AELF (site externe)">${esc(ref)} ↗</a>`:`<p class="${cls}">${esc(ref)}</p>`}
+const isoDay=(d=new Date())=>dayKey(d);
+const ECO=[
+ {k:"messe",t:"Les lectures de la messe",d:"Les textes du jour, sur AELF",u:()=>`https://www.aelf.org/${isoDay()}/romain/messe`},
+ {k:"heures",t:"La liturgie des heures",d:"Laudes, vêpres, complies du jour, sur AELF",u:()=>`https://www.aelf.org/${isoDay()}/romain/laudes`},
+ {k:"saints",t:"Les saints du jour",d:"Leur vie, sur Nominis",u:()=>"https://nominis.cef.fr/"},
+ {k:"messes",t:"Trouver une messe",d:"Horaires près de chez toi, sur Messes.info",u:()=>"https://messes.info/"},
+ {k:"hozana",t:"Prier en communauté",d:"Neuvaines et retraites partagées, sur Hozana",u:()=>"https://www.hozana.org/"}
+];
+function renderEco(){const el=$("#ecoList");if(!el)return;
+ el.innerHTML=ECO.map(e=>`<a class="eco" href="${e.u()}" target="_blank" rel="noopener"><span><b>${e.t}</b><small>${e.d}</small></span><span aria-hidden="true">↗</span><span class="sr"> (site externe)</span></a>`).join("")}
+
+/* ---------- Images saintes (peintures du domaine public) ---------- */
+/* Les fichiers viennent de Wikimedia Commons via `npm run images` (scripts/fetch-images.mjs).
+   Sans ces fichiers, l'app garde ses dessins : rien ne change. */
+const ART_FOR_ICON={cierge:"lumiere",chirho:"pantocrator",coeur:"sacrecoeur",ihs:"tete",croix:"gethsemani",marie:"vierge",lys:"joseph",ailes:"ange"};
+let ART={};
+function artOn(){return S.art!==false&&Object.keys(ART).length>0}
+function artFigure(id){const a=ART[id];if(!a)return null;
+ return `<figure class="art"><img src="${a.src}" alt="${esc(a.title)}, ${esc(a.artist)}" loading="lazy" decoding="async"><figcaption>${esc(a.title)} · ${esc(a.artist)}${a.date?`, ${esc(a.date)}`:""}</figcaption></figure>`}
+function artify(root){if(!root||!artOn())return;
+ root.querySelectorAll(".icon").forEach(box=>{const svg=box.querySelector("svg");if(!svg)return;
+  const id=svg.getAttribute("data-art")||ART_FOR_ICON[svg.getAttribute("data-k")];const f=id&&artFigure(id);
+  if(f){box.outerHTML=f}})}
+const artOr=(id,key)=>ICONS[key].svg().replace("<svg",`<svg data-art="${id}"`);
+Object.keys(ICONS).forEach(k=>{const f=ICONS[k].svg;ICONS[k].svg=()=>f().replace("<svg",`<svg data-k="${k}"`)});
+function loadArt(){
+ if(location.protocol==="file:"&&!nativeApp())return;
+ fetch("images/credits.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&typeof j==="object"){ART=j;renderAll();renderGallery()}}).catch(()=>{})}
+function renderArtCredits(){const el=$("#artCredits");if(!el)return;
+ const ids=Object.keys(ART);
+ el.innerHTML=ids.length?`<ul class="help">${ids.map(id=>{const a=ART[id];return `<li><b>${esc(a.title)}</b> · ${esc(a.artist)}${a.date?`, ${esc(a.date)}`:""}. ${esc(a.license||"Domaine public")}. <a class="small-link" href="${a.page}" target="_blank" rel="noopener">Source</a></li>`}).join("")}</ul>`:`<p class="hint">Les peintures ne sont pas encore installées dans cette version : l'app utilise ses dessins.</p>`;
+ $("#artSw").setAttribute("aria-checked",S.art!==false);$("#artRow").hidden=!ids.length}
 
 /* ---------- Accueil : liturgie, suggestions, saint ---------- */
 function renderToday(){
@@ -2258,7 +2334,8 @@ function renderToday(){
  const date=t.toLocaleDateString("fr-BE",{weekday:"long",day:"numeric",month:"long"});
  const mySaint=getSaint();const feastDay=mySaint&&feastInfo(mySaint.f).days===0;
  $("#litu").style.setProperty("--lc",L.color[1]);
- $("#litu").innerHTML=`<span class="ldot" title="Couleur liturgique : ${L.color[0]}"></span><div style="min-width:0"><div class="eyebrow">${date}</div><b>${L.feast||(L.sun?L.label:(L.saint||L.label))}</b><small>${[(L.feast||(!L.sun&&L.saint))?L.label:null,(!L.feast&&L.sun&&L.saint)?L.saint:null,L.color[0]].filter(Boolean).join(" · ")}</small></div>`;
+ $("#litu").innerHTML=`<span class="ldot" title="Couleur liturgique : ${L.color[0]}"></span><div style="min-width:0"><div class="eyebrow">${date}</div><b>${L.feast||(L.sun?L.label:(L.saint||L.label))}</b><small>${[(L.feast||(!L.sun&&L.saint))?L.label:null,(!L.feast&&L.sun&&L.saint)?L.saint:null,L.color[0]].filter(Boolean).join(" · ")}</small><span class="litu-links"><a href="https://www.aelf.org/${isoDay()}/romain/messe" target="_blank" rel="noopener">Lectures du jour ↗</a><a href="https://nominis.cef.fr/" target="_blank" rel="noopener">Saints du jour ↗</a></span></div>`;
+ renderEco();
  renderResume();
  const sg=novSuggestion(),box=$("#novSuggest");
  if(sg){const item=NOV_LIBRARY.find(i=>i.key===sg.key),nm=parseNovena(item.text).name;
@@ -2292,7 +2369,7 @@ function renderSettings(){
  $("#saintPick").innerHTML=SAINTS.map(x=>`<button type="button" aria-pressed="${S.saint===x.k}" data-s="${x.k}">${ICONS[x.icon].svg()}<span>${x.n.replace(/^(Saint|Sainte) /,"").replace("La Vierge Marie","Vierge Marie")}</span></button>`).join("");
  $("#saintPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.saint=S.saint===b.dataset.s?null:b.dataset.s;save();renderSettings();syncReminders();renderToday()});
  const ms=getSaint();$("#saintInfo").innerHTML=ms?`<b style="font-family:var(--f-display);font-weight:500;color:var(--gold)">${esc(ms.n)}</b>${ms.f?` · fête le ${feastInfo(ms.f).label}`:""}<br><span style="color:var(--mute)">${ms.bio}</span>`:"Aucun saint choisi pour l'instant.";
- $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);$("#calmeSw").setAttribute("aria-checked",!!S.calme);
+ $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);renderArtCredits();$("#calmeSw").setAttribute("aria-checked",!!S.calme);
  const cm=$("#csMonth");if(cm.options.length<2)MOIS.forEach((m,i)=>cm.add(new Option(m,i+1)));
  if(S.customSaint&&!$("#csName").value){$("#csName").value=S.customSaint.n||"";$("#csPrayer").value=S.customSaint.p||"";if(S.customSaint.f){const [mm,dd]=S.customSaint.f.split("-").map(Number);$("#csDay").value=dd;cm.value=mm}}
  if(!LN())$("#notifNote").textContent="Les rappels s'activent dans l'application installée sur le téléphone. Ici, tes choix sont enregistrés.";
@@ -2409,7 +2486,7 @@ document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>show(b.dat
 $("#startBtn").onclick=startSession;
 $("#musicToggle").onclick=()=>{S.music=!S.music;save();renderHome()};
 $("#newVerse").onclick=showVerse;
-$("#gallery").onclick=()=>{gi=(gi+1)%GALLERY.length;renderGallery()};
+$("#gallery").onclick=()=>{gi=(gi+1)%(artOn()?Object.keys(ART).length:GALLERY.length);renderGallery()};
 $("#sMusic").onclick=()=>{A.on?musicStop():musicStart();updMusicBtn()};
 $("#quitBtn").onclick=()=>{
  const cur=SS||FL||NS;if(!cur||cur.finished||(NS&&NS.reread))return closeSession();
@@ -2420,6 +2497,7 @@ $("#restorePick").onclick=()=>$("#restoreFile").click();
 $("#quitPause").onclick=()=>{$("#quitConfirm").hidden=true;pauseFlow()};
 $("#expressBtn").onclick=()=>startFlow("express");
 $("#tileRetreat").onclick=()=>{show("novena");setTimeout(()=>$("#retreatTitle").scrollIntoView({behavior:"smooth",block:"start"}),60)};
+$("#artSw").onclick=()=>{S.art=S.art===false;save();renderSettings();renderGallery()};
 $("#calmeSw").onclick=()=>{S.calme=!S.calme;save();applyCalme();renderSettings()};
 document.querySelectorAll("[data-flow]").forEach(b=>b.onclick=()=>startFlow(b.dataset.flow));
 document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=ICONS[el.dataset.icon].svg());
@@ -2480,7 +2558,7 @@ function initLinks(){
  if(location.hash==="#express"){go("#express");try{history.replaceState(null,"",location.pathname)}catch(e){}}
  const A=plug("App");if(nativeApp()&&A){try{A.addListener("appUrlOpen",e=>go(e&&e.url));A.getLaunchUrl().then(r=>go(r&&r.url)).catch(()=>{})}catch(e){}}
  if(!nativeApp()&&window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker" in navigator&&document.querySelector('link[rel="manifest"]')){navigator.serviceWorker.register("sw.js").catch(()=>{})}}
-renderAll();showVerse();renderGallery();initNative();initLinks();
+renderAll();showVerse();renderGallery();initNative();initLinks();loadArt();
 </script>
 
 </body>

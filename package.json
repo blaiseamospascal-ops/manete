@@ -9,7 +9,8 @@
     "android": "npm run sync && npx cap open android",
     "icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#0e1a36' --splashBackgroundColor '#0e1a36'",
     "widget-data": "node scripts/widget-data.mjs",
-    "web": "node scripts/build-web.mjs"
+    "web": "node scripts/build-web.mjs",
+    "images": "node scripts/fetch-images.mjs"
   },
   "dependencies": {
     "@capacitor/android": "8.5.3",
