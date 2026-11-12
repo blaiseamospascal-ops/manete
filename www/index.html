@@ -327,6 +327,7 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
       <div class="brand"><svg viewBox="0 0 200 200"><defs><radialGradient id="lgGlow" cx="100" cy="46" r="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="currentColor" stop-opacity=".5"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="46" r="52" fill="url(#lgGlow)"/><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M100 176 C 60 146, 26 116, 27 84 C 28 56, 48 42, 68 44 C 84 45, 94 54, 100 68"/><path d="M100 176 C 140 146, 174 116, 173 84 C 172 56, 152 42, 132 44 C 116 45, 106 54, 100 68"/></g><path d="M33 118 C 17 124, 4 116, 0 100 C 16 96, 29 104, 33 118 Z" fill="currentColor"/><path d="M31 115 C 22 112, 12 108, 5 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M167 118 C 183 124, 196 116, 200 100 C 184 96, 171 104, 167 118 Z" fill="currentColor"/><path d="M169 115 C 178 112, 188 108, 195 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M100 74 C 84 64, 84 42, 100 8 C 116 42, 116 64, 100 74 Z" fill="currentColor"/><path d="M100 68 C 93 61, 93 50, 100 36 C 107 50, 107 61, 100 68 Z" fill="var(--lapis)" opacity=".5"/></svg>
 <div><b lang="la">MANETE</b><small>Cœur à Cœur · Demeurez en moi</small></div></div>
       <div class="litu" id="litu"></div>
+      <div class="panel side-card" id="resumeCard" hidden></div>
       <div class="panel side-card" id="novSuggest" hidden></div>
       <div class="hero">
         <div class="icon" id="heroIcon"></div>
@@ -347,13 +348,14 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
           <span class="ui" style="font-size:.8rem;color:var(--mute)" id="silenceInfo">dont 4 min de silence</span>
         </div>
         <button class="btn block" id="startBtn" type="button">Commencer la prière</button>
+        <button class="btn ghost block" id="expressBtn" type="button">Pressé ? 1 minute avec Jésus</button>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:12px">
         <h2>Prier autrement</h2>
         <div class="tiles">
           <button class="tile wide" type="button" id="tileTable"><div class="icon" data-icon="calice"></div><div style="min-width:0"><b>Bénédicités</b><small>Avant et après le repas : pour les enfants, entre adultes, et les vôtres</small></div></button>
-          <button class="tile" type="button" data-flow="chapelet"><div class="icon" data-icon="chapelet"></div><b>Chapelet</b><small id="tileRosary">≈ 20 min</small></button>
+          <button class="tile" type="button" data-flow="chapelet"><div class="icon" data-icon="chapelet"></div><b>Chapelet</b><small id="tileRosary">≈ 20 min</small><small>Pause possible entre les dizaines</small></button>
           <button class="tile" type="button" data-flow="angelus"><div class="icon" data-icon="marie"></div><b>Angélus</b><small id="tileAngelus">2 min · à midi</small></button>
           <button class="tile" type="button" data-flow="examen"><div class="icon" data-icon="cierge"></div><b>Examen du soir</b><small>5 min · relire sa journée</small></button>
           <button class="tile" type="button" data-flow="famille"><div class="icon" data-icon="coeur"></div><b>En famille</b><small>5 min · avec les enfants</small></button>
@@ -506,6 +508,8 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
         <ul class="help">
           <li><b>Prier</b> : choisis une durée et laisse-toi guider. Tu peux revenir en arrière ou arrêter à tout moment : le temps prié est compté.</li>
           <li><b>Silence</b> : l'écran s'assombrit. Touche-le pour revoir le temps restant. Une cloche sonne à la fin.</li>
+          <li><b>Pause</b> : dans le chapelet et les autres prières, « ✕ » propose de mettre en pause. Tu reprends plus tard depuis l'accueil, là où tu en étais.</li>
+          <li><b>Pressé ?</b> Le bouton « 1 minute avec Jésus » propose une prière express.</li>
           <li><b>Neuvaines</b> : un jour par jour. Si tu en manques un, tu reprends là où tu en étais.</li>
           <li><b>Musique</b> : le bouton ♪ en haut de chaque prière la coupe ou la remet.</li>
           <li><b>Série de jours</b> : un jour manqué par semaine est pardonné (jour de grâce).</li>
@@ -593,7 +597,7 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
     <div class="steps" id="stepsBar"></div>
     <div id="quitConfirm" hidden class="panel ui" style="font-size:.9rem;display:flex;flex-direction:column;gap:10px;text-align:center">
       <span id="quitMsg">Arrêter maintenant ? Le temps déjà prié sera compté.</span>
-      <div class="row" style="justify-content:center"><button class="btn" id="quitYes" type="button" style="padding:8px 18px">Terminer</button><button class="btn ghost" id="quitNo" type="button" style="padding:8px 18px">Continuer</button></div>
+      <div class="row" style="justify-content:center"><button class="btn" id="quitPause" type="button" style="padding:8px 18px" hidden>Mettre en pause</button><button class="btn ghost" id="quitYes" type="button" style="padding:8px 18px">Terminer</button><button class="btn ghost" id="quitNo" type="button" style="padding:8px 18px">Continuer</button></div>
     </div>
     <div class="stage" id="stage" aria-live="polite"></div>
     <div class="s-foot" id="sFoot"></div>
@@ -749,7 +753,7 @@ const BADGES=[
 
 /* ---------- État ---------- */
 const KEY="manete-v1",OLD_KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",calme:false,musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",calme:false,paused:null,musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -937,7 +941,7 @@ function finishSession(early){
  $("#doneBtn").onclick=closeSession;$("#session").scrollTop=0;SS.finished=true;
  renderAll();
 }
-function closeSession(){clearInterval(timerInt);const ses=$("#session");ses.hidden=true;ses.classList.remove("nov","kids");ses.style.removeProperty("--tone");$("#stage").onclick=null;FL=null;document.body.style.overflow="";musicStop();try{wake&&wake.release()}catch(e){}SS=null;NS=null;renderAll();renderNovenas()}
+function closeSession(){if(FL&&!FL.keep&&S.paused&&S.paused.kind===FL.kind&&S.paused.auto){S.paused=null;save()}clearInterval(timerInt);const ses=$("#session");ses.hidden=true;ses.classList.remove("nov","kids");ses.style.removeProperty("--tone");$("#stage").onclick=null;FL=null;document.body.style.overflow="";musicStop();try{wake&&wake.release()}catch(e){}SS=null;NS=null;renderAll();renderNovenas()}
 
 /* ---------- Neuvaines ---------- */
 const NOV_TYPES={
@@ -1467,6 +1471,7 @@ const FIXED={};`01-01|Sainte Marie, Mère de Dieu|W|4
 02-22|Chaire de saint Pierre|W|2
 03-19|Saint Joseph, époux de la Vierge Marie|W|4
 03-25|Annonciation du Seigneur|W|4
+04-25|Saint Marc, évangéliste|R|2
 04-29|Sainte Catherine de Sienne, patronne de l'Europe|W|2
 05-01|Saint Joseph travailleur|W|1
 05-03|Saints Philippe et Jacques, apôtres|R|2
@@ -1567,7 +1572,7 @@ function liturgy(dt=new Date()){
  if(fx&&(season==="triduum"||(season==="careme"&&label==="Semaine sainte"))&&fx.r<5)fx=null;
  let feast=mv;if(fx&&(!feast||fx.r>feast.r))feast=fx;
  if(feast){if(feast.r>=2||season==="ordinaire")c=feast.c}
- return{season,label,feast:feast?feast.n:null,rank:feast?feast.r:0,color:LCOL[c]}
+ return{season,label,feast:feast?feast.n:null,rank:feast?feast.r:0,color:LCOL[c],sun,saint:SAINT_JOUR[mm]||(FIXED[mm]&&(!feast||FIXED[mm].n!==feast.n)?FIXED[mm].n:null)}
 }
 function novSuggestion(){
  const t=new Date(),y=t.getFullYear(),out=[];
@@ -1674,12 +1679,12 @@ function rosarySteps(set){
  st.push({label:"Salve Regina",text:SALVE,bead:60});
  return st}
 const FLOWS={
- chapelet:()=>{const set=FL&&FL.set||DAY_MYST[new Date().getDay()];const steps=rosarySteps(set);
+ chapelet:()=>{const set=FL&&FL.set||DAY_MYST[new Date().getDay()];if(FL)FL.set=set;const steps=rosarySteps(set);
   return{eyebrow:MYST[set].n,bonus:["Chapelet",40],count:"chapelet",icon:"chapelet",title:"Chapelet offert",text:"« Marie gardait toutes ces choses, et les repassait dans son cœur. »",rosary:1,
    steps:steps.map(s=>({rosary:s,html:()=>{
     const lastDone=s.bead-1;
     return `<p class="eyebrow">${MYST[set].n}</p>${rosarySVG(s.bead,lastDone)}${s.myst?`<div style="display:flex;flex-direction:column;gap:2px"><p class="ref" style="margin:0">${ordFr(s.j+1).replace("re","er")} mystère · ${s.myst[1]}</p><h2>${s.myst[0]}</h2><p class="ui" style="font-size:.85rem;color:var(--mute)">Fruit du mystère : ${s.myst[2]}</p></div>`:""}${s.announce?`<p class="text">Prends un instant pour imaginer la scène. Où es-tu ? Que vois-tu ? Que dit Jésus, que fait Marie ?</p>`:`<p class="prayer-label">${s.label}${s.sub?` <span class="ui" style="font-size:.9rem;color:var(--mute)">${s.sub}</span>`:""}</p>${S.showText!==false?`<p class="prayer">${esc(s.text)}</p>`:""}<button class="small-link" type="button" data-toggle-text>${S.showText!==false?"Masquer le texte":"Afficher le texte"}</button>`}`},
-    btn:s.announce?"Commencer la dizaine":s.label==="Salve Regina"?"Amen · Terminer":"Suivant",tapAdvance:!s.announce}))}},
+    btn:s.announce?"Commencer la dizaine":s.label==="Salve Regina"?"Amen · Terminer":"Suivant",tapAdvance:!s.announce,pausePoint:s.label==="Ô mon Jésus"&&s.j<4}))}},
  angelus:()=>{const ps=liturgy().season==="paques";return{eyebrow:ps?"Temps pascal":"Midi",bonus:["Angélus",10],count:"angelus",icon:"marie",title:"Va en paix",text:"« Et le Verbe s'est fait chair, et il a habité parmi nous. »",
   steps:[{html:()=>`<p class="eyebrow">${ps?"Regina Caeli · temps pascal":"L'Angélus"}</p><div class="icon">${ICONS.marie.svg()}</div><h2>${ps?"Reine du ciel, réjouis-toi":"L'ange du Seigneur"}</h2><p class="text" style="color:var(--mute);font-size:1rem">Trois fois par jour, le matin, à midi et le soir, l'Église s'arrête pour se souvenir que Dieu s'est fait homme.</p><p class="prayer">${esc(ps?REGINA:ANGELUS)}</p>`,btn:"Amen"}]}},
  examen:()=>({eyebrow:"Examen du soir",bonus:["Examen du soir",20],count:"examen",icon:"cierge",title:"Bonne nuit dans sa paix",text:"« Je me couche et je m'endors en paix, car toi seul, Seigneur, tu me donnes la sécurité dans ma demeure. » (Ps 4,9)",
@@ -1719,12 +1724,13 @@ function renderFlow(){
  $("#flowNext").onclick=flowNext;
  const bk=$("#flowBack");if(bk)bk.onclick=()=>{FL.i--;renderFlow()};
  const tg=st.querySelector("[data-toggle-text]");if(tg)tg.onclick=e=>{e.stopPropagation();S.showText=S.showText===false;save();renderFlow()};
+ if(s.pausePoint){$("#sFoot").insertAdjacentHTML("beforeend",'<button class="small-link" id="flowPause" type="button">Dizaine terminée : faire une pause et continuer plus tard</button>');$("#flowPause").onclick=pauseFlow}
  if(s.onRender)s.onRender();
  st.onclick=s.tapAdvance?(e=>{if(e.target.closest("button,input,textarea"))return;flowNext()}):null;
 }
 function flowNext(){const s=FL.def.steps[FL.i];if(s.onNext)s.onNext();if(FL.def.rosary&&FL.i%13===0)chime(rnd([587.33,659.25,880]),.04);FL.i++;if(FL.i>=FL.def.steps.length)finishFlow();else{renderFlow();if(!FL.def.rosary)$("#session").scrollTop=0}}
 function finishFlow(){
- const d=FL.def;clearInterval(timerInt);$("#stage").onclick=null;
+ const d=FL.def;if(S.paused&&S.paused.kind===FL.kind)S.paused=null;clearInterval(timerInt);$("#stage").onclick=null;
  const mins=Math.max(1,Math.round((Date.now()-FL.start)/60000));
  if(d.onFinish)d.onFinish();
  S.counts=S.counts||{};S.counts[d.count]=(S.counts[d.count]||0)+1;
@@ -1856,13 +1862,325 @@ function saveCustomSaint(){
  const f=(d>=1&&d<=31&&m>=1&&m<=12)?String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0"):null;
  S.customSaint={n,f,p:$("#csPrayer").value.trim()};S.saint="custom";save();renderSettings();syncReminders();renderToday();toast(`${n} est ton saint patron`)}
 
+/* ---------- Saint du jour (d'après le Martyrologe romain et le calendrier de France et de Belgique) ---------- */
+const SAINT_JOUR={};`01-03|Saint Nom de Jésus · sainte Geneviève
+01-04|Sainte Angèle de Foligno
+01-05|Saint Édouard le Confesseur
+01-06|Saint André Bessette
+01-07|Saint Raymond de Peñafort
+01-08|Saint Séverin du Norique
+01-09|Saint Adrien de Cantorbéry
+01-10|Saint Guillaume de Bourges
+01-11|Saint Paulin d'Aquilée
+01-12|Sainte Marguerite Bourgeoys
+01-13|Saint Hilaire de Poitiers
+01-14|Saint Félix de Nole
+01-15|Saint Maur
+01-16|Saint Marcel Ier, pape
+01-18|Sainte Marguerite de Hongrie
+01-19|Saints Marius et Marthe
+01-20|Saint Fabien et saint Sébastien
+01-22|Saint Vincent, diacre et martyr
+01-23|Saint Ildefonse de Tolède
+01-27|Sainte Angèle Merici
+01-29|Saint Gildas
+01-30|Sainte Martine
+02-01|Sainte Brigitte de Kildare
+02-03|Saint Blaise · saint Anschaire
+02-04|Sainte Jeanne de France
+02-06|Saint Paul Miki et ses compagnons
+02-07|Saint Richard
+02-08|Sainte Joséphine Bakhita · saint Jérôme Émilien
+02-09|Sainte Apolline
+02-12|Sainte Eulalie de Barcelone
+02-13|Bienheureux Jourdain de Saxe
+02-15|Saint Claude La Colombière
+02-16|Sainte Julienne
+02-17|Les sept saints fondateurs des Servites
+02-18|Sainte Bernadette Soubirous
+02-19|Saint Conrad de Plaisance
+02-20|Saints François et Jacinthe Marto
+02-21|Saint Pierre Damien
+02-23|Saint Polycarpe
+02-24|Saint Éthelbert de Kent
+02-25|Sainte Walburge
+02-26|Saint Porphyre de Gaza
+02-27|Saint Grégoire de Narek
+02-28|Saint Romain de Condat
+02-29|Saint Oswald de Worcester
+03-01|Saint Aubin
+03-02|Saint Charles le Bon
+03-03|Sainte Cunégonde
+03-04|Saint Casimir
+03-05|Saint Jean-Joseph de la Croix
+03-06|Sainte Colette
+03-07|Saintes Perpétue et Félicité
+03-08|Saint Jean de Dieu
+03-09|Sainte Françoise Romaine
+03-10|Saint Jean Ogilvie
+03-11|Saint Euloge de Cordoue
+03-12|Saint Maximilien de Tébessa
+03-13|Sainte Euphrasie
+03-14|Sainte Mathilde
+03-15|Sainte Louise de Marillac
+03-16|Saint Héribert
+03-17|Saint Patrick
+03-18|Saint Cyrille de Jérusalem
+03-20|Saint Cuthbert
+03-21|Saint Nicolas de Flüe
+03-22|Sainte Léa
+03-23|Saint Turibe de Mogrovejo
+03-24|Sainte Catherine de Suède
+03-26|Saint Ludger
+03-27|Saint Rupert de Salzbourg
+03-28|Saint Gontran
+03-29|Saint Eustase de Luxeuil
+03-30|Saint Jean Climaque
+03-31|Saint Benjamin, diacre et martyr
+04-01|Saint Hugues de Grenoble
+04-02|Saint François de Paule
+04-03|Saint Richard de Chichester
+04-04|Saint Isidore de Séville
+04-05|Saint Vincent Ferrier
+04-06|Saint Guillaume d'Eskilsoe
+04-07|Saint Jean-Baptiste de La Salle
+04-08|Sainte Julie Billiart
+04-09|Sainte Waudru
+04-10|Saint Fulbert
+04-11|Saint Stanislas
+04-12|Saint Jules Ier, pape
+04-13|Saint Martin Ier, pape
+04-14|Saint Bénézet
+04-15|Saint Paterne
+04-16|Saint Benoît-Joseph Labre
+04-17|Saint Anicet, pape
+04-18|Saint Parfait
+04-19|Sainte Emma
+04-20|Sainte Agnès de Montepulciano
+04-21|Saint Anselme
+04-22|Saints Soter et Caius
+04-23|Saint Georges · saint Adalbert
+04-24|Saint Fidèle de Sigmaringen
+04-26|Saints Clet et Marcellin
+04-27|Sainte Zita
+04-28|Saint Pierre Chanel · saint Louis-Marie Grignion de Montfort
+04-30|Saint Pie V
+05-02|Saint Athanase
+05-04|Saint Florian
+05-05|Saint Hilaire d'Arles
+05-06|Saint François de Laval
+05-07|Saint Domitien de Huy
+05-08|Saint Pierre de Tarentaise
+05-09|Saint Pacôme
+05-11|Sainte Estelle
+05-12|Saints Nérée et Achille · saint Pancrace
+05-15|Saint Isidore le laboureur
+05-16|Saint Honoré
+05-17|Saint Pascal Baylon
+05-18|Saint Jean Ier, pape
+05-19|Saint Yves
+05-20|Saint Bernardin de Sienne
+05-21|Saint Eugène de Mazenod
+05-22|Sainte Rita
+05-23|Saint Didier
+05-24|Saints Donatien et Rogatien
+05-25|Saint Bède le Vénérable · sainte Marie-Madeleine de Pazzi
+05-26|Saint Philippe Néri
+05-27|Saint Augustin de Cantorbéry
+05-28|Saint Germain de Paris
+05-29|Saint Paul VI
+05-30|Sainte Jeanne d'Arc
+06-02|Saints Marcellin et Pierre
+06-03|Saint Charles Lwanga et ses compagnons
+06-04|Sainte Clotilde
+06-05|Saint Boniface
+06-06|Saint Norbert
+06-07|Saint Robert de Newminster
+06-08|Saint Médard
+06-09|Saint Éphrem
+06-10|Saint Landry
+06-12|Saint Onuphre
+06-14|Saint Élisée, prophète
+06-15|Sainte Germaine Cousin
+06-16|Saint Jean-François Régis
+06-17|Saint Hervé
+06-18|Saint Grégoire Barbarigo
+06-19|Saint Romuald
+06-20|Saint Silvère, pape
+06-21|Saint Louis de Gonzague
+06-22|Saint Paulin de Nole · saints Jean Fisher et Thomas More
+06-23|Saint Joseph Cafasso
+06-25|Saint Prosper d'Aquitaine
+06-26|Saint Anthelme
+06-27|Saint Cyrille d'Alexandrie
+06-28|Saint Irénée
+06-30|Les premiers martyrs de l'Église de Rome
+07-01|Saint Thierry
+07-02|Saints Processus et Martinien
+07-04|Sainte Élisabeth de Portugal
+07-05|Saint Antoine-Marie Zaccaria
+07-06|Sainte Maria Goretti
+07-07|Saint Willibald
+07-08|Saints Aquila et Priscille
+07-09|Saint Augustin Zhao Rong et ses compagnons
+07-10|Saints Antoine et Théodose de Kiev
+07-12|Saints Louis et Zélie Martin
+07-13|Saint Henri
+07-14|Saint Camille de Lellis
+07-15|Saint Bonaventure
+07-17|Les carmélites de Compiègne
+07-18|Saint Frédéric
+07-19|Saint Arsène
+07-20|Saint Apollinaire
+07-21|Saint Laurent de Brindes
+07-24|Saint Charbel Makhlouf
+07-27|Sainte Nathalie
+07-28|Saint Samson
+07-30|Saint Pierre Chrysologue
+08-02|Saint Eusèbe de Verceil · saint Pierre-Julien Eymard
+08-03|Sainte Lydie
+08-05|Dédicace de Sainte-Marie-Majeure
+08-07|Saint Sixte II et ses compagnons · saint Gaétan
+08-12|Sainte Jeanne-Françoise de Chantal
+08-13|Saints Pontien et Hippolyte
+08-16|Saint Étienne de Hongrie · saint Roch
+08-17|Saint Hyacinthe
+08-18|Sainte Hélène
+08-19|Saint Jean Eudes
+08-20|Saint Bernard de Clairvaux
+08-21|Saint Pie X
+08-23|Sainte Rose de Lima
+08-25|Saint Louis · saint Joseph de Calasanz
+08-26|Saint Césaire d'Arles
+08-30|Saint Fiacre
+08-31|Saint Raymond Nonnat
+09-01|Saint Gilles
+09-02|Les martyrs de septembre 1792
+09-03|Saint Grégoire le Grand
+09-04|Sainte Rosalie
+09-05|Sainte Teresa de Calcutta
+09-06|Saint Bertrand de Garrigues
+09-07|Sainte Reine
+09-09|Saint Pierre Claver
+09-10|Saint Nicolas de Tolentino
+09-11|Saints Protus et Hyacinthe
+09-12|Saint Nom de Marie
+09-13|Saint Jean Chrysostome
+09-16|Saints Corneille et Cyprien
+09-17|Saint Robert Bellarmin · sainte Hildegarde de Bingen
+09-18|Saint Joseph de Cupertino
+09-19|Saint Janvier
+09-20|Saints André Kim Tae-gon, Paul Chong Ha-sang et leurs compagnons
+09-22|Saint Maurice
+09-24|Saint Gérard Sagredo
+09-25|Saint Firmin
+09-26|Saints Côme et Damien
+09-28|Saint Venceslas · saint Laurent Ruiz
+10-03|Saint Gérard de Brogne
+10-05|Sainte Faustine Kowalska
+10-06|Saint Bruno
+10-08|Sainte Pélagie
+10-09|Saint Denis · saint John Henry Newman
+10-10|Saint François de Borgia
+10-11|Saint Jean XXIII
+10-12|Saint Wilfrid
+10-13|Saint Géraud
+10-14|Saint Calixte Ier, pape
+10-16|Sainte Marguerite-Marie Alacoque · sainte Edwige
+10-17|Saint Ignace d'Antioche
+10-19|Saints Jean de Brébeuf, Isaac Jogues et leurs compagnons
+10-20|Sainte Adeline
+10-21|Sainte Ursule
+10-23|Saint Jean de Capistran
+10-24|Saint Antoine-Marie Claret
+10-25|Saints Crépin et Crépinien
+10-26|Saint Dimitri
+10-27|Sainte Émeline
+10-29|Saint Narcisse
+10-30|Saint Alphonse Rodriguez
+10-31|Saint Quentin
+11-03|Saint Hubert · saint Martin de Porrès
+11-05|Saints Zacharie et Élisabeth
+11-06|Saint Léonard
+11-07|Saint Willibrord
+11-08|Sainte Élisabeth de la Trinité
+11-10|Saint Léon le Grand
+11-12|Saint Josaphat
+11-13|Saint Brice
+11-14|Saint Laurent O'Toole
+11-15|Saint Albert le Grand
+11-16|Sainte Marguerite d'Écosse · sainte Gertrude
+11-17|Sainte Élisabeth de Hongrie
+11-18|Dédicace des basiliques Saint-Pierre et Saint-Paul
+11-19|Sainte Mechtilde
+11-20|Saint Edmond
+11-23|Saint Clément Ier · saint Colomban
+11-24|Saint André Dung-Lac et ses compagnons
+11-25|Sainte Catherine d'Alexandrie
+11-26|Saint Léonard de Port-Maurice
+11-27|Notre-Dame de la Médaille miraculeuse
+11-28|Saint Jacques de la Marche
+11-29|Saint Saturnin
+12-01|Saint Charles de Foucauld
+12-02|Sainte Viviane
+12-04|Saint Jean de Damas · sainte Barbe
+12-05|Saint Gérald
+12-07|Saint Ambroise
+12-09|Saint Juan Diego
+12-10|Notre-Dame de Lorette
+12-11|Saint Damase Ier, pape
+12-15|Sainte Nino de Géorgie
+12-16|Sainte Adélaïde
+12-17|Saint Lazare
+12-18|Saint Gatien
+12-19|Saint Urbain V
+12-20|Saint Dominique de Silos
+12-21|Saint Pierre Canisius
+12-22|Sainte Françoise-Xavière Cabrini
+12-23|Saint Jean de Kenty
+12-24|Sainte Adèle
+12-29|Saint Thomas Becket
+12-30|Saint Roger
+12-31|Saint Sylvestre Ier, pape`.split("\n").forEach(l=>{const [k,n]=l.split("|");SAINT_JOUR[k]=n});
+
+/* ---------- Prière express ---------- */
+Object.assign(FLOWS,{
+ express:()=>{const v=rnd(VERSES);return{eyebrow:"Une minute avec Jésus",bonus:["Prière express",5],count:"express",icon:"cierge",title:"Va, il marche avec toi",text:"« Je suis avec vous tous les jours. » (Mt 28,20)",
+  steps:[
+   {html:()=>`<p class="eyebrow">1 · Respirer</p><div class="icon">${ICONS.cierge.svg()}</div><h2>Arrête-toi un instant</h2><p class="text">Respire lentement, trois fois. Jésus est là, même au milieu de ta journée.<br><br><em>Au nom du Père, et du Fils, et du Saint-Esprit.</em></p>`},
+   {html:()=>`<p class="eyebrow">2 · Une parole</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:30ch">« ${v[0]} »</p><p class="ref">${v[1]}</p><p class="text" style="color:var(--mute);font-size:1rem">Redis-la une fois, lentement.</p>`},
+   {html:()=>`<p class="eyebrow">3 · Lui confier</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Une phrase pour lui</h2><div class="field" style="width:100%;text-align:left"><label for="fExp">Jésus, je te confie… (facultatif)</label><input type="text" id="fExp" placeholder="ce rendez-vous, cette personne, cette fatigue…"></div><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:"Amen",onNext:()=>{const x=$("#fExp");if(x&&x.value.trim())addIntention(x.value)}}
+  ]}}
+});
+
+/* ---------- Pause et reprise ---------- */
+const PAUSABLE=["chapelet","oraison","examen","psaume","adoration","couple","louange","famille","anges"];
+const FLOW_NAMES={chapelet:"Chapelet",oraison:"Oraison",examen:"Examen du soir",psaume:"Psaume",adoration:"Adoration",couple:"Prière en couple",louange:"Louange",famille:"Prière en famille",anges:"Anges gardiens"};
+function flowSnapshot(){if(!FL||FL.finished||!PAUSABLE.includes(FL.kind))return null;
+ let data={};try{data=JSON.parse(JSON.stringify(FL.data||{}))}catch(e){}
+ return{kind:FL.kind,i:FL.i,set:FL.set||null,data,elapsed:Date.now()-FL.start,at:Date.now()}}
+function pauseFlow(){const p=flowSnapshot();if(!p)return closeSession();S.paused=p;save();FL.finished=true;FL.keep=true;closeSession();window.scrollTo({top:0,behavior:"smooth"});toast("Mis en pause. Reprends quand tu veux, depuis l'accueil.")}
+function resumeFlow(){const p=S.paused;if(!p||!FLOWS[p.kind])return;
+ startFlow(p.kind,{set:p.set});FL.i=Math.min(p.i,FL.def.steps.length-1);FL.data=Object.assign(FL.data,p.data||{});FL.start=Date.now()-p.elapsed;
+ S.paused=null;save();renderFlow();renderToday()}
+function pausedLabel(p){
+ let where=`étape ${p.i+1}`;
+ if(p.kind==="chapelet"){const st=rosarySteps(p.set||"joyeux")[p.i];where=st&&st.j!=null?`${ordFr(st.j+1)} dizaine ${st.label==="Ô mon Jésus"?"terminée":"en cours"}`:(p.i<8?"début":"Salve Regina")}
+ const min=Math.max(1,Math.round(p.elapsed/60000)),when=diffD(new Date(),new Date(p.at));
+ return `${FLOW_NAMES[p.kind]}${p.kind==="chapelet"&&p.set?` · ${MYST[p.set].n.toLowerCase()}`:""} · ${where} · ${min} min déjà priée${min>1?"s":""}${when===1?" · commencé hier":when>1?` · commencé il y a ${when} jours`:""}`}
+function renderResume(){const c=$("#resumeCard"),p=S.paused;
+ if(!p||!FLOWS[p.kind]){c.hidden=true;return}
+ c.hidden=false;c.innerHTML=`<div class="icon">${ICONS[p.kind==="chapelet"?"chapelet":FLOWS[p.kind]&&p.kind==="anges"?"ailes":"cierge"].svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><span class="eyebrow">En pause</span><b style="font-family:var(--f-display);font-weight:500">Reprendre là où tu en étais</b><span class="nov-status">${pausedLabel(p)}</span><div class="row wrap" style="gap:12px"><button class="btn" type="button" id="resumeGo" style="padding:9px 18px">Reprendre</button><button class="small-link" type="button" id="resumeDrop">Abandonner</button></div></div>`;
+ $("#resumeGo").onclick=resumeFlow;$("#resumeDrop").onclick=()=>{S.paused=null;save();renderResume();toast("Prière en pause abandonnée")}}
+
 /* ---------- Accueil : liturgie, suggestions, saint ---------- */
 function renderToday(){
  const L=liturgy(),t=new Date();
  const date=t.toLocaleDateString("fr-BE",{weekday:"long",day:"numeric",month:"long"});
  const mySaint=getSaint();const feastDay=mySaint&&feastInfo(mySaint.f).days===0;
  $("#litu").style.setProperty("--lc",L.color[1]);
- $("#litu").innerHTML=`<span class="ldot" title="Couleur liturgique : ${L.color[0]}"></span><div style="min-width:0"><div class="eyebrow">${date}</div><b>${L.feast||L.label}</b><small>${L.feast?L.label+" · ":""}${L.color[0]}</small></div>`;
+ $("#litu").innerHTML=`<span class="ldot" title="Couleur liturgique : ${L.color[0]}"></span><div style="min-width:0"><div class="eyebrow">${date}</div><b>${L.feast||(L.sun?L.label:(L.saint||L.label))}</b><small>${[(L.feast||(!L.sun&&L.saint))?L.label:null,(!L.feast&&L.sun&&L.saint)?L.saint:null,L.color[0]].filter(Boolean).join(" · ")}</small></div>`;
+ renderResume();
  const sg=novSuggestion(),box=$("#novSuggest");
  if(sg){const item=NOV_LIBRARY.find(i=>i.key===sg.key),nm=parseNovena(item.text).name;
   const when=sg.dd>1?`Dans ${sg.dd} jours`:sg.dd===1?"Demain":sg.dd===0?"Aujourd'hui":`Commencée il y a ${-sg.dd} jour${sg.dd<-1?"s":""}, il est encore temps`;
@@ -2015,9 +2333,12 @@ $("#gallery").onclick=()=>{gi=(gi+1)%GALLERY.length;renderGallery()};
 $("#sMusic").onclick=()=>{A.on?musicStop():musicStart();updMusicBtn()};
 $("#quitBtn").onclick=()=>{
  const cur=SS||FL||NS;if(!cur||cur.finished||(NS&&NS.reread))return closeSession();
- $("#quitMsg").textContent=SS?"Arrêter maintenant ? Le temps déjà prié sera compté.":"Arrêter maintenant ? Cette prière ne sera pas comptée.";
+ const canPause=!!(FL&&PAUSABLE.includes(FL.kind));$("#quitPause").hidden=!canPause;
+ $("#quitMsg").textContent=SS?"Arrêter maintenant ? Le temps déjà prié sera compté.":canPause?"Mettre en pause pour reprendre plus tard là où tu en es, ou arrêter ?":"Arrêter maintenant ? Cette prière ne sera pas comptée.";
  $("#quitYes").textContent=SS?"Terminer":"Arrêter";$("#quitConfirm").hidden=false;$("#quitNo").focus()};
 $("#restorePick").onclick=()=>$("#restoreFile").click();
+$("#quitPause").onclick=()=>{$("#quitConfirm").hidden=true;pauseFlow()};
+$("#expressBtn").onclick=()=>startFlow("express");
 $("#calmeSw").onclick=()=>{S.calme=!S.calme;save();applyCalme();renderSettings()};
 document.querySelectorAll("[data-flow]").forEach(b=>b.onclick=()=>startFlow(b.dataset.flow));
 document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=ICONS[el.dataset.icon].svg());
@@ -2052,7 +2373,9 @@ $("#intentAdd").onclick=()=>{if(addIntention($("#intentInput").value)){$("#inten
 $("#resetBtn").onclick=()=>{$("#resetBtn").hidden=true;$("#resetConfirm").hidden=false};
 $("#resetNo").onclick=()=>{$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true};
 $("#resetYes").onclick=()=>{S=blank();save();$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true;renderAll();renderProgress();toast("Progression remise à zéro")};
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&SS&&navigator.wakeLock){navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}});
+document.addEventListener("visibilitychange",()=>{
+ if(document.visibilityState==="hidden"&&FL&&!FL.finished){const p=flowSnapshot();if(p){p.auto=true;S.paused=p;save()}}
+ else if(document.visibilityState==="visible"&&FL&&!FL.finished&&S.paused&&S.paused.auto){S.paused=null;save()}if(document.visibilityState==="visible"&&SS&&navigator.wakeLock){navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}});
 function renderAll(){applyFond();renderHeader();renderHome();renderToday()}
 /* ---------- Accessibilité ---------- */
 document.documentElement.lang="fr";

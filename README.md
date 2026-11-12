@@ -12,7 +12,8 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 - **Neuvaines** : une bibliothèque (Marie, saint Joseph, saint Thomas d'Aquin, défunts, Noël, Esprit Saint, miséricorde), ou n'importe quelle neuvaine que l'on colle soi-même. Un cierge s'allume par jour.
 - **Bénédicités** : avant et après le repas, pour les enfants (avec des gestes) et entre adultes, plus ceux que l'on ajoute soi-même.
 - **Prier autrement** : chapelet guidé, Angélus (*Regina Caeli* au temps pascal), examen du soir, prière en famille, louange (liens vers Spotify, YouTube ou Deezer), oraison, psaumes, adoration, prière du couple, prière aux anges gardiens (matin et soir).
-- **Calendrier liturgique** : fête du jour, temps liturgique et couleur, et la bonne neuvaine proposée au bon moment.
+- **Prière express** d'une minute, et **pause** dans le chapelet et les autres prières : on reprend plus tard, là où on en était.
+- **Calendrier liturgique** : saint du jour pour chaque jour de l'année, fête du jour, temps liturgique et couleur, et la bonne neuvaine proposée au bon moment.
 - **Saint patron** au choix (liste ou saint ajouté soi-même) avec sa prière de dévotion, carnet d'intentions, « Ce qu'il m'a dit », médailles, jour de grâce. Les points peuvent être masqués.
 - **Couleur de fond** au choix : bleu nuit, bordeaux, forêt, prune, bleu canard, encre, ou parchemin clair.
 - **Rappels** (notifications locales), **sauvegarde et restauration** par fichier, **partage** d'une neuvaine ou d'une parole.
