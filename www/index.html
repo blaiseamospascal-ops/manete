@@ -208,6 +208,7 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .candles .fl,.nov-candles .fl{transform-box:fill-box;transform-origin:50% 100%;animation:flick 2.4s ease-in-out infinite}
 .nov-candles{flex:1;display:flex;justify-content:center;gap:6px}
 .nov-candles svg{width:24px;height:40px}
+.stage .nov-candles{flex:none}
 .nov-candles .light{animation:kindle 1.6s ease both}
 @keyframes kindle{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
 .session.nov{background:radial-gradient(90% 55% at 50% 0%,color-mix(in srgb,var(--tone) 34%,var(--lapis)),var(--lapis) 72%),var(--lapis)}
@@ -365,6 +366,8 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
           <button class="tile" type="button" data-flow="adoration"><div class="icon" data-icon="calice"></div><b>Adoration</b><small>10 min · devant le Saint-Sacrement</small></button>
           <button class="tile" type="button" data-flow="couple"><div class="icon" data-icon="coeur"></div><b>En couple</b><small>5 min · merci, pardon, prier à deux</small></button>
           <button class="tile" type="button" data-flow="anges"><div class="icon" data-icon="ailes"></div><b>Anges gardiens</b><small>2 min · matin ou soir</small></button>
+          <button class="tile" type="button" data-flow="complies"><div class="icon" data-icon="etoile"></div><b>Complies</b><small>8 min · la prière de la nuit</small></button>
+          <button class="tile" type="button" id="tileRetreat"><div class="icon" data-icon="croix"></div><b>Retraites</b><small>7 jours · Avent, Carême, apprendre à prier</small></button>
         </div>
       </div>
 
@@ -510,6 +513,7 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
           <li><b>Silence</b> : l'écran s'assombrit. Touche-le pour revoir le temps restant. Une cloche sonne à la fin.</li>
           <li><b>Pause</b> : dans le chapelet et les autres prières, « ✕ » propose de mettre en pause. Tu reprends plus tard depuis l'accueil, là où tu en étais.</li>
           <li><b>Pressé ?</b> Le bouton « 1 minute avec Jésus » propose une prière express.</li>
+          <li><b>Retraites</b> : dans l'onglet Neuvaines, des parcours de 7 jours pour l'Avent, le Carême ou pour apprendre à prier.</li>
           <li><b>Neuvaines</b> : un jour par jour. Si tu en manques un, tu reprends là où tu en étais.</li>
           <li><b>Musique</b> : le bouton ♪ en haut de chaque prière la coupe ou la remet.</li>
           <li><b>Série de jours</b> : un jour manqué par semaine est pardonné (jour de grâce).</li>
@@ -567,7 +571,10 @@ details.addlink summary{min-height:32px;display:flex;align-items:center}
         <button class="btn block" id="novSave" type="button">Commencer la neuvaine</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px">
-        <h2>Bibliothèque de neuvaines</h2>
+        <h2 id="retreatTitle">Retraites de 7 jours</h2>
+        <p class="hint">Un parcours guidé, un jour à la fois : une parole, une méditation courte et un pas concret pour la journée.</p>
+        <div id="retreatList" style="display:flex;flex-direction:column;gap:12px"></div>
+        <h2 style="margin-top:12px">Bibliothèque de neuvaines</h2>
         <p class="hint">Des neuvaines éprouvées, écrites à partir de prières de tradition. Aucune ne dépasse la longueur quotidienne de celle de saint Thomas d'Aquin.</p>
         <div class="tones" id="libFilter"></div>
         <div class="check" id="libType" hidden></div>
@@ -747,13 +754,15 @@ const BADGES=[
  {id:"couple",n:"Deux en un",d:"3 prières en couple",i:"heart",ok:s=>((s.counts||{}).couple||0)>=3},
  {id:"anges",n:"Bien gardé",d:"7 prières à son ange",i:"star",ok:s=>((s.counts||{}).anges||0)>=7},
  {id:"patron",n:"Ami des saints",d:"Prier avec son saint patron",i:"star",ok:s=>((s.counts||{}).saint||0)>=1},
+ {id:"retraite",n:"Retraitant",d:"Une retraite de 7 jours achevée",i:"cross",ok:s=>(s.retreatCount||0)>=1},
+ {id:"complies",n:"Veilleur de nuit",d:"7 complies priées",i:"moon",ok:s=>((s.counts||{}).complies||0)>=7},
  {id:"table",n:"Table bénie",d:"7 bénédicités dits",i:"heart",ok:s=>((s.counts||{}).benedicite||0)>=7},
  {id:"adoration",n:"Adorateur",d:"Une visite au Saint-Sacrement",i:"cross",ok:s=>((s.counts||{}).adoration||0)>=1}
 ];
 
 /* ---------- État ---------- */
 const KEY="manete-v1",OLD_KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",calme:false,paused:null,musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",calme:false,paused:null,retreats:{},retreatCount:0,musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -1384,7 +1393,7 @@ function novState(n){
  const last=n.progress.filter(Boolean).sort().pop()||null;
  return{today,done,next,last,prayedToday:n.progress.includes(today),missed:!!last&&last<yesterday()&&next>=0}
 }
-function renderNovenas(){
+function renderNovenas(){renderRetreats();
  $("#novHeroIcon").innerHTML=ICONS.chapelet.svg();renderLibrary();
  const el=$("#novList");
  if(!S.novenas.length){el.innerHTML=`<div class="panel empty">Aucune neuvaine en cours. Ajoute celle que tu veux prier : colle ses 9 jours, choisis une image et une ambiance.</div>`;return}
@@ -1730,6 +1739,7 @@ function renderFlow(){
 }
 function flowNext(){const s=FL.def.steps[FL.i];if(s.onNext)s.onNext();if(FL.def.rosary&&FL.i%13===0)chime(rnd([587.33,659.25,880]),.04);FL.i++;if(FL.i>=FL.def.steps.length)finishFlow();else{renderFlow();if(!FL.def.rosary)$("#session").scrollTop=0}}
 function finishFlow(){
+ if(FL.data&&FL.data.reread){closeSession();return}
  const d=FL.def;if(S.paused&&S.paused.kind===FL.kind)S.paused=null;clearInterval(timerInt);$("#stage").onclick=null;
  const mins=Math.max(1,Math.round((Date.now()-FL.start)/60000));
  if(d.onFinish)d.onFinish();
@@ -2173,6 +2183,75 @@ function renderResume(){const c=$("#resumeCard"),p=S.paused;
  c.hidden=false;c.innerHTML=`<div class="icon">${ICONS[p.kind==="chapelet"?"chapelet":FLOWS[p.kind]&&p.kind==="anges"?"ailes":"cierge"].svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><span class="eyebrow">En pause</span><b style="font-family:var(--f-display);font-weight:500">Reprendre là où tu en étais</b><span class="nov-status">${pausedLabel(p)}</span><div class="row wrap" style="gap:12px"><button class="btn" type="button" id="resumeGo" style="padding:9px 18px">Reprendre</button><button class="small-link" type="button" id="resumeDrop">Abandonner</button></div></div>`;
  $("#resumeGo").onclick=resumeFlow;$("#resumeDrop").onclick=()=>{S.paused=null;save();renderResume();toast("Prière en pause abandonnée")}}
 
+/* ---------- Complies ---------- */
+const PS4="Quand je crie, réponds-moi, Dieu de ma justice !\nQuand je suis dans la détresse, sauve-moi !\nAie pitié de moi, écoute ma prière !\nTremblez, et ne péchez point ;\nparlez en vos cœurs sur votre couche, puis taisez-vous.\nPlusieurs disent : Qui nous fera voir le bonheur ?\nFais lever sur nous la lumière de ta face, Seigneur !\nTu mets dans mon cœur plus de joie\nqu'ils n'en ont quand abondent leur froment et leur moût.\nJe me couche et je m'endors en paix,\ncar toi seul, Seigneur, tu me donnes la sécurité dans ma demeure. (Ps 4, extraits)";
+const PS134="Voici, bénissez le Seigneur, vous tous, serviteurs du Seigneur,\nqui vous tenez dans la maison du Seigneur pendant les nuits !\nÉlevez vos mains vers le sanctuaire, et bénissez le Seigneur !\nQue le Seigneur te bénisse de Sion,\nlui qui a fait les cieux et la terre ! (Ps 134)";
+const NUNC="Maintenant, Seigneur, tu laisses ton serviteur\ns'en aller en paix, selon ta parole.\nCar mes yeux ont vu ton salut,\nsalut que tu as préparé devant tous les peuples,\nlumière pour éclairer les nations,\net gloire d'Israël, ton peuple. (Lc 2,29-32)";
+Object.assign(FLOWS,{
+ complies:()=>{const ps=liturgy().season==="paques";return{eyebrow:"Complies",bonus:["Complies",20],count:"complies",icon:"etoile",title:"Une nuit tranquille",text:"« Je me couche et je m'endors en paix. » (Ps 4,9)",
+  steps:[
+   {html:()=>`<p class="eyebrow">1 · Ouverture</p><div class="icon">${ICONS.etoile.svg()}</div><h2>La prière de la nuit</h2><p class="text" style="color:var(--mute);font-size:1rem">Les complies sont la dernière prière de l'Église avant le sommeil. On les dit au lit ou juste avant, d'une voix calme.</p><p class="prayer" style="text-align:center">Dieu, viens à mon aide.\nSeigneur, à notre secours.\n\n${esc(GLORIA)}</p>`},
+   {html:()=>`<p class="eyebrow">2 · Remettre sa journée</p><div class="icon">${ICONS.croix.svg()}</div><p class="text">Un instant de silence pour relire la journée et demander pardon.</p><p class="prayer" style="text-align:center">Seigneur, prends pitié.\nÔ Christ, prends pitié.\nSeigneur, prends pitié.</p>`},
+   {html:()=>`<p class="eyebrow">3 · Les psaumes du soir</p><p class="prayer">${esc(PS4)}</p><p class="prayer">${esc(PS134)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p>`},
+   {html:()=>`<p class="eyebrow">4 · Parole et répons</p><div class="icon">${ICONS.colombe.svg()}</div><p class="verse" style="max-width:32ch">« Tu es au milieu de nous, Seigneur, et ton nom est invoqué sur nous : ne nous abandonne pas ! »</p><p class="ref">Jr 14,9</p><p class="prayer" style="text-align:center">En tes mains, Seigneur, je remets mon esprit.\n(Ps 31,6)</p>`},
+   {html:()=>`<p class="eyebrow">5 · Cantique de Syméon</p><div class="icon">${ICONS.cierge.svg()}</div><p class="text"><em>Sauve-nous, Seigneur, quand nous veillons ; garde-nous quand nous dormons : que nous veillions avec le Christ et que nous reposions en paix.</em></p><p class="prayer">${esc(NUNC)}</p><p class="prayer" style="color:var(--gold)">${esc(GLORIA)}</p>`},
+   {html:()=>`<p class="eyebrow">6 · Bénédiction</p><div class="icon">${ICONS.marie.svg()}</div><p class="prayer" style="text-align:center">Que le Seigneur tout-puissant\nnous accorde une nuit tranquille\net une fin parfaite. Amen.</p><p class="eyebrow" style="margin-top:6px">${ps?"Regina Caeli":"Salve Regina"}</p><p class="prayer">${esc(ps?REGINA:SALVE)}</p>`,btn:"Amen · Bonne nuit"}
+  ]}}
+});
+PAUSABLE.push("complies");FLOW_NAMES.complies="Complies";
+
+/* ---------- Retraites de 7 jours ---------- */
+const RETREATS=[
+ {key:"prier",n:"Apprendre à prier",d:"Pour commencer, ou recommencer : sept pas simples vers une prière quotidienne.",img:"cierge",tone:"#d9ad55",days:[
+  ["Prier, c'est aimer","Quand tu pries, entre dans ta chambre, ferme ta porte, et prie ton Père qui est là dans le lieu secret.","Mt 6,6","Prier n'est pas d'abord dire des choses : c'est passer du temps avec quelqu'un qui t'aime. La qualité de la prière ne se mesure pas aux sentiments.","Choisis un lieu et une heure fixes pour cette semaine, et tiens-les, même cinq minutes."],
+  ["Le silence","Après le feu, un murmure doux et léger.","1 R 19,12","Dieu parle rarement dans le bruit. Le silence n'est pas un vide : c'est l'espace où l'on écoute.","Prends trois minutes de silence, les yeux fermés, sans rien demander. Quand une pensée vient, laisse-la passer."],
+  ["La Parole","Ta parole est une lampe à mes pieds, et une lumière sur mon sentier.","Ps 119,105","La lectio divina : lire lentement, s'arrêter sur un mot, le redire, puis répondre à Dieu.","Lis lentement un évangile du jour, trouve un mot qui te touche, et garde-le jusqu'au soir."],
+  ["Prier avec son corps","Offrez vos corps comme un sacrifice vivant, saint, agréable à Dieu.","Rm 12,1","Le corps aide la prière : à genoux pour adorer, debout pour louer, assis pour écouter, les mains ouvertes pour recevoir.","Essaie de prier à genoux ou les mains ouvertes, et remarque ce que cela change."],
+  ["Demander","Demandez, et l'on vous donnera ; cherchez, et vous trouverez ; frappez, et l'on vous ouvrira.","Mt 7,7","Demander n'est pas un manque de foi : Jésus nous y invite. Dieu ne répond pas toujours comme on l'imagine, mais il répond toujours.","Confie à Dieu une demande précise, et note-la dans ton carnet d'intentions."],
+  ["Remercier et louer","Rendez grâces en toutes choses.","1 Th 5,18","Remercier, c'est voir les dons. Louer, c'est regarder le Donateur. Les deux élargissent le cœur.","Ce soir, nomme trois mercis de ta journée, à voix haute."],
+  ["La fidélité","Il faut toujours prier, et ne point se relâcher.","Lc 18,1","La prière grandit par la fidélité, pas par l'intensité. Mieux vaut cinq minutes chaque jour qu'une heure de temps en temps.","Décide de ton rendez-vous quotidien avec Jésus pour la suite, et active un rappel dans les Réglages."]]},
+ {key:"avent",n:"Retraite d'Avent",d:"Sept jours pour préparer son cœur à Noël, avec Marie et Joseph.",img:"etoile",tone:"#b494d6",days:[
+  ["Veiller","Prenez garde, veillez et priez ; car vous ne savez quand ce temps viendra.","Mc 13,33","Veiller, c'est rester éveillé à la présence de Dieu dans le quotidien, pas attendre passivement.","Éteins un écran ce soir, et remplace ce temps par cinq minutes de prière."],
+  ["Préparer le chemin","Préparez au désert le chemin du Seigneur.","Is 40,3","Qu'est-ce qui encombre ton cœur et empêche Jésus d'y entrer ? Une rancune, une habitude, une inquiétude ?","Nomme un obstacle et pose un geste concret pour le retirer."],
+  ["La joie","Réjouissez-vous toujours dans le Seigneur ; je le répète, réjouissez-vous.","Ph 4,4","La joie chrétienne n'est pas l'absence de soucis : c'est la certitude que Dieu vient.","Offre un moment de joie à quelqu'un : un appel, un mot, une attention."],
+  ["Marie qui attend","Voici la servante du Seigneur ; qu'il me soit fait selon ta parole.","Lc 1,38","Marie attend dans la confiance, sans tout comprendre. Son oui ouvre la porte au Sauveur.","Prie un Je vous salue Marie lentement, en pesant chaque mot."],
+  ["Joseph le juste","Ne crains pas de prendre avec toi Marie, ta femme.","Mt 1,20","Joseph obéit dans la nuit, sans bruit. Il protège ce que Dieu lui confie.","Rends un service discret à un membre de ta famille, sans le dire."],
+  ["Pas de place","Il n'y avait pas de place pour eux dans l'hôtellerie.","Lc 2,7","Jésus naît parmi les pauvres. Qui, autour de toi, cherche une place ?","Fais un don ou une visite à quelqu'un de seul cette semaine."],
+  ["Emmanuel","On lui donnera le nom d'Emmanuel, ce qui signifie Dieu avec nous.","Mt 1,23","Dieu ne reste pas loin : il vient habiter ta vie telle qu'elle est.","Prépare ta crèche, ou contemple-la quelques minutes, en famille si possible."]]},
+ {key:"careme",n:"Retraite de Carême",d:"Sept jours de conversion : prière, jeûne et partage, jusqu'à la joie de Pâques.",img:"croix",tone:"#b88ac4",days:[
+  ["Revenir","Revenez à moi de tout votre cœur.","Jl 2,12","Le Carême n'est pas une performance : c'est un retour. Dieu attend, il ne compte pas.","Écris en une phrase ce que tu veux vivre pendant ce Carême."],
+  ["Le désert","Jésus fut emmené par l'Esprit dans le désert.","Mt 4,1","Le désert, c'est le lieu où l'on se dépouille du superflu pour retrouver l'essentiel.","Choisis un « désert » : une demi-heure sans téléphone aujourd'hui."],
+  ["Le jeûne","Quand tu jeûnes, parfume ta tête et lave ton visage.","Mt 6,17","Jeûner, c'est créer en soi une faim de Dieu. Le jeûne se vit dans la discrétion et la joie.","Renonce à une petite chose aujourd'hui, et offre-la pour quelqu'un."],
+  ["Le partage","Que ta main gauche ne sache pas ce que fait ta droite.","Mt 6,3","L'aumône ouvre le cœur. Ce que j'économise par le jeûne peut nourrir quelqu'un d'autre.","Donne ce que tu as économisé à une œuvre ou à une personne."],
+  ["Le pardon","Comme il était encore loin, son père le vit et fut ému de compassion.","Lc 15,20","Le Père court à notre rencontre. Le sacrement du pardon est cette course.","Prévois le jour et le lieu de ta confession avant Pâques."],
+  ["La croix","Si quelqu'un veut venir après moi, qu'il se charge chaque jour de sa croix.","Lc 9,23","Porter sa croix, c'est accueillir ce qu'on ne choisit pas, uni à Jésus.","Offre à Jésus une difficulté de ce jour, sans te plaindre."],
+  ["Vers Pâques","Si le grain de blé ne meurt, il reste seul ; mais s'il meurt, il porte beaucoup de fruit.","Jn 12,24","Toute mort offerte devient vie. Pâques n'efface pas la croix : il la transfigure.","Remercie pour une épreuve qui, avec le recul, a porté du fruit."]]}
+];
+function retreatState(r){S.retreats=S.retreats||{};return S.retreats[r.key]||null}
+function renderRetreats(){
+ const el=$("#retreatList");if(!el)return;
+ el.innerHTML=RETREATS.map(r=>{const st=retreatState(r),done=st?st.progress.filter(Boolean).length:0,today=dayKey(),prayedToday=st&&st.progress.includes(today),complete=done===7;
+  const status=!st?`7 jours · ≈ 5 min par jour`:complete?`Retraite achevée · 7/7`:prayedToday?`Jour ${done} vécu aujourd'hui. Reviens demain pour le jour ${done+1}.`:`${done}/7 jours`;
+  const btn=!st?`<button class="btn" style="padding:9px 18px;background:var(--tone)" type="button" data-rt="start">Commencer</button>`:complete?`<button class="btn ghost" style="padding:8px 16px" type="button" data-rt="restart">Recommencer</button>`:prayedToday?`<button class="btn ghost" style="padding:8px 16px" type="button" data-rt="reread">Relire le jour ${done}</button>`:`<button class="btn" style="padding:9px 18px;background:var(--tone)" type="button" data-rt="go">Vivre le jour ${done+1}</button>`;
+  return `<div class="panel nov-card" style="--tone:${r.tone}" data-k="${r.key}"><div class="icon">${ICONS[r.img].svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><h3>${r.n}</h3><p style="font-size:.98rem;color:var(--mute)">${r.d}</p>${st?`<div class="candles" role="img" aria-label="${done} jours vécus sur 7">${st.progress.map(p=>candle(!!p)).join("")}</div>`:""}<p class="nov-status">${status}</p><div class="row wrap" style="gap:10px">${btn}${st&&!complete?`<button class="small-link" type="button" data-rt="stop">Arrêter</button>`:""}</div></div></div>`}).join("");
+ el.querySelectorAll("[data-rt]").forEach(b=>b.onclick=()=>{const k=b.closest("[data-k]").dataset.k,r=RETREATS.find(x=>x.key===k),a=b.dataset.rt;S.retreats=S.retreats||{};
+  if(a==="start"||a==="restart"){S.retreats[k]={progress:Array(7).fill(null),started:Date.now()};save();startRetreat(k,false)}
+  else if(a==="go")startRetreat(k,false);else if(a==="reread")startRetreat(k,true);
+  else if(a==="stop"){delete S.retreats[k];save();renderRetreats()}})}
+let RT=null;
+function startRetreat(k,reread){const r=RETREATS.find(x=>x.key===k),st=S.retreats[k];const done=st.progress.filter(Boolean).length;const idx=reread?done-1:st.progress.findIndex(p=>!p);if(idx<0)return;
+ const d=r.days[idx];RT={k,idx};
+ startFlow("retraite");FL.data={k,idx,reread};FL.def=retreatDef(r,d,idx,reread);FL.i=0;renderFlow();
+ const ses=$("#session");ses.classList.add("nov");ses.style.setProperty("--tone",r.tone)}
+function retreatDef(r,d,idx,reread){const st=S.retreats[r.key];
+ return{eyebrow:r.n,bonus:[`Jour ${idx+1} de retraite`,20],count:"retraite",icon:r.img,title:idx===6?"Retraite achevée":`Jour ${idx+1} vécu`,text:idx===6?"« Je suis avec vous tous les jours. » (Mt 28,20)":`À demain pour le jour ${idx+2}.`,
+  steps:[
+   {html:()=>`<p class="eyebrow">${esc(r.n)} · jour ${idx+1} sur 7</p><div class="nov-candles" role="img" aria-label="${st.progress.filter(Boolean).length} jours vécus sur 7">${st.progress.map(p=>candle(!!p)).join("")}</div><div class="icon">${ICONS[r.img].svg()}</div><h2>${esc(d[0])}</h2><p class="verse" style="max-width:32ch">« ${esc(d[1])} »</p><p class="ref">${esc(d[2])}</p><p class="text">${esc(d[3])}</p>`},
+   {html:()=>`<p class="eyebrow">Pour aujourd'hui</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Un pas concret</h2><p class="text"><em>${esc(d[4])}</em></p><p class="text" style="color:var(--mute);font-size:1rem">Prends un moment de silence pour le confier à Jésus.</p><p class="prayer" style="text-align:center">${esc(GLORIA)}</p>`,btn:reread?"Fermer":"Amen · Jour vécu"}
+  ],
+  onFinish:()=>{if(!reread)st.progress[idx]=dayKey();if(st.progress.every(Boolean)&&!st.done){st.done=true;S.retreatCount=(S.retreatCount||0)+1}}}}
+FLOWS.retraite=()=>({eyebrow:"",bonus:["",0],count:"retraite",icon:"cierge",title:"",steps:[{html:()=>""}]});
+
 /* ---------- Accueil : liturgie, suggestions, saint ---------- */
 function renderToday(){
  const L=liturgy(),t=new Date();
@@ -2241,7 +2320,8 @@ function initNative(){const ln=LN();if(!ln)return;try{ln.addListener("localNotif
 /* ---------- Partage & sauvegarde ---------- */
 /* Passer APP_LIVE à true une fois la fiche Google Play en ligne : le lien est alors ajouté aux partages. */
 const APP_NAME="Manete",APP_ID="app.manete.priere",APP_LIVE=false,APP_URL=`https://play.google.com/store/apps/details?id=${APP_ID}`;
-const SHARE_FOOT=`\n\n——\nPartagé avec ${APP_NAME}, une app de prière gratuite, sans pub et sans collecte de données${APP_LIVE?" :\n"+APP_URL:"."}`;
+const WEB_URL=(location.protocol==="https:"&&/\.github\.io$/.test(location.hostname))?location.origin+location.pathname:"";
+const SHARE_FOOT=`\n\n——\nPartagé avec ${APP_NAME}, une app de prière gratuite, sans pub et sans collecte de données${APP_LIVE?" :\n"+APP_URL:WEB_URL?" :\n"+WEB_URL:"."}`;
 const nativeApp=()=>{try{const C=window.Capacitor;return !!(C&&C.isNativePlatform&&C.isNativePlatform())}catch(e){return false}};
 const plug=n=>{try{return window.Capacitor.Plugins[n]}catch(e){return null}};
 function showBox(title,hint,text){$("#sbTitle").textContent=title;$("#sbHint").textContent=hint||"";$("#sbText").value=text;$("#shareBox").hidden=false}
@@ -2339,6 +2419,7 @@ $("#quitBtn").onclick=()=>{
 $("#restorePick").onclick=()=>$("#restoreFile").click();
 $("#quitPause").onclick=()=>{$("#quitConfirm").hidden=true;pauseFlow()};
 $("#expressBtn").onclick=()=>startFlow("express");
+$("#tileRetreat").onclick=()=>{show("novena");setTimeout(()=>$("#retreatTitle").scrollIntoView({behavior:"smooth",block:"start"}),60)};
 $("#calmeSw").onclick=()=>{S.calme=!S.calme;save();applyCalme();renderSettings()};
 document.querySelectorAll("[data-flow]").forEach(b=>b.onclick=()=>startFlow(b.dataset.flow));
 document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=ICONS[el.dataset.icon].svg());
@@ -2394,7 +2475,12 @@ document.documentElement.lang="fr";
  document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;
   if(!box.hidden){box.hidden=true}else if(!sil.hidden){sil.click()}else if(!ses.hidden){$("#quitBtn").click()}});
 })();
-renderAll();showVerse();renderGallery();initNative();
+function initLinks(){
+ const go=u=>{if(u&&/(manete:\/\/express|#express)$/.test(u))setTimeout(()=>{if(!FL&&!SS&&!NS)startFlow("express")},300)};
+ if(location.hash==="#express"){go("#express");try{history.replaceState(null,"",location.pathname)}catch(e){}}
+ const A=plug("App");if(nativeApp()&&A){try{A.addListener("appUrlOpen",e=>go(e&&e.url));A.getLaunchUrl().then(r=>go(r&&r.url)).catch(()=>{})}catch(e){}}
+ if(!nativeApp()&&window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker" in navigator&&document.querySelector('link[rel="manifest"]')){navigator.serviceWorker.register("sw.js").catch(()=>{})}}
+renderAll();showVerse();renderGallery();initNative();initLinks();
 </script>
 
 </body>

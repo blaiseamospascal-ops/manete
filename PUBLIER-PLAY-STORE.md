@@ -16,7 +16,7 @@ Ce guide va du code jusqu'à la publication. Compte environ 3 semaines, dont 14 
 
 ## 3. Générer l'app signée
 
-1. `npm run android` : Android Studio s'ouvre.
+1. `npm run android` (il régénère aussi les données du widget) : Android Studio s'ouvre.
 2. Menu **Build › Generate Signed App Bundle or APK › Android App Bundle**.
 3. Crée une **clé d'envoi** (*upload key*, un fichier `.jks`). **Garde ce fichier et son mot de passe en lieu sûr, hors de GitHub** : sans eux, tu ne peux plus mettre l'app à jour. Le `.gitignore` les exclut déjà.
 4. Choisis la variante **release**. Tu obtiens un fichier `app-release.aab`.
@@ -53,7 +53,7 @@ Pour un compte personnel récent, Google exige un **test fermé avec au moins 12
 
 1. Pousse le dépôt sur GitHub (public).
 2. **Settings › Pages › Build and deployment** : source « Deploy from a branch », branche `main`, dossier `/docs`.
-3. L'URL est `https://<ton-compte>.github.io/<nom-du-depot>/`. C'est celle à indiquer dans la Play Console.
+3. L'adresse de la politique de confidentialité est `https://<ton-compte>.github.io/<nom-du-depot>/confidentialite.html`. C'est celle à indiquer dans la Play Console. La racine du site est la version web de l'app.
 
 ## 7. Production
 

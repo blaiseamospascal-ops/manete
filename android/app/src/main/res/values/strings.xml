@@ -4,4 +4,6 @@
     <string name="title_activity_main">Manete</string>
     <string name="package_name">app.manete.priere</string>
     <string name="custom_url_scheme">app.manete.priere</string>
+    <string name="widget_button">1 minute avec Jésus</string>
+    <string name="widget_description">Le saint et la parole du jour, et une prière d'une minute</string>
 </resources>

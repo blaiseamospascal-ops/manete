@@ -5,12 +5,15 @@
   "description": "Application de prière catholique gratuite, sans publicité et sans collecte de données",
   "license": "MIT",
   "scripts": {
-    "sync": "npx cap sync",
-    "android": "npx cap sync android && npx cap open android",
-    "icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#0e1a36' --splashBackgroundColor '#0e1a36'"
+    "sync": "node scripts/widget-data.mjs && node scripts/build-web.mjs && npx cap sync",
+    "android": "npm run sync && npx cap open android",
+    "icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#0e1a36' --splashBackgroundColor '#0e1a36'",
+    "widget-data": "node scripts/widget-data.mjs",
+    "web": "node scripts/build-web.mjs"
   },
   "dependencies": {
     "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
     "@capacitor/core": "8.5.3",
     "@capacitor/filesystem": "8.1.5",
     "@capacitor/local-notifications": "8.3.1",

@@ -1,0 +1,35 @@
+{
+  "name": "Manete · Cœur à Cœur",
+  "short_name": "Manete",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0e1a36",
+  "theme_color": "#0e1a36",
+  "description": "Prière catholique simple, gratuite et privée.",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "1 minute avec Jésus",
+      "url": "./#express"
+    }
+  ]
+}
