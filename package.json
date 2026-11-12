@@ -1,6 +1,7 @@
 {
   "name": "manete",
   "version": "1.0.0",
+  "author": "Malo B. <manete.app@gmail.com>",
   "private": true,
   "description": "Application de prière catholique gratuite, sans publicité et sans collecte de données",
   "license": "MIT",

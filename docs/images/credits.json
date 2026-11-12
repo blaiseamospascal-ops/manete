@@ -1,0 +1,492 @@
+{
+  "lumiere": {
+    "src": "images/lumiere.jpg",
+    "title": "La Lumière du monde",
+    "artist": "William Holman Hunt",
+    "date": "1851-1853",
+    "desc": "« Voici, je me tiens à la porte, et je frappe. » (Ap 3,20)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Hunt-light-of-the-world.jpeg",
+    "file": "File:Hunt-light-of-the-world.jpeg"
+  },
+  "pantocrator": {
+    "src": "images/pantocrator.jpg",
+    "title": "Christ Pantocrator",
+    "artist": "Monastère Sainte-Catherine du Sinaï",
+    "date": "VIe siècle",
+    "desc": "L'une des plus anciennes icônes du Christ.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:CHRIST_PANTOCRATOR-SINAI(6th_Century).jpg",
+    "file": "File:CHRIST PANTOCRATOR-SINAI(6th Century).jpg"
+  },
+  "tete": {
+    "src": "images/tete.jpg",
+    "title": "Tête du Christ",
+    "artist": "Rembrandt",
+    "date": "vers 1648",
+    "desc": "Un visage de douceur, peint d'après nature.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Rembrandt_-_Head_of_Christ_-_BYU.jpg",
+    "file": "File:Rembrandt - Head of Christ - BYU.jpg"
+  },
+  "gethsemani": {
+    "src": "images/gethsemani.jpg",
+    "title": "Le Christ à Gethsémani",
+    "artist": "Heinrich Hofmann",
+    "date": "1890",
+    "desc": "« Que ta volonté soit faite. » (Mt 26,42)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Christ_in_Gethsemane.jpg",
+    "file": "File:Christ in Gethsemane.jpg"
+  },
+  "enfants": {
+    "src": "images/enfants.jpg",
+    "title": "Le Christ bénissant les enfants",
+    "artist": "Lucas Cranach l'Ancien",
+    "date": "XVIe siècle",
+    "desc": "« Laissez les petits enfants venir à moi. » (Mc 10,14)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Lucas_Cranach_(I)_-_Christ_Blessing_the_Children_-_Sammlung_W%C3%BCrth_Johanniterkirche.jpg",
+    "file": "File:Lucas Cranach (I) - Christ Blessing the Children - Sammlung Würth Johanniterkirche.jpg"
+  },
+  "vierge": {
+    "src": "images/vierge.jpg",
+    "title": "La Vierge en prière",
+    "artist": "Sassoferrato",
+    "date": "1640-1650",
+    "desc": "Marie recueillie, modèle de toute prière.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Sassoferrato_-_Jungfrun_i_b%C3%B6n.jpg",
+    "file": "File:Sassoferrato - Jungfrun i bön.jpg"
+  },
+  "immaculee": {
+    "src": "images/immaculee.jpg",
+    "title": "L'Immaculée Conception",
+    "artist": "Bartolomé Esteban Murillo",
+    "date": "1678",
+    "desc": "« Une femme enveloppée du soleil. » (Ap 12,1)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Immaculate_Conception_of_the_Venerable_Ones_cleaned_up.jpg",
+    "file": "File:Immaculate Conception of the Venerable Ones cleaned up.jpg"
+  },
+  "vladimir": {
+    "src": "images/vladimir.jpg",
+    "title": "Notre-Dame de Vladimir",
+    "artist": "Icône de Constantinople",
+    "date": "XIIe siècle",
+    "desc": "La Mère et l'Enfant, joue contre joue : la tendresse.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Virgin_of_Vladimir.jpg",
+    "file": "File:Virgin of Vladimir.jpg"
+  },
+  "annonciation": {
+    "src": "images/annonciation.jpg",
+    "title": "L'Annonciation",
+    "artist": "Fra Angelico",
+    "date": "vers 1440",
+    "desc": "« Voici la servante du Seigneur. » (Lc 1,38)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Angelico_-_Annunciation_-_San_Marco_north_corridor.jpg",
+    "file": "File:Angelico - Annunciation - San Marco north corridor.jpg"
+  },
+  "famille": {
+    "src": "images/famille.jpg",
+    "title": "La Sainte Famille à l'oiseau",
+    "artist": "Bartolomé Esteban Murillo",
+    "date": "vers 1650",
+    "desc": "Jésus, Marie et Joseph dans la joie d'une maison.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Sagrada_Familia_del_pajarito_(Murillo).jpg",
+    "file": "File:Sagrada Familia del pajarito (Murillo).jpg"
+  },
+  "joseph": {
+    "src": "images/joseph.jpg",
+    "title": "Saint Joseph et l'Enfant Jésus",
+    "artist": "Guido Reni",
+    "date": "vers 1635",
+    "desc": "Le père nourricier, l'homme juste.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Guido_Reni_-_Saint_Joseph_and_the_Christ_Child_-_Google_Art_Project.jpg",
+    "file": "File:Guido Reni - Saint Joseph and the Christ Child - Google Art Project.jpg"
+  },
+  "sacrecoeur": {
+    "src": "images/sacrecoeur.jpg",
+    "title": "Le Sacré-Cœur de Jésus",
+    "artist": "Pompeo Batoni",
+    "date": "1767",
+    "desc": "« Voici ce Cœur qui a tant aimé les hommes. »",
+    "license": "CC0",
+    "page": "https://commons.wikimedia.org/wiki/File:SacredHeartBatoni.jpg",
+    "file": "File:SacredHeartBatoni.jpg"
+  },
+  "appel": {
+    "src": "images/appel.jpg",
+    "title": "La Vocation de saint Matthieu",
+    "artist": "Le Caravage",
+    "date": "1600",
+    "desc": "« Suis-moi. » Et Matthieu se leva. (Mt 9,9)",
+    "license": "CC0",
+    "page": "https://commons.wikimedia.org/wiki/File:Caravaggio_%E2%80%94_The_Calling_of_Saint_Matthew.jpg",
+    "file": "File:Caravaggio — The Calling of Saint Matthew.jpg"
+  },
+  "prodigue": {
+    "src": "images/prodigue.jpg",
+    "title": "Le Retour du fils prodigue",
+    "artist": "Rembrandt",
+    "date": "vers 1668",
+    "desc": "« Son père le vit et fut ému de compassion. » (Lc 15,20)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Rembrandt_Harmensz_van_Rijn_-_Return_of_the_Prodigal_Son_-_Google_Art_Project.jpg",
+    "file": "File:Rembrandt Harmensz van Rijn - Return of the Prodigal Son - Google Art Project.jpg"
+  },
+  "sermon": {
+    "src": "images/sermon.jpg",
+    "title": "Le Sermon sur la montagne",
+    "artist": "Carl Bloch",
+    "date": "1877",
+    "desc": "« Heureux les cœurs purs. » (Mt 5,8)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Bloch-SermonOnTheMount.jpg",
+    "file": "File:Bloch-SermonOnTheMount.jpg"
+  },
+  "emmaus": {
+    "src": "images/emmaus.jpg",
+    "title": "Le Souper à Emmaüs",
+    "artist": "Le Caravage",
+    "date": "1601",
+    "desc": "« Ils le reconnurent à la fraction du pain. » (Lc 24,35)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Supper_at_Emmaus-Caravaggio_(1601).jpg",
+    "file": "File:Supper at Emmaus-Caravaggio (1601).jpg"
+  },
+  "cene": {
+    "src": "images/cene.jpg",
+    "title": "La Cène",
+    "artist": "Léonard de Vinci",
+    "date": "1495-1498",
+    "desc": "« Faites ceci en mémoire de moi. » (Lc 22,19)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Leonardo_da_Vinci_-_The_Last_Supper_high_res.jpg",
+    "file": "File:Leonardo da Vinci - The Last Supper high res.jpg"
+  },
+  "crucifix": {
+    "src": "images/crucifix.jpg",
+    "title": "Le Christ en croix",
+    "artist": "Diego Velázquez",
+    "date": "vers 1632",
+    "desc": "« Il n'y a pas de plus grand amour. » (Jn 15,13)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Diego_Vel%C3%A1zquez_-_Christ_on_the_Cross_-_WGA24389.jpg",
+    "file": "File:Diego Velázquez - Christ on the Cross - WGA24389.jpg"
+  },
+  "nativite": {
+    "src": "images/nativite.jpg",
+    "title": "L'Adoration des bergers",
+    "artist": "Gerrit van Honthorst",
+    "date": "1622",
+    "desc": "« Il vous est né un Sauveur. » (Lc 2,11)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Gerard_van_Honthorst_-_Adoration_of_the_Shepherds_(1622).jpg",
+    "file": "File:Gerard van Honthorst - Adoration of the Shepherds (1622).jpg"
+  },
+  "latour": {
+    "src": "images/latour.jpg",
+    "title": "Le Nouveau-né",
+    "artist": "Georges de La Tour",
+    "date": "vers 1648",
+    "desc": "Marie contemple l'Enfant, à la lumière d'une bougie.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Georges_de_La_Tour_-_The_New-born_(detail,_Mus%C3%A9e_des_Beaux-Arts_de_Rennes).jpg",
+    "file": "File:Georges de La Tour - The New-born (detail, Musée des Beaux-Arts de Rennes).jpg"
+  },
+  "transfiguration": {
+    "src": "images/transfiguration.jpg",
+    "title": "La Transfiguration",
+    "artist": "Fra Angelico",
+    "date": "vers 1440",
+    "desc": "« Il est bon que nous soyons ici. » (Mt 17,4)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Transfiguration_by_fra_Angelico_(San_Marco_Cell_6).jpg",
+    "file": "File:Transfiguration by fra Angelico (San Marco Cell 6).jpg"
+  },
+  "pentecote": {
+    "src": "images/pentecote.jpg",
+    "title": "La Pentecôte",
+    "artist": "Le Greco",
+    "date": "vers 1600",
+    "desc": "« Ils furent tous remplis du Saint-Esprit. » (Ac 2,4)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Pentecost%C3%A9s_(El_Greco,_c._1600)_Prado.jpg",
+    "file": "File:Pentecostés (El Greco, c. 1600) Prado.jpg"
+  },
+  "descente": {
+    "src": "images/descente.jpg",
+    "title": "La Descente de croix",
+    "artist": "Rogier van der Weyden",
+    "date": "vers 1435",
+    "desc": "Le peintre de Tournai et Bruxelles, au sommet de son art.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:El_Descendimiento,_by_Rogier_van_der_Weyden,_from_Prado_in_Google_Earth.jpg",
+    "file": "File:El Descendimiento, by Rogier van der Weyden, from Prado in Google Earth.jpg"
+  },
+  "memling": {
+    "src": "images/memling.jpg",
+    "title": "La Vierge et l'Enfant",
+    "artist": "Hans Memling",
+    "date": "vers 1480",
+    "desc": "Un maître de Bruges.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Hans_Memling_-_Virgin_and_Child_(National_Gallery,_London).jpg",
+    "file": "File:Hans Memling - Virgin and Child (National Gallery, London).jpg"
+  },
+  "rosaire": {
+    "src": "images/rosaire.jpg",
+    "title": "La Vierge du Rosaire",
+    "artist": "Bartolomé Esteban Murillo",
+    "date": "vers 1650",
+    "desc": "Marie tend le chapelet.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Bartolom%C3%A9_Esteban_Perez_Murillo_-_Virgin_and_Child_with_a_Rosary_-_WGA16360.jpg",
+    "file": "File:Bartolomé Esteban Perez Murillo - Virgin and Child with a Rosary - WGA16360.jpg"
+  },
+  "sixtine": {
+    "src": "images/sixtine.jpg",
+    "title": "La Madone Sixtine",
+    "artist": "Raphaël",
+    "date": "1512",
+    "desc": "Marie présente l'Enfant au monde.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Raphael_-_The_Sistine_Madonna_-_Google_Arts_%26_Culture.jpg",
+    "file": "File:Raphael - The Sistine Madonna - Google Arts & Culture.jpg"
+  },
+  "magnificat": {
+    "src": "images/magnificat.jpg",
+    "title": "La Vierge du Magnificat",
+    "artist": "Sandro Botticelli",
+    "date": "vers 1483",
+    "desc": "« Mon âme exalte le Seigneur. » (Lc 1,46)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Magnificat_Madonna_-_Botticelli_(uffici)_b.jpg",
+    "file": "File:Magnificat Madonna - Botticelli (uffici) b.jpg"
+  },
+  "bellini": {
+    "src": "images/bellini.jpg",
+    "title": "La Vierge à la prairie",
+    "artist": "Giovanni Bellini",
+    "date": "vers 1505",
+    "desc": "La paix d'une mère et de son enfant.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Giovanni_bellini,_madonna_del_prato_01.jpg",
+    "file": "File:Giovanni bellini, madonna del prato 01.jpg"
+  },
+  "perpetuel": {
+    "src": "images/perpetuel.jpg",
+    "title": "Notre-Dame du Perpétuel Secours",
+    "artist": "Icône crétoise",
+    "date": "XVe siècle",
+    "desc": "L'icône confiée aux rédemptoristes, à Rome.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Original_icon_of_Our_Lady_of_Perpertual_Help_(Succour)_in_Sant%27Alfonso_di_Liguori_(Rome).jpg",
+    "file": "File:Original icon of Our Lady of Perpertual Help (Succour) in Sant'Alfonso di Liguori (Rome).jpg"
+  },
+  "guadalupe": {
+    "src": "images/guadalupe.jpg",
+    "title": "Notre-Dame de Guadalupe",
+    "artist": "Image de la tilma de Juan Diego",
+    "date": "1531",
+    "desc": "Marie apparue à Juan Diego, au Mexique.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Virgen_de_Guadalupe_1531.jpg",
+    "file": "File:Virgen de Guadalupe 1531.jpg"
+  },
+  "pieta": {
+    "src": "images/pieta.jpg",
+    "title": "Pietà",
+    "artist": "William Bouguereau",
+    "date": "1876",
+    "desc": "Marie près de son Fils : la consolation des affligés.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:William-Adolphe_Bouguereau_(1825-1905)_-_Pieta_(1876).jpg",
+    "file": "File:William-Adolphe Bouguereau (1825-1905) - Pieta (1876).jpg"
+  },
+  "michel": {
+    "src": "images/michel.jpg",
+    "title": "Saint Michel archange",
+    "artist": "Guido Reni",
+    "date": "1635",
+    "desc": "« Qui est comme Dieu ? »",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Guido_Reni_031.jpg",
+    "file": "File:Guido Reni 031.jpg"
+  },
+  "augustin": {
+    "src": "images/augustin.jpg",
+    "title": "Saint Augustin",
+    "artist": "Philippe de Champaigne",
+    "date": "vers 1650",
+    "desc": "Le cœur brûlant, entre la Vérité et l'Écriture. Un peintre bruxellois.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Philippe_de_Champaigne_-_Saint_Augustine_-_LACMA_-_with_frame.JPG",
+    "file": "File:Philippe de Champaigne - Saint Augustine - LACMA - with frame.JPG"
+  },
+  "jerome": {
+    "src": "images/jerome.jpg",
+    "title": "Saint Jérôme écrivant",
+    "artist": "Le Caravage",
+    "date": "1606",
+    "desc": "« Ignorer les Écritures, c'est ignorer le Christ. »",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:San_Gerolamo_(Caravaggio)_September_2015-1a.jpg",
+    "file": "File:San Gerolamo (Caravaggio) September 2015-1a.jpg"
+  },
+  "ignace": {
+    "src": "images/ignace.jpg",
+    "title": "Saint Ignace de Loyola",
+    "artist": "Pierre Paul Rubens",
+    "date": "vers 1620",
+    "desc": "« Tout pour la plus grande gloire de Dieu. » Un peintre d'Anvers.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:St._Ignatius_of_Loyola_by_Peter_Paul_Rubens.jpg",
+    "file": "File:St. Ignatius of Loyola by Peter Paul Rubens.jpg"
+  },
+  "tobie": {
+    "src": "images/tobie.jpg",
+    "title": "Tobie et l'ange",
+    "artist": "Filippino Lippi",
+    "date": "vers 1475-1480",
+    "desc": "L'ange Raphaël guide Tobie vers Sara.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Tobias_and_the_Angel_-_Filippino_Lippi.jpg",
+    "file": "File:Tobias and the Angel - Filippino Lippi.jpg"
+  },
+  "angelus": {
+    "src": "images/angelus.jpg",
+    "title": "L'Angélus",
+    "artist": "Jean-François Millet",
+    "date": "1857-1859",
+    "desc": "Au son de la cloche, deux paysans s'arrêtent pour prier.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Jean-Fran%C3%A7ois_Millet_(II)_001.jpg",
+    "file": "File:Jean-François Millet (II) 001.jpg"
+  },
+  "benedicite": {
+    "src": "images/benedicite.jpg",
+    "title": "Le Bénédicité",
+    "artist": "Jean Siméon Chardin",
+    "date": "1740",
+    "desc": "Une petite fille dit le bénédicité avant le repas.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Jean-Baptiste_Simeon_Chardin_Saying_Grace.jpg",
+    "file": "File:Jean-Baptiste Simeon Chardin Saying Grace.jpg"
+  },
+  "invite": {
+    "src": "images/invite.jpg",
+    "title": "Viens, Seigneur Jésus, sois notre hôte",
+    "artist": "Fritz von Uhde",
+    "date": "1885",
+    "desc": "Le Christ s'invite à la table d'une famille.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:The_Mealtime_Prayer_-_Fritz_von_Uhde_-_Google_Cultural_Institute.jpg",
+    "file": "File:The Mealtime Prayer - Fritz von Uhde - Google Cultural Institute.jpg"
+  },
+  "mains": {
+    "src": "images/mains.jpg",
+    "title": "Les Mains en prière",
+    "artist": "Albrecht Dürer",
+    "date": "1508",
+    "desc": "Le dessin le plus célèbre de la prière.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Albrecht_D%C3%BCrer_-_Praying_Hands,_1508_-_Google_Art_Project.jpg",
+    "file": "File:Albrecht Dürer - Praying Hands, 1508 - Google Art Project.jpg"
+  },
+  "temple": {
+    "src": "images/temple.jpg",
+    "title": "Jésus retrouvé au Temple",
+    "artist": "William Holman Hunt",
+    "date": "1860",
+    "desc": "« Ne saviez-vous pas qu'il faut que je sois aux affaires de mon Père ? » (Lc 2,49)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:William_Holman_Hunt_-_The_Finding_of_the_Saviour_in_the_Temple_-_Google_Art_Project.jpg",
+    "file": "File:William Holman Hunt - The Finding of the Saviour in the Temple - Google Art Project.jpg"
+  },
+  "ange": {
+    "src": "images/ange.jpg",
+    "title": "L'Ange gardien",
+    "artist": "Pierre de Cortone",
+    "date": "1656",
+    "desc": "« Il ordonnera à ses anges de te garder. » (Ps 91,11)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Cortona_Guardian_Angel_01.jpg",
+    "file": "File:Cortona Guardian Angel 01.jpg"
+  },
+  "bethesda": {
+    "src": "images/bethesda.jpg",
+    "title": "Le Christ guérissant à Bethesda",
+    "artist": "Carl Bloch",
+    "date": "1883",
+    "desc": "« Veux-tu être guéri ? » (Jn 5,6)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Christhealingthesick.jpg",
+    "file": "File:Christhealingthesick.jpg"
+  },
+  "resurrection": {
+    "src": "images/resurrection.jpg",
+    "title": "La Résurrection",
+    "artist": "Piero della Francesca",
+    "date": "vers 1463",
+    "desc": "« Il est ressuscité, il n'est point ici. » (Mc 16,6)",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Resurrection_(Piero_della_Francesca).jpeg",
+    "file": "File:Resurrection (Piero della Francesca).jpeg"
+  },
+  "agneau": {
+    "src": "images/agneau.jpg",
+    "title": "L'Adoration de l'Agneau mystique",
+    "artist": "Jan et Hubert van Eyck",
+    "date": "1432",
+    "desc": "Le chef-d'œuvre de la cathédrale Saint-Bavon, à Gand.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Lamgods_open.jpg",
+    "file": "File:Lamgods open.jpg"
+  },
+  "lys": {
+    "src": "images/lys.jpg",
+    "title": "La Vierge aux lys",
+    "artist": "William Bouguereau",
+    "date": "1899",
+    "desc": "Marie toute pure, entourée d'anges.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:La_Vierge_au_lys.jpg",
+    "file": "File:La Vierge au lys.jpg"
+  },
+  "francois": {
+    "src": "images/francois.jpg",
+    "title": "Saint François prêchant aux oiseaux",
+    "artist": "Giotto",
+    "date": "vers 1297",
+    "desc": "« Loué sois-tu, mon Seigneur, avec toutes tes créatures. »",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Giotto_-_Saint_Francis_Receiving_the_Stigmata.jpg",
+    "file": "File:Giotto - Saint Francis Receiving the Stigmata.jpg"
+  },
+  "thomas": {
+    "src": "images/thomas.jpg",
+    "title": "Saint Thomas d'Aquin",
+    "artist": "Carlo Crivelli",
+    "date": "1476",
+    "desc": "Le docteur angélique, son livre à la main.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:St-thomas-aquinas.jpg",
+    "file": "File:St-thomas-aquinas.jpg"
+  },
+  "monique": {
+    "src": "images/monique.jpg",
+    "title": "Saint Augustin et sainte Monique",
+    "artist": "Ary Scheffer",
+    "date": "1854",
+    "desc": "La mère et le fils, à Ostie, regardant le ciel.",
+    "license": "Public domain",
+    "page": "https://commons.wikimedia.org/wiki/File:Saint_Augustine_and_Saint_Monica.jpg",
+    "file": "File:Saint Augustine and Saint Monica.jpg"
+  }
+}

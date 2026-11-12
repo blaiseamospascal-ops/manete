@@ -20,7 +20,7 @@ Les rappels sont des notifications **locales**, programmées sur le téléphone.
 
 ## Liens externes
 
-Certains liens ouvrent un autre site ou service, seulement quand tu les touches : AELF (lectures et Bible), Nominis (saints du jour), Hozana, Messes.info, la recherche d'un chant sur Spotify, YouTube ou Deezer, ou la fiche de l'app sur Google Play. Les images saintes sont enregistrées dans l'app : les afficher ne contacte aucun site. Ces services ont leur propre politique de confidentialité. L'app ne leur transmet aucune information sur toi.
+Certains liens ouvrent un autre site ou service, seulement quand tu les touches : AELF (lectures et Bible), Nominis (saints du jour), Hozana, Egliseinfo.be, Messes.info, Cathobel, la recherche d'un chant sur Spotify, YouTube ou Deezer, ou la fiche de l'app sur Google Play. Les images saintes sont enregistrées dans l'app : les afficher ne contacte aucun site. Ces services ont leur propre politique de confidentialité. L'app ne leur transmet aucune information sur toi.
 
 ## Partage
 
@@ -32,10 +32,12 @@ L'app ne collecte aucune donnée, y compris pour les enfants qui l'utiliseraient
 
 ## Contact
 
-Pour toute question, ouvre une *issue* sur le dépôt GitHub du projet.
+Manete est éditée par Malo B., à titre bénévole. Pour toute question : **manete.app@gmail.com**, ou une *issue* sur le dépôt GitHub du projet.
+
+Si tu m'écris par email, ton message et ton adresse servent uniquement à te répondre. Ils ne sont ni partagés ni utilisés à d'autres fins.
 
 ---
 
 # Privacy policy (English)
 
-Manete collects, transmits and sells **no data**. There is no account, no server, no analytics and no advertising. Everything you enter (intentions, journal, novenas, progress, settings) is stored **only on your device**. Backups are files you choose where to send. Reminders are local notifications. Links to AELF, Nominis, Hozana, Messes.info, music services (Spotify, YouTube, Deezer) or Google Play open only when you tap them. Holy images are bundled in the app. These services have their own privacy policies, and the app sends them no information about you.
+Manete collects, transmits and sells **no data**. There is no account, no server, no analytics and no advertising. Everything you enter (intentions, journal, novenas, progress, settings) is stored **only on your device**. Backups are files you choose where to send. Reminders are local notifications. Links to AELF, Nominis, Hozana, Messes.info, music services (Spotify, YouTube, Deezer) or Google Play open only when you tap them. Holy images are bundled in the app. These services have their own privacy policies, and the app sends them no information about you. Publisher: Malo B. (volunteer). Contact: manete.app@gmail.com.

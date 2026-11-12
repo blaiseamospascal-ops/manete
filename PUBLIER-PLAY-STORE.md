@@ -12,7 +12,8 @@ Ce guide va du code jusqu'à la publication. Compte environ 3 semaines, dont 14 
 
 1. Va sur [play.google.com/console](https://play.google.com/console) et crée un compte **personnel**. Les frais d'inscription sont de **25 $**, une seule fois.
 2. Google vérifie ton identité (pièce d'identité) et te demande un téléphone Android pour valider le compte. Cela prend quelques jours.
-3. Ton nom et ton pays apparaîtront sur la fiche de l'app comme développeur.
+3. Ton nom et ton pays apparaîtront sur la fiche de l'app comme développeur. Comme **nom de développeur** public, tu peux indiquer « Malo B. » ; ton nom légal complet reste connu de Google seulement.
+4. Indique **manete.app@gmail.com** comme adresse de contact du compte. Google l'affiche publiquement sur la fiche : c'est pour cela qu'elle est distincte de ton adresse personnelle.
 
 ## 3. Générer l'app signée
 
@@ -39,6 +40,7 @@ Ce guide va du code jusqu'à la publication. Compte environ 3 semaines, dont 14 
    - Image de présentation 1024 × 500 px.
    - **Au moins 2 captures d'écran** de téléphone.
    - Catégorie : **Style de vie** ou **Livres et références**.
+   - **Coordonnées** : email manete.app@gmail.com (obligatoire), site web : l'adresse GitHub Pages du projet.
 
 ## 5. Test fermé obligatoire (compte personnel)
 

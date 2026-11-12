@@ -12,6 +12,10 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 - **Neuvaines** : une bibliothèque (Marie, saint Joseph, saint Thomas d'Aquin, défunts, Noël, Esprit Saint, miséricorde), ou n'importe quelle neuvaine que l'on colle soi-même. Un cierge s'allume par jour.
 - **Bénédicités** : avant et après le repas, pour les enfants (avec des gestes) et entre adultes, plus ceux que l'on ajoute soi-même.
 - **Prier autrement** : chapelet guidé, Angélus (*Regina Caeli* au temps pascal), examen du soir, prière en famille, louange (liens vers Spotify, YouTube ou Deezer), oraison, psaumes, adoration, prière du couple, prière aux anges gardiens (matin et soir).
+- **Pour mes enfants** (prière des mères, pères, grands-mères et grands-pères), **chapelet de la Miséricorde**, **chemin de croix** (14 stations et la Résurrection).
+- **Sanctuaires de Belgique et de France** : carte schématique hors ligne et fiches (Banneux, Beauraing, Lourdes, la Rue du Bac, La Salette…).
+- **Carnet des grâces** : grâces notées, intentions exaucées, mots reçus, neuvaines et retraites achevées, mois par mois.
+- **Aide à la dictée** : sous chaque champ de texte, un rappel pour dicter avec le micro du clavier.
 - **Complies** (la prière de la nuit) et **retraites de 7 jours** : Avent, Carême, apprendre à prier.
 - **Widget Android** : saint et parole du jour sur l'écran d'accueil, avec un bouton « 1 minute avec Jésus ».
 - **Prière express** d'une minute, et **pause** dans le chapelet et les autres prières : on reprend plus tard, là où on en était.
@@ -22,7 +26,7 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 
 ## Images saintes
 
-L'app peut afficher de vraies peintures et icônes anciennes (Fra Angelico, Murillo, Sassoferrato, Rembrandt, Holman Hunt, l'icône du Christ du Sinaï…), toutes du **domaine public**.
+L'app peut afficher près de 50 peintures et icônes anciennes (Fra Angelico, le Caravage, Rembrandt, Van Eyck, Van der Weyden, Memling, Rubens, Millet, Chardin, l'icône du Christ du Sinaï…), toutes du **domaine public**. Chacune a sa place : *L'Angélus* de Millet pour l'Angélus, *Le Bénédicité* de Chardin avant le repas, *Le Retour du fils prodigue* pour la miséricorde, les saints patrons, les neuvaines, les retraites…
 
 1. Lance **une fois** `npm run images` (connexion internet nécessaire). Le script cherche chaque œuvre sur Wikimedia Commons, **ne garde que les fichiers marqués domaine public ou CC0**, et les range dans `www/images/` avec leurs crédits (`credits.json`).
 2. Vérifie chaque image : le lien vers sa page Commons est dans `credits.json` et dans l'app (Réglages › Images saintes). Si une image ne convient pas, indique le fichier exact dans `scripts/fetch-images.mjs` (champ `file`) et relance.
@@ -32,7 +36,7 @@ Les images sont ensuite intégrées à l'app : aucune connexion n'est faite pend
 
 ## Liens vers l'Église
 
-L'app renvoie vers les sites de référence plutôt que de recopier leurs textes : AELF (lectures du jour, liturgie des heures, Bible), Nominis (saints du jour), Hozana (prière en communauté), Messes.info (horaires de messes). Chaque référence biblique est cliquable et ouvre le chapitre sur AELF.
+L'app renvoie vers les sites de référence plutôt que de recopier leurs textes : AELF (lectures du jour, liturgie des heures, Bible), Nominis (saints du jour), Hozana (prière en communauté), Egliseinfo.be et Messes.info (horaires de messes en Belgique et en France), Cathobel (l'Église en Belgique). Chaque référence biblique est cliquable et ouvre le chapitre sur AELF.
 
 ## Vie privée
 
@@ -77,6 +81,13 @@ La version web n'a pas les rappels ni le widget, qui demandent l'app Android. Po
 - **Bible** : d'après la traduction Louis Segond 1910 (domaine public), où « l'Éternel » est rendu par « le Seigneur ». Les quelques versets des livres deutérocanoniques (Tobie, Sagesse, Maccabées) sont traduits pour l'app. **Prières traditionnelles** (*Notre Père*, *Je vous salue Marie*, *Souvenez-vous*, Angélus, prière de Léon XIII à saint Joseph…) : domaine public.
 - **Polices** : Cinzel, EB Garamond et Jost, sous licence SIL Open Font License.
 - **Musique** : aucune n'est intégrée. L'app ouvre seulement une recherche dans l'application de musique choisie par l'utilisateur.
+
+## Auteur et contact
+
+Manete est créée bénévolement par **Malo B.**
+
+- Une idée, une erreur dans un texte, un saint du jour à corriger : **manete.app@gmail.com**, ou une *issue* sur ce dépôt.
+- Dans l'app : Réglages › À propos › « Écrire à l'auteur ».
 
 ## Contribuer
 
