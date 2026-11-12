@@ -14,6 +14,7 @@
   --lapis:#0e1a36; --lapis-2:#16264a; --lapis-3:#203462;
   --gold:#d9ad55; --gold-soft:#b8913f; --vermilion:#c2492f;
   --parchment:#efe5cf; --mute:#a9a68f; --line:color-mix(in srgb,var(--gold) 22%,transparent);
+  --edge:color-mix(in srgb,var(--gold) 60%,transparent);
   --panel:rgba(14,26,54,.55); --nav:rgba(10,19,40,.94);
   --f-display:"Cinzel","Trajan Pro",Georgia,serif;
   --f-body:"EB Garamond",Garamond,"Times New Roman",serif;
@@ -26,13 +27,16 @@
 :root[data-fond="prune"]{--lapis:#221433;--lapis-2:#2f1d46;--lapis-3:#472c66;--panel:rgba(34,20,51,.55);--nav:rgba(25,14,38,.94)}
 :root[data-fond="canard"]{--lapis:#0a2a35;--lapis-2:#103a48;--lapis-3:#1a5567;--panel:rgba(10,42,53,.55);--nav:rgba(7,31,39,.94)}
 :root[data-fond="encre"]{--lapis:#14130f;--lapis-2:#201e18;--lapis-3:#353126;--panel:rgba(20,19,15,.6);--nav:rgba(14,13,10,.94)}
-:root[data-fond="parchemin"]{color-scheme:light;--lapis:#f1e7d0;--lapis-2:#faf4e6;--lapis-3:#fffaf0;--gold:#86621c;--gold-soft:#a67c2c;--parchment:#2b2415;--mute:#6a6049;--vermilion:#a63a22;--panel:rgba(255,252,243,.62);--nav:rgba(241,231,208,.96)}
+:root[data-fond="parchemin"]{color-scheme:light;--lapis:#f1e7d0;--lapis-2:#faf4e6;--lapis-3:#fffaf0;--gold:#86621c;--gold-soft:#a67c2c;--parchment:#2b2415;--mute:#6a6049;--vermilion:#a63a22;--edge:var(--gold);--panel:rgba(255,252,243,.62);--nav:rgba(241,231,208,.96)}
 :root[data-fond="parchemin"] .btn[style*="--tone"],:root[data-fond="parchemin"] .session.nov .btn{color:#2b2415}
-:root[data-fond="parchemin"] :is(.nov-card,.side-card,.session.nov) .icon,:root[data-fond="parchemin"] :is(.pill,.candles,.nov-candles){filter:brightness(.62) saturate(1.5)}
+[style*="--tone"]{--ink:var(--tone)}
+:root[data-fond="parchemin"] [style*="--tone"]{--ink:color-mix(in srgb,var(--tone) 42%,#1d1707)}
+:root[data-fond="parchemin"] .tones button[aria-pressed="true"]{color:var(--parchment);border-color:var(--parchment)}
+:root[data-fond="parchemin"] :is(.candles,.nov-candles){filter:brightness(.7) saturate(1.4)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%}
-body{background:radial-gradient(120% 70% at 50% -10%,var(--lapis-3),var(--lapis) 60%) fixed,var(--lapis);color:var(--parchment);font-family:var(--f-body);font-size:18px;line-height:1.5;-webkit-tap-highlight-color:transparent}
+body{background:radial-gradient(120% 70% at 50% -10%,var(--lapis-3),var(--lapis) 60%) fixed,var(--lapis);color:var(--parchment);font-family:var(--f-body);font-size:1.125rem;line-height:1.5;-webkit-tap-highlight-color:transparent}
 .app{max-width:540px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 110px;display:flex;flex-direction:column;gap:20px}
 h1,h2,h3{font-family:var(--f-display);font-weight:500;letter-spacing:.04em;text-wrap:balance;margin:0}
 h1{font-size:1.6rem;color:var(--gold)}
@@ -41,7 +45,10 @@ p{margin:0}
 .eyebrow{font-family:var(--f-ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
 .ui{font-family:var(--f-ui)}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
-button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+:is(button,a,input,textarea,select,summary):focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+:root{scroll-padding-bottom:120px;scroll-padding-top:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:root[data-calme] *,:root[data-calme] *::before,:root[data-calme] *::after{animation:none!important;transition:none!important}
 .btn{font-family:var(--f-ui);font-weight:500;font-size:1rem;letter-spacing:.03em;padding:14px 22px;border-radius:999px;background:var(--gold);color:var(--lapis);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,filter .15s}
 .btn:active{transform:scale(.97)}
 .btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--line)}
@@ -76,8 +83,9 @@ button:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px sol
 .toggle{display:flex;align-items:center;gap:10px;font-family:var(--f-ui);font-size:.92rem}
 .switch{width:44px;height:26px;border-radius:26px;background:color-mix(in srgb,var(--parchment) 15%,transparent);position:relative;flex:none;transition:background .2s}
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--parchment);transition:transform .2s}
-.switch[aria-checked="true"]{background:var(--gold)}
-.switch[aria-checked="true"]::after{transform:translateX(18px);background:var(--lapis)}
+.switch{border:1px solid var(--edge)}
+.switch[aria-checked="true"],[aria-checked="true"]>.switch{background:var(--gold)}
+.switch[aria-checked="true"]::after,[aria-checked="true"]>.switch::after{transform:translateX(18px);background:var(--lapis)}
 
 .verse{font-size:1.2rem;font-style:italic;line-height:1.45;text-wrap:pretty}
 .ref{font-family:var(--f-ui);font-size:.8rem;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-top:8px}
@@ -108,8 +116,9 @@ nav.tabs button[aria-current="page"]{color:var(--gold)}
 .badge svg{width:34px;height:34px;color:var(--gold)}
 .badge b{font-family:var(--f-ui);font-weight:500;font-size:.78rem;line-height:1.2}
 .badge small{font-family:var(--f-ui);font-size:.66rem;color:var(--mute);line-height:1.25}
-.badge.locked{opacity:.38}
-.badge.locked svg{color:var(--mute)}
+.badge.locked{border-style:dashed}
+.badge.locked b{color:var(--mute);font-weight:400}
+.badge.locked svg{color:var(--mute);opacity:.7}
 .ladder{display:flex;flex-direction:column;gap:6px;font-family:var(--f-ui);font-size:.88rem}
 .ladder div{display:flex;justify-content:space-between;color:var(--mute);font-variant-numeric:tabular-nums}
 .ladder div.reached{color:var(--parchment)}
@@ -148,7 +157,7 @@ textarea::placeholder{color:var(--mute);font-style:italic}
 .acts button{font-family:var(--f-ui);font-size:.74rem;padding:8px 2px;border-radius:12px;border:1px solid var(--line);color:var(--mute)}
 .acts button[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
 .s-foot{display:flex;flex-direction:column;gap:10px}
-.small-link{font-family:var(--f-ui);font-size:.85rem;color:var(--mute);text-decoration:underline;text-underline-offset:3px;align-self:center}
+.small-link{font-family:var(--f-ui);font-size:.85rem;color:var(--mute);text-decoration:underline;text-underline-offset:3px;align-self:center;min-height:32px;min-width:32px;padding:4px 2px;display:inline-flex;align-items:center;justify-content:center}
 
 /* silence */
 .silence{--parchment:#efe5cf;--mute:#a9a68f;--gold:#d9ad55;position:fixed;inset:0;z-index:30;background:#05080f;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:24px;color:var(--parchment);transition:background 2s}
@@ -183,14 +192,14 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .check ol{margin:6px 0 0;padding-left:20px;color:var(--mute)}
 .imgpick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .imgpick button{aspect-ratio:1;max-width:100%;border:1px solid var(--line);border-radius:12px;padding:8px;color:var(--mute)}
-.imgpick button[aria-pressed="true"]{border-color:var(--tone,var(--gold));color:var(--tone,var(--gold));background:color-mix(in srgb,var(--parchment) 6%,transparent)}
+.imgpick button[aria-pressed="true"]{border-color:var(--ink,var(--gold));color:var(--ink,var(--gold));background:color-mix(in srgb,var(--parchment) 6%,transparent)}
 .imgpick svg{width:100%;height:100%}
 .tones{display:flex;gap:8px;flex-wrap:wrap}
 .tones button{font-family:var(--f-ui);font-size:.8rem;padding:7px 12px 7px 9px;border-radius:999px;border:1px solid var(--line);display:flex;align-items:center;gap:7px}
 .tones button i{width:12px;height:12px;border-radius:50%;background:var(--c)}
 .tones button[aria-pressed="true"]{border-color:var(--c);color:var(--c)}
 .nov-card{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:start}
-.nov-card .icon{width:76px;color:var(--tone)}
+.nov-card .icon{width:76px;color:var(--ink)}
 .nov-card h3{font-size:1rem;color:var(--parchment);line-height:1.3}
 .nov-status{font-family:var(--f-ui);font-size:.82rem;color:var(--mute)}
 .nov-intent{font-style:italic;color:var(--mute);font-size:.98rem;overflow-wrap:anywhere}
@@ -202,9 +211,9 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .nov-candles .light{animation:kindle 1.6s ease both}
 @keyframes kindle{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
 .session.nov{background:radial-gradient(90% 55% at 50% 0%,color-mix(in srgb,var(--tone) 34%,var(--lapis)),var(--lapis) 72%),var(--lapis)}
-.session.nov .icon{color:var(--tone)}
+.session.nov .icon{color:var(--ink)}
 .session.nov .btn{background:var(--tone)}
-.pill{font-family:var(--f-ui);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--tone,var(--gold));color:var(--tone,var(--gold))}
+.pill{font-family:var(--f-ui);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--ink,var(--gold));color:var(--ink,var(--gold))}
 .pill.soft{border-color:var(--line);color:var(--mute);text-transform:none;letter-spacing:.02em}
 .nov-intent-box{width:100%;border:1px solid var(--line);border-radius:14px;padding:10px 14px;font-style:italic;text-align:left}
 .divider{display:flex;align-items:center;gap:10px;width:100%;font-family:var(--f-ui);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
@@ -220,7 +229,7 @@ input[type="text"]::placeholder{color:var(--mute);font-style:italic}
 .tile b{font-family:var(--f-display);font-weight:500;font-size:.95rem;color:var(--parchment)}
 .tile small{font-family:var(--f-ui);font-size:.74rem;color:var(--mute);line-height:1.3}
 .side-card{display:grid;grid-template-columns:76px 1fr;gap:14px;align-items:start}
-.side-card .icon{width:76px;color:var(--tone,var(--gold))}
+.side-card .icon{width:76px;color:var(--ink,var(--gold))}
 .rosary{width:min(150px,40vw);max-width:100%;color:var(--mute)}
 .prayer-label{font-family:var(--f-display);font-size:1.3rem;color:var(--gold);margin:0}
 .session.kids .text{font-size:1.35rem;line-height:1.45}
@@ -264,6 +273,15 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
 .brand svg{width:46px;height:46px;color:var(--gold)}
 .brand b{font-family:var(--f-display);font-weight:500;font-size:1.5rem;letter-spacing:.14em;color:var(--gold);display:block;line-height:1.1}
 .brand small{font-family:var(--f-ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+/* Contours des champs et des boutons : contraste 3:1 au moins (WCAG 1.4.11) */
+textarea,input[type="text"],input[type="time"],select,.btn.ghost,.dur,.chipbtn,.ptabs button,.acts button,.tones button,.fonds button,.imgpick button,.saints button,.iconbtn,.grace,.s-top .chip{border-color:var(--edge)}
+/* État choisi : pas seulement la couleur (WCAG 1.4.1) */
+:is(.acts,.ptabs,.tones,.fonds,.saints) button[aria-pressed="true"]{font-weight:600;box-shadow:inset 0 0 0 1px currentColor}
+.acts button{color:var(--parchment)}
+.help{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-family:var(--f-ui);font-size:.88rem;color:var(--mute)}
+.help b{color:var(--parchment);font-weight:500}
+button.ui{min-height:32px}
+details.addlink summary{min-height:32px;display:flex;align-items:center}
 .iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--mute);flex:none}
 .iconbtn svg{width:18px;height:18px}
 .flame{transform-origin:60px 46px;animation:flick 2.6s ease-in-out infinite}
@@ -297,8 +315,8 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
       </div>
     </div>
     <div class="chips">
-      <span class="chip" title="Jours d'affilée"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--gold)"><path d="M12 2c2 4 5 6 5 11a5 5 0 0 1-10 0c0-3 2-4 2-7 1 1 2 2 2 4 1-2 1-5 1-8z"/></svg><span id="streakChip">0</span></span>
-      <span class="chip" title="Points de grâce" id="xpChipWrap"><span id="xpChip">0</span>&nbsp;XP</span>
+      <span class="chip" title="Jours d'affilée"><svg viewBox="0 0 24 24" fill="currentColor" style="color:var(--gold)"><path d="M12 2c2 4 5 6 5 11a5 5 0 0 1-10 0c0-3 2-4 2-7 1 1 2 2 2 4 1-2 1-5 1-8z"/></svg><span id="streakChip">0</span><span class="sr"> jours d'affilée</span></span>
+      <span class="chip" id="xpChipWrap"><span id="xpChip">0</span>&nbsp;pts</span>
       <button class="iconbtn" id="gearBtn" type="button" aria-label="Réglages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button>
     </div>
   </header>
@@ -307,14 +325,14 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
   <section id="view-pray" class="view">
     <div style="display:flex;flex-direction:column;gap:20px">
       <div class="brand"><svg viewBox="0 0 200 200"><defs><radialGradient id="lgGlow" cx="100" cy="46" r="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="currentColor" stop-opacity=".5"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></radialGradient></defs><circle cx="100" cy="46" r="52" fill="url(#lgGlow)"/><g fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"><path d="M100 176 C 60 146, 26 116, 27 84 C 28 56, 48 42, 68 44 C 84 45, 94 54, 100 68"/><path d="M100 176 C 140 146, 174 116, 173 84 C 172 56, 152 42, 132 44 C 116 45, 106 54, 100 68"/></g><path d="M33 118 C 17 124, 4 116, 0 100 C 16 96, 29 104, 33 118 Z" fill="currentColor"/><path d="M31 115 C 22 112, 12 108, 5 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M167 118 C 183 124, 196 116, 200 100 C 184 96, 171 104, 167 118 Z" fill="currentColor"/><path d="M169 115 C 178 112, 188 108, 195 102" stroke="var(--lapis)" stroke-width="1.6" fill="none" opacity=".6"/><path d="M100 74 C 84 64, 84 42, 100 8 C 116 42, 116 64, 100 74 Z" fill="currentColor"/><path d="M100 68 C 93 61, 93 50, 100 36 C 107 50, 107 61, 100 68 Z" fill="var(--lapis)" opacity=".5"/></svg>
-<div><b>MANETE</b><small>Cœur à Cœur · Demeurez en moi</small></div></div>
+<div><b lang="la">MANETE</b><small>Cœur à Cœur · Demeurez en moi</small></div></div>
       <div class="litu" id="litu"></div>
       <div class="panel side-card" id="novSuggest" hidden></div>
       <div class="hero">
         <div class="icon" id="heroIcon"></div>
         <p class="eyebrow" id="greet">Bonsoir</p>
         <h1>Viens, Jésus t'attend</h1>
-        <p class="icon-cap">« Cor ad cor loquitur » : le cœur parle au cœur.</p>
+        <p class="icon-cap">« <span lang="la">Cor ad cor loquitur</span> » : le cœur parle au cœur.</p>
         <div class="goal">
           <div class="row between ui" style="font-size:.85rem;color:var(--mute)"><span>Objectif du jour</span><span id="goalTxt">0 / 10 min</span></div>
           <div class="bar"><i id="goalBar" style="width:0"></i></div>
@@ -325,7 +343,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
         <div class="eyebrow">Durée de la prière</div>
         <div class="durations" id="durations"></div>
         <div class="row between wrap">
-          <button class="toggle" id="musicToggle" type="button"><span class="switch" role="switch" aria-checked="true" id="musicSwitch"></span>Musique méditative</button>
+          <button class="toggle" id="musicToggle" type="button" role="switch" aria-checked="true"><span class="switch" aria-hidden="true"></span>Musique méditative</button>
           <span class="ui" style="font-size:.8rem;color:var(--mute)" id="silenceInfo">dont 4 min de silence</span>
         </div>
         <button class="btn block" id="startBtn" type="button">Commencer la prière</button>
@@ -373,8 +391,9 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
   <!-- PROGRÈS -->
   <section id="view-progress" class="view" hidden>
     <div style="display:flex;flex-direction:column;gap:20px">
+      <h1 class="sr">Mes progrès</h1>
       <div class="panel" id="pLevelPanel" style="display:flex;flex-direction:column;gap:14px">
-        <div class="row between"><h2 id="pLvlName">Pèlerin</h2><span class="ui" style="color:var(--mute);font-size:.85rem" id="pLvlXp">0 / 100 XP</span></div>
+        <div class="row between"><h2 id="pLvlName">Pèlerin</h2><span class="ui" style="color:var(--mute);font-size:.85rem" id="pLvlXp">0 / 100 pts</span></div>
         <div class="bar"><i id="pLvlBar" style="width:0"></i></div>
         <p style="font-style:italic;color:var(--mute)" id="pLvlQuote"></p>
       </div>
@@ -397,7 +416,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
       </div>
       <div class="panel ui" id="pPoints" style="font-size:.88rem;color:var(--mute);display:flex;flex-direction:column;gap:6px">
         <b style="color:var(--parchment);font-weight:500">Comment gagner des points</b>
-        <span>10 XP par minute de prière · +30 par silence complet · +20 pour la première prière du jour · +15 par intention confiée · bonus de fidélité jusqu'à +50.</span>
+        <span>10 points par minute de prière · +30 par silence complet · +20 pour la première prière du jour · +15 par intention confiée · bonus de fidélité jusqu'à +50.</span>
         <span>Un jour de grâce par semaine : si tu manques un seul jour, ta série continue.</span>
         <span>Les points ne mesurent pas l'amour de Dieu : ils t'aident seulement à revenir chaque jour. Tu peux les masquer dans les réglages.</span>
       </div>
@@ -416,7 +435,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
         <p class="icon-cap">Confie à Jésus ce qui pèse et ce qui réjouit. Reviens marquer les grâces reçues.</p>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:12px">
-        <textarea id="intentInput" placeholder="Seigneur Jésus, je te confie…"></textarea>
+        <textarea id="intentInput" aria-label="Mon intention" placeholder="Seigneur Jésus, je te confie…"></textarea>
         <button class="btn block" id="intentAdd" type="button">Confier cette intention</button>
       </div>
       <div class="panel" id="intentList"></div>
@@ -477,8 +496,21 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
         </details>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:12px">
-        <h2>Couleur de fond</h2>
+        <h2>Affichage</h2>
+        <span class="eyebrow">Couleur de fond</span>
         <div class="fonds" id="fondPick"></div>
+        <div class="setrow"><div class="lab"><b>Réduire les animations</b><small>Flammes fixes, pas de fondus ni de cercle qui respire</small></div><button class="switch" role="switch" type="button" id="calmeSw" aria-checked="false" aria-label="Réduire les animations"></button></div>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+        <h2>Comment ça marche</h2>
+        <ul class="help">
+          <li><b>Prier</b> : choisis une durée et laisse-toi guider. Tu peux revenir en arrière ou arrêter à tout moment : le temps prié est compté.</li>
+          <li><b>Silence</b> : l'écran s'assombrit. Touche-le pour revoir le temps restant. Une cloche sonne à la fin.</li>
+          <li><b>Neuvaines</b> : un jour par jour. Si tu en manques un, tu reprends là où tu en étais.</li>
+          <li><b>Musique</b> : le bouton ♪ en haut de chaque prière la coupe ou la remet.</li>
+          <li><b>Série de jours</b> : un jour manqué par semaine est pardonné (jour de grâce).</li>
+          <li><b>Tes données</b> restent sur ce téléphone. Pense à exporter une sauvegarde.</li>
+        </ul>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:4px">
         <h2 style="margin-bottom:6px">Le jeu</h2>
@@ -488,9 +520,9 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
       <div class="panel" style="display:flex;flex-direction:column;gap:12px">
         <h2>Mes données</h2>
         <p class="hint">Tout reste sur ce téléphone : pas de compte, pas de serveur, aucune donnée collectée. Fais une sauvegarde de temps en temps, et toujours avant de changer de téléphone.</p>
-        <div class="row wrap" style="gap:8px"><button class="btn ghost" type="button" id="expBtn" style="padding:9px 16px">Exporter une sauvegarde</button><label class="btn ghost" for="restoreFile" style="padding:9px 16px;cursor:pointer">Restaurer un fichier</label><input type="file" id="restoreFile" accept=".json,application/json,text/plain" hidden></div>
-        <details class="addlink"><summary class="ui">Restaurer en collant le texte</summary><div class="field" style="margin-top:10px"><textarea id="restoreText" placeholder="Colle ici le texte de ta sauvegarde"></textarea><button class="btn ghost" type="button" id="restoreGo" style="padding:8px 16px">Restaurer</button></div></details>
-        <div class="check warn" id="restoreConfirm" hidden></div>
+        <div class="row wrap" style="gap:8px"><button class="btn ghost" type="button" id="expBtn" style="padding:9px 16px">Exporter une sauvegarde</button><button class="btn ghost" type="button" id="restorePick" style="padding:9px 16px">Restaurer un fichier</button><input type="file" id="restoreFile" aria-label="Fichier de sauvegarde" accept=".json,application/json,text/plain" hidden></div>
+        <details class="addlink"><summary class="ui">Restaurer en collant le texte</summary><div class="field" style="margin-top:10px"><textarea id="restoreText" aria-label="Texte de la sauvegarde" placeholder="Colle ici le texte de ta sauvegarde"></textarea><button class="btn ghost" type="button" id="restoreGo" style="padding:8px 16px">Restaurer</button></div></details>
+        <div class="check warn" id="restoreConfirm" aria-live="polite" hidden></div>
       </div>
       <div class="panel" style="display:flex;flex-direction:column;gap:10px">
         <h2>Faire connaître l'app</h2>
@@ -508,6 +540,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
         <h1>Neuvaines</h1>
         <p class="icon-cap">Neuf jours de prière persévérante, comme les apôtres avec Marie au Cénacle, dans l'attente de l'Esprit.</p>
       </div>
+      <h2 class="sr">Mes neuvaines</h2>
       <div id="novList" style="display:flex;flex-direction:column;gap:12px"></div>
       <button class="btn block" id="novNew" type="button">+ Ajouter ma propre neuvaine</button>
       <div class="panel" id="novForm" hidden style="display:flex;flex-direction:column;gap:18px">
@@ -521,7 +554,7 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
             <button class="chipbtn" id="novEx" type="button">Essayer avec un exemple</button>
           </div>
           <p class="hint">Chaque jour commence par une ligne « Jour 1 », « 2e jour » ou « Premier jour ». Si tu veux, ajoute en tête « NEUVAINE : nom » et « PRIÈRE DE CHAQUE JOUR : » pour un texte à redire tous les jours.</p>
-          <div class="check" id="novCheck">Colle un texte pour voir les jours détectés.</div>
+          <div class="check" id="novCheck" aria-live="polite">Colle un texte pour voir les jours détectés.</div>
         </div>
         <div class="field"><label for="novName">2 · Nom de la neuvaine</label><input type="text" id="novName" placeholder="Neuvaine à…"></div>
         <div class="field"><label for="novIntent">Ton intention (facultatif)</label><input type="text" id="novIntent" placeholder="Pour…"></div>
@@ -550,32 +583,32 @@ select{width:100%;border-radius:14px;border:1px solid var(--line);background:var
 </nav>
 
 <!-- SESSION -->
-<div class="session" id="session" hidden>
+<div class="session" id="session" role="dialog" aria-modal="true" aria-label="Prière en cours" hidden>
   <div class="inner">
     <div class="s-top">
       <button class="chip" id="quitBtn" type="button">✕ Quitter</button>
-      <span class="chip" id="sTimer">00:00</span>
+      <span class="chip" id="sTimer" role="timer" aria-label="Temps écoulé">00:00</span>
       <button class="chip" id="sMusic" type="button">♪ Musique</button>
     </div>
     <div class="steps" id="stepsBar"></div>
     <div id="quitConfirm" hidden class="panel ui" style="font-size:.9rem;display:flex;flex-direction:column;gap:10px;text-align:center">
-      <span>Arrêter maintenant ? Le temps déjà prié sera compté.</span>
+      <span id="quitMsg">Arrêter maintenant ? Le temps déjà prié sera compté.</span>
       <div class="row" style="justify-content:center"><button class="btn" id="quitYes" type="button" style="padding:8px 18px">Terminer</button><button class="btn ghost" id="quitNo" type="button" style="padding:8px 18px">Continuer</button></div>
     </div>
-    <div class="stage" id="stage"></div>
+    <div class="stage" id="stage" aria-live="polite"></div>
     <div class="s-foot" id="sFoot"></div>
   </div>
 </div>
 
-<div class="silence" id="silence" hidden>
+<div class="silence" id="silence" role="dialog" aria-modal="true" aria-label="Temps de silence" hidden>
   <div class="breath"><i></i></div>
   <p class="sil-text" id="silText">Ferme les yeux.<br>Respire lentement.<br>Il est là.</p>
   <p class="sil-time" id="silTime">05:00</p>
   <button class="btn ghost" id="silEnd" type="button">Terminer le silence</button>
 </div>
 
-<div class="modal" id="shareBox" hidden><div class="panel modal-in"><h2 id="sbTitle">Partager</h2><p class="hint" id="sbHint"></p><textarea id="sbText" readonly style="min-height:180px"></textarea><div class="row" style="gap:8px;justify-content:flex-end"><button class="btn ghost" type="button" id="sbClose" style="padding:9px 18px">Fermer</button><button class="btn" type="button" id="sbCopy" style="padding:9px 18px">Copier</button></div></div></div>
-<div class="toast" id="toast" hidden></div>
+<div class="modal" id="shareBox" role="dialog" aria-modal="true" aria-labelledby="sbTitle" hidden><div class="panel modal-in"><h2 id="sbTitle">Partager</h2><p class="hint" id="sbHint"></p><textarea id="sbText" aria-labelledby="sbTitle" readonly style="min-height:180px"></textarea><div class="row" style="gap:8px;justify-content:flex-end"><button class="btn ghost" type="button" id="sbClose" style="padding:9px 18px">Fermer</button><button class="btn" type="button" id="sbCopy" style="padding:9px 18px">Copier</button></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 
 <script>
 /* ---------- Données ---------- */
@@ -716,7 +749,7 @@ const BADGES=[
 
 /* ---------- État ---------- */
 const KEY="manete-v1",OLD_KEY="coeur-a-coeur-v1";
-const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
+const blank=()=>({xp:0,totalMin:0,sessions:0,silences:0,verses:0,streak:0,bestStreak:0,lastDay:null,days:{},badges:{},intentions:[],morning:0,evening:0,dur:10,music:true,novenas:[],novenaCount:0,words:[],counts:{},saint:null,hidePoints:false,myLinks:[],myGraces:[],graceDays:{},customSaint:null,couplePrayer:"",fond:"nuit",calme:false,musicApp:"spotify",oraisonMin:10,showText:true,graceWeek:null,rem:null});
 let S=blank();
 try{const raw=localStorage.getItem(KEY)||localStorage.getItem(OLD_KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -727,7 +760,7 @@ function levelOf(xp){let i=0;for(let k=0;k<LEVELS.length;k++)if(xp>=LEVELS[k][0]
 const $=s=>document.querySelector(s);
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const fmt=s=>`${String(Math.floor(s/60)).padStart(2,"0")}:${String(Math.floor(s%60)).padStart(2,"0")}`;
-function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>el.hidden=true,2600)}
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>el.hidden=true,4200)}
 
 /* ---------- Audio (généré, sans fichier) ---------- */
 const A={ctx:null,master:null,rev:null,nodes:[],chime:null,on:false};
@@ -793,7 +826,7 @@ function renderHome(){
  const box=$("#durations");box.innerHTML="";
  DURS.forEach(d=>{const b=document.createElement("button");b.type="button";b.className="dur";b.setAttribute("aria-pressed",S.dur===d);b.innerHTML=`${d}<small>MIN</small>`;b.onclick=()=>{S.dur=d;save();renderHome()};box.appendChild(b)});
  $("#silenceInfo").textContent=`dont ${silenceMin(S.dur)} min de silence`;
- $("#musicSwitch").setAttribute("aria-checked",S.music);
+ $("#musicToggle").setAttribute("aria-checked",S.music);
 }
 const silenceMin=d=>Math.max(2,Math.round(d*.4));
 let curVerse=null;
@@ -804,15 +837,15 @@ function renderGallery(){const k=GALLERY[gi],I=ICONS[k];$("#galIcon").innerHTML=
 /* ---------- Progrès ---------- */
 function renderProgress(){
  const L=levelOf(S.xp);
- $("#pLvlName").textContent=`${ROMAN[L.i]} · ${L.name}`;$("#pLvlXp").textContent=L.next?`${S.xp} / ${L.next} XP`:`${S.xp} XP`;
+ $("#pLvlName").textContent=`${ROMAN[L.i]} · ${L.name}`;$("#pLvlXp").textContent=L.next?`${S.xp} / ${L.next} pts`:`${S.xp} pts`;
  $("#pLvlBar").style.width=L.pct+"%";$("#pLvlQuote").textContent=L.quote;
  const wk=$("#week");wk.innerHTML="";const names=["D","L","M","M","J","V","S"];
  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dayKey(d),m=S.days[k]||0,lit=m>0;
   wk.insertAdjacentHTML("beforeend",`<div class="day ${i===0?"today":""}"><svg viewBox="0 0 26 38">${lit?'<ellipse cx="13" cy="9" rx="9" ry="9" fill="#d9ad55" opacity=".18"/><path d="M13 2c3 4 4 7 0 10-4-3-3-6 0-10z" fill="#d9ad55"/>':''}<line x1="13" y1="12" x2="13" y2="15" stroke="${lit?"#d9ad55":"#a9a68f"}" stroke-width="1"/><rect x="8" y="15" width="10" height="21" rx="1.5" fill="none" stroke="${lit?"#d9ad55":"color-mix(in srgb,var(--mute) 50%,transparent)"}" stroke-width="1.2"/></svg>${names[d.getDay()]}<span style="font-variant-numeric:tabular-nums">${lit?m+"′":"·"}</span></div>`)}
  $("#sStreak").textContent=liveStreak();$("#sMin").textContent=S.totalMin;$("#sSil").textContent=S.silences;
- $("#badges").innerHTML=BADGES.map(b=>`<div class="badge ${S.badges[b.id]?"":"locked"}">${BADGE_ICON[b.i]}<b>${b.n}</b><small>${b.d}</small></div>`).join("");
+ $("#badges").innerHTML=BADGES.map(b=>`<div class="badge ${S.badges[b.id]?"":"locked"}">${BADGE_ICON[b.i]}<b>${b.n}</b><small>${b.d}<span class="sr">${S.badges[b.id]?" : médaille obtenue":" : pas encore obtenue"}</span></small></div>`).join("");
  ["#pLevelPanel","#pLadder","#pPoints"].forEach(id=>$(id).hidden=!!S.hidePoints);
- $("#ladder").innerHTML=LEVELS.map((l,k)=>`<div class="${k<L.i?"reached":k===L.i?"current":""}"><span>${ROMAN[k]} · ${l[1]}</span><span>${l[0]} XP</span></div>`).join("");
+ $("#ladder").innerHTML=LEVELS.map((l,k)=>`<div class="${k<L.i?"reached":k===L.i?"current":""}"><span>${ROMAN[k]} · ${l[1]}</span><span>${l[0]} pts</span></div>`).join("");
 }
 
 /* ---------- Carnet ---------- */
@@ -859,7 +892,7 @@ function renderStep(){
   ft.innerHTML=`<button class="btn block" id="silGo" type="button">Fermer les yeux</button><button class="small-link" id="nextBtn" type="button">Passer le silence</button>`;
   $("#silGo").onclick=()=>startSilence();
  }else if(id==="dialogue"){
-  st.innerHTML=`<p class="eyebrow">4 · Parler à Jésus</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Cœur à cœur</h2>${SS.silenceDone?`<div class="field" style="width:100%;text-align:left"><label for="sWord">Ce qu'il m'a dit dans le silence (facultatif)</label><input type="text" id="sWord" placeholder="Un mot, une image, une paix…" value="${esc(SS.word||"")}"></div>`:""}<div class="acts" id="acts">${Object.keys(ACTS).map(k=>`<button type="button" aria-pressed="${k===SS.act}" data-a="${k}">${k}</button>`).join("")}</div><p class="text" id="actText">${ACTS[SS.act]}</p><textarea id="sIntent" placeholder="Jésus, je te confie… (facultatif)">${esc(SS.intention)}</textarea>`;
+  st.innerHTML=`<p class="eyebrow">4 · Parler à Jésus</p><div class="icon">${ICONS.coeur.svg()}</div><h2>Cœur à cœur</h2>${SS.silenceDone?`<div class="field" style="width:100%;text-align:left"><label for="sWord">Ce qu'il m'a dit dans le silence (facultatif)</label><input type="text" id="sWord" placeholder="Un mot, une image, une paix…" value="${esc(SS.word||"")}"></div>`:""}<div class="acts" id="acts">${Object.keys(ACTS).map(k=>`<button type="button" aria-pressed="${k===SS.act}" data-a="${k}">${k}</button>`).join("")}</div><p class="text" id="actText">${ACTS[SS.act]}</p><textarea id="sIntent" aria-label="Mon intention (facultatif)" placeholder="Jésus, je te confie… (facultatif)">${esc(SS.intention)}</textarea>`;
   ft.innerHTML=next();
   st.querySelectorAll("#acts button").forEach(b=>b.onclick=()=>{SS.act=b.dataset.a;st.querySelectorAll("#acts button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#actText").innerHTML=ACTS[SS.act]});
   $("#sIntent").oninput=e=>SS.intention=e.target.value;
@@ -869,6 +902,7 @@ function renderStep(){
   ft.innerHTML=next("Amen · Terminer");
   st.querySelectorAll("#ptabs button").forEach(b=>b.onclick=()=>{SS.prayer=b.dataset.p;st.querySelectorAll("#ptabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#ptext").textContent=PRAYERS[SS.prayer]});
  }
+ if(SS.step>0){ft.insertAdjacentHTML("beforeend",'<button class="small-link" id="stepBack" type="button">Retour</button>');$("#stepBack").onclick=()=>{SS.step--;renderStep();$("#session").scrollTop=0}}
  const nb=$("#nextBtn");if(nb)nb.onclick=()=>{if(SS.step<STEPS.length-1){SS.step++;if(SS.step===1)chime(587.33,.08);renderStep();$("#session").scrollTop=0}else finishSession()};
 }
 let silInt=null,silDeep=null;
@@ -900,7 +934,7 @@ function finishSession(early){
  $("#stage").innerHTML=rewardHTML(r,{eyebrow:"Envoi",icon:ICONS.croix.svg(),title:"Va en paix"})+`<div class="panel" style="width:100%"><p class="eyebrow">Parole à garder aujourd'hui</p><p class="verse" style="margin-top:8px;font-size:1.08rem">« ${carry[0]} »</p><p class="ref">${carry[1]}</p><button class="small-link" type="button" id="shareCarry" style="margin-top:8px">Partager cette parole</button></div>`;
  $("#shareCarry").onclick=()=>shareVerse(carry);
  $("#sFoot").innerHTML=`<button class="btn block" id="doneBtn" type="button">Revenir à l'accueil</button>`;
- $("#doneBtn").onclick=closeSession;$("#session").scrollTop=0;
+ $("#doneBtn").onclick=closeSession;$("#session").scrollTop=0;SS.finished=true;
  renderAll();
 }
 function closeSession(){clearInterval(timerInt);const ses=$("#session");ses.hidden=true;ses.classList.remove("nov","kids");ses.style.removeProperty("--tone");$("#stage").onclick=null;FL=null;document.body.style.overflow="";musicStop();try{wake&&wake.release()}catch(e){}SS=null;NS=null;renderAll();renderNovenas()}
@@ -1355,7 +1389,7 @@ function renderNovenas(){
   if(n.completedAt){status=`Achevée le ${new Date(n.completedAt).toLocaleDateString("fr-BE",{day:"numeric",month:"long"})} · 9/9`;btn=`<button class="btn ghost" style="padding:8px 16px" data-act="restart" type="button">Recommencer</button>`}
   else if(st.prayedToday){status=`Jour ${st.done} prié aujourd'hui. Reviens demain pour le jour ${st.next+1}.`;btn=`<button class="btn ghost" style="padding:8px 16px" data-act="reread" type="button">Relire le jour ${st.done}</button>`}
   else{status=st.missed?`Un jour a été manqué : reprends simplement là où tu en étais.`:st.done?`${st.done}/9 jours priés`:`Prête à commencer`;btn=`<button class="btn" style="padding:9px 18px;background:var(--tone)" data-act="pray" type="button">Prier le jour ${st.next+1}</button>`}
-  return `<div class="panel nov-card" style="--tone:${n.tone}" data-id="${n.id}"><div class="icon">${(ICONS[n.img]||ICONS.croix).svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><h3>${esc(n.name)}</h3><div class="candles">${n.progress.map(p=>candle(!!p)).join("")}</div><p class="nov-status">${status}</p>${n.intention?`<p class="nov-intent">${esc(n.intention)}</p>`:""}<div class="row wrap" style="gap:10px">${btn}<button class="small-link" data-act="share" type="button">Partager</button><button class="small-link" data-act="del" type="button">Supprimer</button></div><div class="row wrap ui" data-confirm hidden style="gap:8px;font-size:.85rem"><span>Supprimer cette neuvaine ?</span><button class="btn ghost" style="padding:5px 12px" data-act="delyes" type="button">Oui</button><button class="btn ghost" style="padding:5px 12px" data-act="delno" type="button">Non</button></div></div></div>`}).join("");
+  return `<div class="panel nov-card" style="--tone:${n.tone}" data-id="${n.id}"><div class="icon">${(ICONS[n.img]||ICONS.croix).svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><h3>${esc(n.name)}</h3><div class="candles" role="img" aria-label="${n.progress.filter(Boolean).length} jours priés sur 9">${n.progress.map(p=>candle(!!p)).join("")}</div><p class="nov-status">${status}</p>${n.intention?`<p class="nov-intent">${esc(n.intention)}</p>`:""}<div class="row wrap" style="gap:10px">${btn}<button class="small-link" data-act="share" type="button">Partager</button><button class="small-link" data-act="del" type="button">Supprimer</button></div><div class="row wrap ui" data-confirm hidden style="gap:8px;font-size:.85rem"><span>Supprimer cette neuvaine ?</span><button class="btn ghost" style="padding:5px 12px" data-act="delyes" type="button">Oui</button><button class="btn ghost" style="padding:5px 12px" data-act="delno" type="button">Non</button></div></div></div>`}).join("");
  el.querySelectorAll("[data-act]").forEach(b=>b.onclick=()=>{
   const card=b.closest(".nov-card"),id=+card.dataset.id,n=S.novenas.find(x=>x.id===id),a=b.dataset.act;if(!n)return;
   if(a==="share")shareNovenaObj(n);
@@ -1381,7 +1415,7 @@ function startNovena(id,reread){
 }
 function renderNovena(){
  const n=S.novenas.find(x=>x.id===NS.id),d=n.days[NS.idx];
- $("#stepsBar").innerHTML=`<div class="nov-candles">${n.progress.map(p=>candle(!!p)).join("")}</div>`;
+ $("#stepsBar").innerHTML=`<div class="nov-candles" role="img" aria-label="${n.progress.filter(Boolean).length} jours priés sur 9">${n.progress.map(p=>candle(!!p)).join("")}</div>`;
  $("#stage").innerHTML=`<p class="eyebrow">${esc(n.name)}</p><div class="icon">${(ICONS[n.img]||ICONS.croix).svg()}</div><h2>Jour ${NS.idx+1}${d.title?` · ${esc(d.title)}`:""}</h2>${n.intention?`<div class="nov-intent-box"><span class="eyebrow">Mon intention</span><br>${esc(n.intention)}</div>`:""}<p class="prayer">${esc(d.text)}</p>${n.daily?`<div class="divider">Prière de chaque jour</div><p class="prayer">${esc(n.daily)}</p>`:""}`;
  $("#sFoot").innerHTML=NS.reread?`<button class="btn block" id="novDone" type="button">Fermer</button>`:`<button class="btn block" id="novDone" type="button">Amen · J'ai prié le jour ${NS.idx+1}</button>`;
  $("#novDone").onclick=NS.reread?closeSession:finishNovenaDay;
@@ -1396,12 +1430,12 @@ function finishNovenaDay(){
  if(complete){n.completedAt=Date.now();if(!n.rewarded){n.rewarded=true;S.novenaCount=(S.novenaCount||0)+1;gains.push(["Neuvaine achevée",100])}}
  const r=recordPrayer(mins,gains);
  bell();setTimeout(()=>chime(880,.07),900);musicStop();try{wake&&wake.release()}catch(e){}
- $("#stepsBar").innerHTML=`<div class="nov-candles">${n.progress.map((p,i)=>candle(!!p,i===NS.idx?"light":"")).join("")}</div>`;
+ $("#stepsBar").innerHTML=`<div class="nov-candles" role="img" aria-label="${n.progress.filter(Boolean).length} jours priés sur 9">${n.progress.map((p,i)=>candle(!!p,i===NS.idx?"light":"")).join("")}</div>`;
  const nextTxt=complete?"Les neuf cierges sont allumés. Rends grâce pour ce que Dieu a fait et fera.":`Un cierge de plus est allumé. À demain pour le jour ${NS.idx+2}.`;
  $("#stage").innerHTML=rewardHTML(r,{eyebrow:esc(n.name),icon:(ICONS[n.img]||ICONS.croix).svg(),title:complete?"Neuvaine achevée":`Jour ${NS.idx+1} offert`,text:nextTxt});
  $("#sFoot").innerHTML=`<button class="btn block" id="doneBtn" type="button">Revenir aux neuvaines</button>`;
  $("#doneBtn").onclick=closeSession;$("#session").scrollTop=0;
- if(complete)syncReminders();
+ if(complete)syncReminders();NS.finished=true;
  renderAll();
 }
 
@@ -1598,7 +1632,7 @@ function advanceStreak(today){
  else if(S.lastDay===dayBefore()&&graceFree()&&S.streak>0){S.streak++;S.graceWeek=weekKey();grace=true}
  else S.streak=1;
  S.lastDay=today;S.bestStreak=Math.max(S.bestStreak,S.streak);return grace}
-const xpTxt=n=>S.hidePoints?"":` · +${n} XP`;
+const xpTxt=n=>S.hidePoints?"":` · +${n} pts`;
 function recordPrayer(mins,gains){
  const today=dayKey(),first=!S.days[today];
  gains.push([`${mins} min de prière`,mins*10]);
@@ -1612,7 +1646,7 @@ function recordPrayer(mins,gains){
  return{gains,total,fresh,grace,L,up:L.i>before}}
 function rewardHTML(r,o){
  const up=r.up&&!S.hidePoints;
- return `<p class="eyebrow">${o.eyebrow}</p><div class="icon">${o.icon}</div><h2>${up?`Nouveau degré : ${r.L.name}`:o.title}</h2>${o.text?`<p class="text">${o.text}</p>`:""}${up?`<p class="text"><em>${r.L.quote}</em></p>`:""}${r.grace?`<div class="newbadge">${BADGE_ICON.flame}<div><b class="ui" style="font-weight:500">Jour de grâce</b><br><span style="color:var(--mute);font-size:.95rem">Tu avais manqué un jour : ta série de ${S.streak} jours continue. Prochain jour de grâce lundi.</span></div></div>`:""}${S.hidePoints?"":`<div class="panel xp-list">${r.gains.map(g=>`<div><span>${g[0]}</span><b>+${g[1]}</b></div>`).join("")}<div class="xp-total"><span>Total</span><b>+${r.total} XP</b></div></div>`}${r.fresh.map(b=>`<div class="newbadge">${BADGE_ICON[b.i]}<div><b class="ui" style="font-weight:500">Médaille : ${b.n}</b><br><span style="color:var(--mute);font-size:.95rem">${b.d}</span></div></div>`).join("")}`}
+ return `<p class="eyebrow">${o.eyebrow}</p><div class="icon">${o.icon}</div><h2>${up?`Nouveau degré : ${r.L.name}`:o.title}</h2>${o.text?`<p class="text">${o.text}</p>`:""}${up?`<p class="text"><em>${r.L.quote}</em></p>`:""}${r.grace?`<div class="newbadge">${BADGE_ICON.flame}<div><b class="ui" style="font-weight:500">Jour de grâce</b><br><span style="color:var(--mute);font-size:.95rem">Tu avais manqué un jour : ta série de ${S.streak} jours continue. Prochain jour de grâce lundi.</span></div></div>`:""}${S.hidePoints?"":`<div class="panel xp-list">${r.gains.map(g=>`<div><span>${g[0]}</span><b>+${g[1]}</b></div>`).join("")}<div class="xp-total"><span>Total</span><b>+${r.total} pts</b></div></div>`}${r.fresh.map(b=>`<div class="newbadge">${BADGE_ICON[b.i]}<div><b class="ui" style="font-weight:500">Médaille : ${b.n}</b><br><span style="color:var(--mute);font-size:.95rem">${b.d}</span></div></div>`).join("")}`}
 function addWord(text,src){text=(text||"").trim();if(!text)return;S.words=S.words||[];S.words.push({text,src,at:Date.now()})}
 
 /* ---------- Prières guidées (chapelet, Angélus, examen, famille) ---------- */
@@ -1714,10 +1748,10 @@ const PRAISE=[
 const MUSIC_APPS={spotify:["Spotify",q=>`https://open.spotify.com/search/${encodeURIComponent(q)}`],youtube:["YouTube",q=>`https://www.youtube.com/results?search_query=${encodeURIComponent(q)}`],deezer:["Deezer",q=>`https://www.deezer.com/search/${encodeURIComponent(q)}`]};
 function praiseListHTML(){
  const app=S.musicApp||"spotify",mk=MUSIC_APPS[app];
- const mine=(S.myLinks||[]).map((l,i)=>`<div class="praise-row"><div style="min-width:0"><b>${esc(l.name)}</b><small>Mon lien</small></div><a class="chipbtn" href="${esc(l.url)}" target="_blank" rel="noopener" data-out>Écouter ↗</a><button class="small-link" type="button" data-dellink="${i}" aria-label="Retirer ${esc(l.name)}">✕</button></div>`).join("");
+ const mine=(S.myLinks||[]).map((l,i)=>`<div class="praise-row"><div style="min-width:0"><b>${esc(l.name)}</b><small>Mon lien</small></div><a class="chipbtn" href="${esc(l.url)}" target="_blank" rel="noopener" data-out aria-label="Écouter ${esc(l.name)} (ouvre une autre application)">Écouter ↗</a><button class="small-link" type="button" data-dellink="${i}" aria-label="Retirer ${esc(l.name)}">✕</button></div>`).join("");
  return `<div class="tones" id="appPick" style="justify-content:center">${Object.entries(MUSIC_APPS).map(([k,v])=>`<button type="button" aria-pressed="${app===k}" data-app="${k}" style="--c:var(--gold)">${v[0]}</button>`).join("")}</div>
- <div class="praise-list">${mine}${PRAISE.map(p=>`<div class="praise-row"><div style="min-width:0"><b>${p.n}</b><small>${p.d}</small></div><a class="chipbtn" href="${mk[1](p.q)}" target="_blank" rel="noopener" data-out>Écouter ↗</a></div>`).join("")}</div>
- <details class="addlink"><summary class="ui">+ Ajouter ma playlist ou mon chant</summary><div class="field" style="margin-top:10px"><input type="text" id="lkName" placeholder="Nom, par exemple « Ma louange du matin »"><input type="text" id="lkUrl" inputmode="url" placeholder="Lien Spotify, YouTube ou Deezer (https://…)"><button class="btn ghost" type="button" id="lkAdd" style="padding:8px 16px">Ajouter</button></div></details>
+ <div class="praise-list">${mine}${PRAISE.map(p=>`<div class="praise-row"><div style="min-width:0"><b>${p.n}</b><small>${p.d}</small></div><a class="chipbtn" href="${mk[1](p.q)}" target="_blank" rel="noopener" data-out aria-label="Écouter ${p.n} sur ${mk[0]} (ouvre une autre application)">Écouter ↗</a></div>`).join("")}</div>
+ <details class="addlink"><summary class="ui">+ Ajouter ma playlist ou mon chant</summary><div class="field" style="margin-top:10px"><input type="text" id="lkName" aria-label="Nom du lien" placeholder="Nom, par exemple « Ma louange du matin »"><input type="text" id="lkUrl" aria-label="Adresse du lien" inputmode="url" placeholder="Lien Spotify, YouTube ou Deezer (https://…)"><button class="btn ghost" type="button" id="lkAdd" style="padding:8px 16px">Ajouter</button></div></details>
  <p class="hint" style="text-align:center">Le chant s'ouvre dans ton application de musique. Reviens ici quand il est fini.</p>`}
 function bindPraise(){
  const st=$("#stage");
@@ -1850,7 +1884,8 @@ const REM_DEF={daily:{on:false,t:"07:30"},novena:{on:false,t:"20:30"},angelus:{o
 const REM_LBL={daily:["Prière avec Jésus","Un rappel doux chaque jour"],novena:["Neuvaine en cours","Seulement s'il y a une neuvaine en cours"],angelus:["Angélus","Chaque jour à midi"],examen:["Examen du soir","Relire la journée avant de dormir"],saint:["Fête de mon saint patron","Le matin de sa fête"],angeMatin:["Ange gardien, le matin","Lui confier la journée"],angeSoir:["Ange gardien, le soir","Lui confier la nuit"]};
 function LN(){try{const C=window.Capacitor;return C&&C.isNativePlatform&&C.isNativePlatform()&&C.Plugins&&C.Plugins.LocalNotifications}catch(e){return null}}
 const FONDS=[["nuit","Bleu nuit","#0e1a36"],["bordeaux","Bordeaux","#2b0f19"],["foret","Forêt","#0e2a22"],["prune","Prune","#221433"],["canard","Bleu canard","#0a2a35"],["encre","Encre","#14130f"],["parchemin","Parchemin (clair)","#f1e7d0"]];
-function applyFond(){const f=FONDS.some(x=>x[0]===S.fond)?S.fond:"nuit";if(f==="nuit")document.documentElement.removeAttribute("data-fond");else document.documentElement.setAttribute("data-fond",f)}
+function applyCalme(){if(S.calme)document.documentElement.setAttribute("data-calme","");else document.documentElement.removeAttribute("data-calme")}
+function applyFond(){applyCalme();const f=FONDS.some(x=>x[0]===S.fond)?S.fond:"nuit";if(f==="nuit")document.documentElement.removeAttribute("data-fond");else document.documentElement.setAttribute("data-fond",f)}
 function renderSettings(){
  $("#fondPick").innerHTML=FONDS.map(([k,n,c])=>`<button type="button" aria-pressed="${(S.fond||"nuit")===k}" data-f="${k}" style="--c:${c}"><i></i>${n}</button>`).join("");
  $("#fondPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.fond=b.dataset.f;save();applyFond();renderSettings()});
@@ -1860,7 +1895,7 @@ function renderSettings(){
  $("#saintPick").innerHTML=SAINTS.map(x=>`<button type="button" aria-pressed="${S.saint===x.k}" data-s="${x.k}">${ICONS[x.icon].svg()}<span>${x.n.replace(/^(Saint|Sainte) /,"").replace("La Vierge Marie","Vierge Marie")}</span></button>`).join("");
  $("#saintPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.saint=S.saint===b.dataset.s?null:b.dataset.s;save();renderSettings();syncReminders();renderToday()});
  const ms=getSaint();$("#saintInfo").innerHTML=ms?`<b style="font-family:var(--f-display);font-weight:500;color:var(--gold)">${esc(ms.n)}</b>${ms.f?` · fête le ${feastInfo(ms.f).label}`:""}<br><span style="color:var(--mute)">${ms.bio}</span>`:"Aucun saint choisi pour l'instant.";
- $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);
+ $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);$("#calmeSw").setAttribute("aria-checked",!!S.calme);
  const cm=$("#csMonth");if(cm.options.length<2)MOIS.forEach((m,i)=>cm.add(new Option(m,i+1)));
  if(S.customSaint&&!$("#csName").value){$("#csName").value=S.customSaint.n||"";$("#csPrayer").value=S.customSaint.p||"";if(S.customSaint.f){const [mm,dd]=S.customSaint.f.split("-").map(Number);$("#csDay").value=dd;cm.value=mm}}
  if(!LN())$("#notifNote").textContent="Les rappels s'activent dans l'application installée sur le téléphone. Ici, tes choix sont enregistrés.";
@@ -1978,7 +2013,12 @@ $("#musicToggle").onclick=()=>{S.music=!S.music;save();renderHome()};
 $("#newVerse").onclick=showVerse;
 $("#gallery").onclick=()=>{gi=(gi+1)%GALLERY.length;renderGallery()};
 $("#sMusic").onclick=()=>{A.on?musicStop():musicStart();updMusicBtn()};
-$("#quitBtn").onclick=()=>{if(!SS)return closeSession();$("#quitConfirm").hidden=false};
+$("#quitBtn").onclick=()=>{
+ const cur=SS||FL||NS;if(!cur||cur.finished||(NS&&NS.reread))return closeSession();
+ $("#quitMsg").textContent=SS?"Arrêter maintenant ? Le temps déjà prié sera compté.":"Arrêter maintenant ? Cette prière ne sera pas comptée.";
+ $("#quitYes").textContent=SS?"Terminer":"Arrêter";$("#quitConfirm").hidden=false;$("#quitNo").focus()};
+$("#restorePick").onclick=()=>$("#restoreFile").click();
+$("#calmeSw").onclick=()=>{S.calme=!S.calme;save();applyCalme();renderSettings()};
 document.querySelectorAll("[data-flow]").forEach(b=>b.onclick=()=>startFlow(b.dataset.flow));
 document.querySelectorAll("[data-icon]").forEach(el=>el.innerHTML=ICONS[el.dataset.icon].svg());
 $("#gearBtn").onclick=()=>show("settings");
@@ -2007,13 +2047,30 @@ $("#novTplIns").onclick=()=>{$("#novText").value=NOV_TEMPLATE;checkNovText()};
 $("#novEx").onclick=()=>{$("#novText").value=NOV_EXAMPLE;delete $("#novName").dataset.touched;NF.img="coeur";NF.tone="#d9ad55";checkNovText();renderNovForm()};
 $("#novTplCopy").onclick=()=>{const done=()=>toast("Modèle copié : remplis-le puis colle-le ici");try{navigator.clipboard.writeText(NOV_TEMPLATE).then(done).catch(()=>{$("#novText").value=NOV_TEMPLATE;checkNovText();toast("Modèle inséré dans le champ")})}catch(e){$("#novText").value=NOV_TEMPLATE;checkNovText();toast("Modèle inséré dans le champ")}};
 $("#quitNo").onclick=()=>$("#quitConfirm").hidden=true;
-$("#quitYes").onclick=()=>{$("#quitConfirm").hidden=true;finishSession(true)};
+$("#quitYes").onclick=()=>{$("#quitConfirm").hidden=true;if(SS&&!SS.finished)finishSession(true);else closeSession()};
 $("#intentAdd").onclick=()=>{if(addIntention($("#intentInput").value)){$("#intentInput").value="";toast("Intention confiée à Jésus"+xpTxt(15));renderJournal();renderHeader()}};
 $("#resetBtn").onclick=()=>{$("#resetBtn").hidden=true;$("#resetConfirm").hidden=false};
 $("#resetNo").onclick=()=>{$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true};
 $("#resetYes").onclick=()=>{S=blank();save();$("#resetBtn").hidden=false;$("#resetConfirm").hidden=true;renderAll();renderProgress();toast("Progression remise à zéro")};
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&SS&&navigator.wakeLock){navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}});
 function renderAll(){applyFond();renderHeader();renderHome();renderToday()}
+/* ---------- Accessibilité ---------- */
+document.documentElement.lang="fr";
+(function(){
+ const ses=$("#session"),sil=$("#silence"),box=$("#shareBox"),main=document.querySelector("main"),nav=document.querySelector("nav.tabs");
+ let lastFocus=null;
+ const sync=()=>{const sOpen=!ses.hidden,top=!sil.hidden||!box.hidden;
+  main.inert=sOpen||top;nav.inert=sOpen||top;ses.inert=top;if(!box.hidden)sil.inert=true;else sil.inert=false;
+  if(!box.hidden)$("#sbCopy").focus({preventScroll:true});else if(!sil.hidden)$("#silEnd").focus({preventScroll:true})};
+ new MutationObserver(sync).observe(document.body,{attributes:true,attributeFilter:["hidden"],subtree:true});
+ /* les images dessinées sont décoratives : le sens est toujours dans le texte voisin */
+ const hide=root=>root.querySelectorAll&&root.querySelectorAll("svg:not([role])").forEach(v=>{v.setAttribute("aria-hidden","true");v.setAttribute("focusable","false")});
+ hide(document);new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1){if(n.tagName==="svg"&&!n.hasAttribute("role"))n.setAttribute("aria-hidden","true");hide(n)}}))).observe(document.body,{childList:true,subtree:true});
+ /* le bouton principal d'une étape reprend le focus quand l'étape change */
+ new MutationObserver(()=>{if(ses.hidden||ses.inert)return;const a=document.activeElement;if(!a||!a.isConnected||!ses.contains(a)){const b=$("#sFoot .btn");if(b)b.focus({preventScroll:true})}}).observe($("#sFoot"),{childList:true});
+ document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;
+  if(!box.hidden){box.hidden=true}else if(!sil.hidden){sil.click()}else if(!ses.hidden){$("#quitBtn").click()}});
+})();
 renderAll();showVerse();renderGallery();initNative();
 </script>
 

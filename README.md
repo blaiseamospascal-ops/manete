@@ -21,6 +21,10 @@ Application de prière catholique **gratuite, sans publicité, sans compte et sa
 
 L'app n'a pas de serveur. Elle n'envoie rien, à personne : pas d'analytics, pas de publicité, pas de compte. Les polices sont intégrées, sans Google Fonts. Voir [PRIVACY.md](PRIVACY.md).
 
+## Accessibilité
+
+L'app vise WCAG 2.2 niveau AA. Voir [ACCESSIBILITE.md](ACCESSIBILITE.md) pour l'évaluation et ses limites.
+
 ## Structure
 
 | Dossier | Contenu |
