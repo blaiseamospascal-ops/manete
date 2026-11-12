@@ -34,7 +34,7 @@ const CATALOGUE = [
   { id: "latour", must: "Tour", title: "Le Nouveau-né", artist: "Georges de La Tour", date: "vers 1648", desc: "Marie contemple l'Enfant, à la lumière d'une bougie.", q: "Georges de La Tour The New-born Child Rennes" },
   { id: "transfiguration", must: "Angelico", title: "La Transfiguration", artist: "Fra Angelico", date: "vers 1440", desc: "« Il est bon que nous soyons ici. » (Mt 17,4)", q: "Fra Angelico Transfiguration San Marco" },
   { id: "pentecote", must: "Greco", title: "La Pentecôte", artist: "Le Greco", date: "vers 1600", desc: "« Ils furent tous remplis du Saint-Esprit. » (Ac 2,4)", q: "El Greco Pentecost Prado" },
-  { id: "agneau", must: "Eyck|Lamgods|Ghent Altarpiece", file: "File:Lamgods open.jpg", title: "L'Adoration de l'Agneau mystique", artist: "Jan et Hubert van Eyck", date: "1432", desc: "Le chef-d'œuvre de la cathédrale Saint-Bavon, à Gand.", q: "Ghent Altarpiece Adoration of the Mystic Lamb central panel" },
+  { id: "agneau", must: "Lamb|Lam ?Gods|Agneau", not: "open|closed|ferm|\\bAdam\\b|\\bEve\\b|polyptych|detail", title: "L'Adoration de l'Agneau mystique", artist: "Jan et Hubert van Eyck", date: "1432", desc: "Le chef-d'œuvre de la cathédrale Saint-Bavon, à Gand.", q: "Ghent Altarpiece Adoration of the Mystic Lamb central panel" },
   { id: "descente", must: "Weyden", title: "La Descente de croix", artist: "Rogier van der Weyden", date: "vers 1435", desc: "Le peintre de Tournai et Bruxelles, au sommet de son art.", q: "Rogier van der Weyden Descent from the Cross Prado" },
   // Marie
   { id: "memling", must: "Memling", title: "La Vierge et l'Enfant", artist: "Hans Memling", date: "vers 1480", desc: "Un maître de Bruges.", q: "Hans Memling Virgin and Child" },
