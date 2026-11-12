@@ -56,23 +56,6 @@ L'app vise WCAG 2.2 niveau AA. Voir [ACCESSIBILITE.md](ACCESSIBILITE.md) pour l'
 | `docs/` | Version web installable (GitHub Pages) et page de confidentialité. Générée par `npm run web` |
 | `scripts/` | Génération de la version web et des données du widget |
 
-## Lancer et compiler
-
-```bash
-npm install
-npm run android        # synchronise puis ouvre Android Studio
-```
-
-Après une modification de `www/index.html`, lancer `npm run sync` : il régénère les données du widget, la version web dans `docs/`, puis synchronise Android.
-
-## Version web (GitHub Pages)
-
-1. Pousse le dépôt sur GitHub, puis **Settings › Pages** : branche `main`, dossier `/docs`.
-2. L'app est alors en ligne sur `https://<ton-compte>.github.io/<depot>/`. Elle fonctionne hors ligne et s'installe sur l'écran d'accueil (Android : menu ⋮ › Installer ; iPhone : Partager › Sur l'écran d'accueil).
-3. La politique de confidentialité est à `…/confidentialite.html` : c'est l'adresse à donner à Google Play.
-4. Les boutons « Partager » ajoutent automatiquement l'adresse du site.
-
-La version web n'a pas les rappels ni le widget, qui demandent l'app Android. Pour publier sur Google Play, voir [PUBLIER-PLAY-STORE.md](PUBLIER-PLAY-STORE.md).
 
 ## Licences
 
