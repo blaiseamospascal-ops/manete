@@ -18,6 +18,13 @@ Les images que tu ajoutes (pour ton saint patron ou une neuvaine) sont réduites
 
 Ce que tu coches pendant la préparation à la confession n'est **jamais enregistré** : tout s'efface à la fin.
 
+## Fonctions du téléphone
+
+- **Vibrations** : aucune autorisation sensible, aucune donnée.
+- **Lecture à voix haute** : le texte est lu par la synthèse vocale installée sur ton téléphone. L'app n'envoie rien elle-même ; le fonctionnement de cette voix dépend des réglages de ton téléphone.
+- **Verrou du carnet** : la vérification de l'empreinte ou du visage est faite par Android. L'app reçoit seulement « oui » ou « non » et n'a jamais accès à tes données biométriques.
+- **Sauvegarde automatique d'Android** : désactivée. Tes données ne sont pas copiées vers ton compte Google.
+
 ## Sauvegarde
 
 Le bouton « Exporter une sauvegarde » crée un fichier sur ton téléphone. C'est toi qui choisis où l'envoyer (Drive, email, autre). L'app ne l'envoie nulle part d'elle-même.

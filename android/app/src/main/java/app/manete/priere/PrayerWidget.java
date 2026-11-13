@@ -3,9 +3,11 @@ package app.manete.priere;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import org.json.JSONArray;
@@ -23,6 +25,7 @@ import java.util.Locale;
  * et un bouton « 1 minute avec Jésus » qui ouvre la prière express.
  * Les données viennent de assets/widget_data.json (généré par scripts/widget-data.mjs) :
  * le widget reste juste même si l'app n'est pas ouverte.
+ * La neuvaine en cours et la série de jours viennent de l'app (plugin Preferences, clé « widget »).
  */
 public class PrayerWidget extends AppWidgetProvider {
 
@@ -30,6 +33,51 @@ public class PrayerWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager manager, int[] ids) {
         for (int id : ids) {
             update(context, manager, id);
+        }
+    }
+
+    /** Met à jour tous les widgets posés sur l'écran d'accueil (appelé quand l'app passe en arrière-plan). */
+    static void refreshAll(Context context) {
+        try {
+            AppWidgetManager manager = AppWidgetManager.getInstance(context);
+            int[] ids = manager.getAppWidgetIds(new ComponentName(context, PrayerWidget.class));
+            for (int id : ids) {
+                update(context, manager, id);
+            }
+        } catch (Exception ignored) {
+        }
+    }
+
+    /** Ligne d'état : « Neuvaine · jour 4 sur 9 » et « 5 jours d'affilée ». Vide si rien à montrer. */
+    private static String statusLine(Context context, Calendar now) {
+        try {
+            String raw = context.getSharedPreferences("CapacitorStorage", Context.MODE_PRIVATE).getString("widget", null);
+            if (raw == null) {
+                return "";
+            }
+            JSONObject st = new JSONObject(raw);
+            StringBuilder sb = new StringBuilder();
+            String novena = st.optString("novena", "");
+            int day = st.optInt("day", 0);
+            if (!novena.isEmpty() && day > 0) {
+                sb.append(novena).append(" · jour ").append(day).append(" sur 9");
+            }
+            int streak = st.optInt("streak", 0);
+            String last = st.optString("lastDay", "");
+            if (!st.optBoolean("hide", false) && streak > 1 && !last.isEmpty()) {
+                SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+                Calendar y = (Calendar) now.clone();
+                y.add(Calendar.DAY_OF_YEAR, -1);
+                if (last.equals(f.format(now.getTime())) || last.equals(f.format(y.getTime()))) {
+                    if (sb.length() > 0) {
+                        sb.append(" · ");
+                    }
+                    sb.append(streak).append(" jours d'affilée");
+                }
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            return "";
         }
     }
 
@@ -77,6 +125,9 @@ public class PrayerWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_saint, saint);
         views.setTextViewText(R.id.widget_verse, "« " + verse + " »");
         views.setTextViewText(R.id.widget_ref, ref);
+        String status = statusLine(context, now);
+        views.setTextViewText(R.id.widget_status, status);
+        views.setViewVisibility(R.id.widget_status, status.isEmpty() ? View.GONE : View.VISIBLE);
 
         int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 

@@ -38,6 +38,17 @@
         android:fontFamily="serif"
         android:ellipsize="end" />
 
+    <TextView
+        android:id="@+id/widget_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#A9A68F"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

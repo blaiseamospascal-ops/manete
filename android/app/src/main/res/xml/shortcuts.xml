@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="express"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_express"
+        android:shortcutShortLabel="@string/sc_express_short"
+        android:shortcutLongLabel="@string/sc_express_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.manete.priere"
+            android:targetClass="app.manete.priere.MainActivity"
+            android:data="manete://express" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="chapelet"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_chapelet"
+        android:shortcutShortLabel="@string/sc_chapelet_short"
+        android:shortcutLongLabel="@string/sc_chapelet_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.manete.priere"
+            android:targetClass="app.manete.priere.MainActivity"
+            android:data="manete://chapelet" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="angelus"
+        android:enabled="true"
+        android:icon="@drawable/ic_sc_angelus"
+        android:shortcutShortLabel="@string/sc_angelus_short"
+        android:shortcutLongLabel="@string/sc_angelus_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="app.manete.priere"
+            android:targetClass="app.manete.priere.MainActivity"
+            android:data="manete://angelus" />
+    </shortcut>
+</shortcuts>

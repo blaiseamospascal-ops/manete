@@ -5,5 +5,11 @@
     <string name="package_name">app.manete.priere</string>
     <string name="custom_url_scheme">app.manete.priere</string>
     <string name="widget_button">1 minute avec Jésus</string>
-    <string name="widget_description">Le saint et la parole du jour, et une prière d'une minute</string>
+    <string name="widget_description">Le saint et la parole du jour, et une prière d\'une minute</string>
+    <string name="sc_express_short">1 minute</string>
+    <string name="sc_express_long">1 minute avec Jésus</string>
+    <string name="sc_chapelet_short">Chapelet</string>
+    <string name="sc_chapelet_long">Prier le chapelet</string>
+    <string name="sc_angelus_short">Angélus</string>
+    <string name="sc_angelus_long">Prier l\'Angélus</string>
 </resources>

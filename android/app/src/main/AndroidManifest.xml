@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -19,12 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Lien manete://express (bouton du widget) -->
+            <!-- Raccourcis de l'icône (appui long) -->
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+
+            <!-- Liens manete://express, manete://chapelet, manete://angelus (widget et raccourcis) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="manete" android:host="express" />
+                <data android:scheme="manete" />
             </intent-filter>
         </activity>
 
@@ -53,6 +57,17 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Vibrations pendant le chapelet et à la fin du silence -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Verrou du carnet par empreinte ou visage -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Rappels : pas besoin d'alarmes exactes (évite la déclaration Play « Exact alarm ») -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" tools:node="remove" />
+
+    <!-- Lecture à voix haute : voir le moteur de synthèse vocale du téléphone (Android 11+) -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
 </manifest>
