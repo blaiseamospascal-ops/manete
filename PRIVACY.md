@@ -10,6 +10,14 @@ Manete ne collecte, ne transmet et ne vend **aucune donnée**. L'app ne demande 
 
 Tes intentions, ton carnet, tes neuvaines, ta progression et tes réglages sont enregistrés **uniquement sur ton téléphone**, dans le stockage local de l'app. Personne d'autre n'y a accès, pas même les auteurs de l'app. Si tu désinstalles l'app, ces données sont effacées.
 
+## Tes images
+
+Les images que tu ajoutes (pour ton saint patron ou une neuvaine) sont réduites puis enregistrées **uniquement sur ton téléphone**, comme le reste de tes données. Elles ne sont envoyées nulle part.
+
+## Examen de conscience
+
+Ce que tu coches pendant la préparation à la confession n'est **jamais enregistré** : tout s'efface à la fin.
+
 ## Sauvegarde
 
 Le bouton « Exporter une sauvegarde » crée un fichier sur ton téléphone. C'est toi qui choisis où l'envoyer (Drive, email, autre). L'app ne l'envoie nulle part d'elle-même.
@@ -20,7 +28,7 @@ Les rappels sont des notifications **locales**, programmées sur le téléphone.
 
 ## Liens externes
 
-Certains liens ouvrent un autre site ou service, seulement quand tu les touches : AELF (lectures et Bible), Nominis (saints du jour), Hozana, Egliseinfo.be, Messes.info, Cathobel, la recherche d'un chant sur Spotify, YouTube ou Deezer, ou la fiche de l'app sur Google Play. Les images saintes sont enregistrées dans l'app : les afficher ne contacte aucun site. Ces services ont leur propre politique de confidentialité. L'app ne leur transmet aucune information sur toi.
+Certains liens ouvrent un autre site ou service, seulement quand tu les touches : AELF (lectures et Bible), Nominis (saints du jour), Hozana, Egliseinfo.be, Messes.info, Cathobel, le site du Vatican, la fiche de l'app YouPray, la recherche d'un chant sur Spotify, YouTube ou Deezer, ou la fiche de l'app sur Google Play. Les images saintes sont enregistrées dans l'app : les afficher ne contacte aucun site. Ces services ont leur propre politique de confidentialité. L'app ne leur transmet aucune information sur toi.
 
 ## Partage
 
