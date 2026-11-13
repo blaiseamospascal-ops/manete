@@ -8,6 +8,7 @@ mkdirSync(u("docs/icons"), { recursive: true });
 writeFileSync(u("docs/index.html"), html);
 for (const f of ["icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png"]) copyFileSync(u("assets/web/" + f), u("docs/icons/" + f));
 if (existsSync(u("www/images"))) cpSync(u("www/images"), u("docs/images"), { recursive: true });
+if (existsSync(u("www/sounds"))) cpSync(u("www/sounds"), u("docs/sounds"), { recursive: true });
 const version = new Date().toISOString().slice(0, 19).replace(/\D/g, "");
 writeFileSync(u("docs/sw.js"), readFileSync(u("scripts/sw-template.js"), "utf8").replace("__VERSION__", version));
 writeFileSync(u("docs/manifest.webmanifest"), JSON.stringify({

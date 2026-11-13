@@ -926,9 +926,22 @@ function audioInit(){
  A.rev=A.ctx.createConvolver();const len=A.ctx.sampleRate*5,buf=A.ctx.createBuffer(2,len,A.ctx.sampleRate);
  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)}
  A.rev.buffer=buf;const wet=A.ctx.createGain();wet.gain.value=.7;A.rev.connect(wet);wet.connect(A.master);
+ sndLoad(S.son||"cloche");sndLoad("musique");
 }
+/* Sons enregistrés (sounds/*.mp3) : timbres clairs, audibles sur un petit haut-parleur. Sans eux, l'app garde ses sons de synthèse. */
+const SND={buf:{},loading:{}};
+function sndLoad(k){if(SND.buf[k])return Promise.resolve(SND.buf[k]);if(SND.loading[k])return SND.loading[k];
+ if(!A.ctx||(location.protocol==="file:"&&!nativeApp()))return Promise.resolve(null);
+ SND.loading[k]=fetch(`sounds/${k}.mp3`).then(r=>r.ok?r.arrayBuffer():null).then(ab=>ab?new Promise(res=>{try{A.ctx.decodeAudioData(ab,res,()=>res(null))}catch(e){res(null)}}):null).then(b=>{SND.buf[k]=b||null;if(!b)delete SND.loading[k];return b}).catch(()=>{delete SND.loading[k];return null});
+ return SND.loading[k]}
+function playBuf(b,vol){const s=A.ctx.createBufferSource(),g=A.ctx.createGain();g.gain.value=vol;s.buffer=b;s.connect(g);g.connect(A.ctx.destination);s.start();return s}
 function musicStart(){
  audioInit();if(!A.ctx||A.on)return;A.ctx.resume();A.on=true;
+ const go=b=>{if(!A.on)return;if(b){const t=A.ctx.currentTime,src=A.ctx.createBufferSource();src.buffer=b;src.loop=true;src.loopStart=1;src.loopEnd=Math.min(65,b.duration-.05);src.connect(A.master);src.start(t,1);A.nodes.push(src);
+   A.master.gain.cancelScheduledValues(t);A.master.gain.setValueAtTime(A.master.gain.value,t);A.master.gain.linearRampToValueAtTime(.9,t+4)}else synthMusic()};
+ if(SND.buf.musique)go(SND.buf.musique);else sndLoad("musique").then(go);
+}
+function synthMusic(){
  const t=A.ctx.currentTime;
  const lp=A.ctx.createBiquadFilter();lp.type="lowpass";lp.frequency.value=900;lp.connect(A.master);lp.connect(A.rev);
  [[73.42,.10],[110,.07],[146.83,.06],[220,.03],[293.66,.02]].forEach(([f,g],k)=>{
@@ -955,7 +968,11 @@ function chime(f,vol){
  o.connect(g);g.connect(A.rev);g.connect(A.master);o.start(t);o.stop(t+4.2);
 }
 function bell(){
- audioInit();if(!A.ctx)return;A.ctx.resume();const t=A.ctx.currentTime;
+ audioInit();if(!A.ctx)return;A.ctx.resume();const k=S.son||"cloche",t0=Date.now();
+ if(SND.buf[k]){playBuf(SND.buf[k],.95);return}
+ sndLoad(k).then(b=>{if(b&&Date.now()-t0<1500)playBuf(b,.95);else synthBell()})}
+function synthBell(){
+ const t=A.ctx.currentTime;
  const out=A.ctx.createGain();out.gain.value=1;out.connect(A.ctx.destination);out.connect(A.rev);
  if(!A.on){A.master.gain.cancelScheduledValues(t);A.master.gain.setValueAtTime(.6,t)}
  if(S.son==="gong"){sonGong(t,out);return}
@@ -2728,7 +2745,7 @@ async function syncReminders(){
   const pend=await ln.getPending();if(pend.notifications.length)await ln.cancel({notifications:pend.notifications.map(n=>({id:n.id}))});
   if(!any){if(note)note.textContent="Aucun rappel actif.";return}
   const perm=await ln.requestPermissions();if(perm.display!=="granted"){if(note)note.textContent="Autorise les notifications de Manete dans les réglages du téléphone.";return}
-  const list=[],at=(id,t,title,body,extra={})=>{const [h,m]=t.split(":").map(Number);list.push(Object.assign({id,title,body,schedule:{on:Object.assign({hour:h,minute:m},extra),allowWhileIdle:true},actionTypeId:"PRAY",extra:{kind:id}},id===3?{channelId:"angelus"}:{}))};
+  const list=[],at=(id,t,title,body,extra={})=>{const [h,m]=t.split(":").map(Number);list.push(Object.assign({id,title,body,schedule:{on:Object.assign({hour:h,minute:m},extra),allowWhileIdle:true},isExactNotification:false,actionTypeId:"PRAY",extra:{kind:id}},id===3?{channelId:"angelus"}:{}))};
   if(R.daily.on)at(1,R.daily.t,"Manete","Jésus t'attend. Quelques minutes avec lui ?");
   const nv=S.novenas.find(n=>!n.completedAt);if(R.novena.on&&nv)at(2,R.novena.t,"Ta neuvaine",`C'est le moment de prier : ${nv.name}`);
   if(R.angelus.on)at(3,"12:00","Angélus","L'ange du Seigneur apporta l'annonce à Marie…");
@@ -2736,7 +2753,7 @@ async function syncReminders(){
   if(R.angeMatin.on)at(6,R.angeMatin.t,"Ange de Dieu","Confie ta journée à ton ange gardien.");
   if(R.angeSoir.on)at(7,R.angeSoir.t,"Ange de Dieu","Confie ta nuit à ton ange gardien.");
   const ms=getSaint();if(R.saint.on&&ms&&ms.f){const [mo,da]=ms.f.split("-").map(Number);at(5,"09:00",`Fête de ${ms.n}`,ms.inv,{month:mo,day:da})}
-  const sz=S.snooze;if(sz&&sz.at>Date.now()+5000)list.push({id:90+sz.k,title:sz.title,body:sz.body,schedule:{at:new Date(sz.at),allowWhileIdle:true},actionTypeId:"PRAY",extra:{kind:sz.k}});else if(sz){S.snooze=null;save()}
+  const sz=S.snooze;if(sz&&sz.at>Date.now()+5000)list.push({id:90+sz.k,title:sz.title,body:sz.body,schedule:{at:new Date(sz.at),allowWhileIdle:true},isExactNotification:false,actionTypeId:"PRAY",extra:{kind:sz.k}});else if(sz){S.snooze=null;save()}
   try{await ln.registerActionTypes({types:[{id:"PRAY",actions:[{id:"now",title:"Prier maintenant"},{id:"later",title:"Dans 1 heure"}]}]})}catch(e){}
   try{await ln.createChannel({id:"angelus",name:"Angélus",description:"La cloche de l'Angélus, à midi",importance:4,visibility:1,sound:"angelus.wav"})}catch(e){}
   if(list.length)await ln.schedule({notifications:list});
@@ -3034,7 +3051,7 @@ PAUSABLE.push("chante");Object.assign(FLOW_NAMES,{chante:"Chanter et danser"});
 
 /* ---------- Téléphone : vibrations, lecture à voix haute, verrou du carnet, bouton retour ---------- */
 function haptic(kind){if(S.vib===false)return;const H=plug("Haptics"),pat={grain:18,dizaine:[60,80,60],fin:[120,100,120,100,260]}[kind]||18;
- try{if(nativeApp()&&H){if(kind==="grain")H.impact({style:"LIGHT"});else if(kind==="dizaine")H.impact({style:"HEAVY"});else{H.vibrate({duration:140});setTimeout(()=>H.vibrate({duration:300}),260)}}
+ try{if(nativeApp()&&H){if(kind==="grain")H.vibrate({duration:30});else if(kind==="dizaine")H.vibrate({duration:110});else{H.vibrate({duration:140});setTimeout(()=>H.vibrate({duration:300}),260)}}
   else if(navigator.vibrate)navigator.vibrate(pat)}catch(e){}}
 
 const TTS={on:false,token:0};
