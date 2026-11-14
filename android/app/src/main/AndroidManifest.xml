@@ -59,6 +59,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Vibrations pendant le chapelet et à la fin du silence -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Micro : seulement pour enregistrer les voix du petit bonhomme, gardées sur le téléphone -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- Verrou du carnet par empreinte ou visage -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Rappels : pas besoin d'alarmes exactes (évite la déclaration Play « Exact alarm ») -->
