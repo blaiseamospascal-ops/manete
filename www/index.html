@@ -412,7 +412,6 @@ details.autres p{margin:4px 0 2px;font-size:.92rem;color:var(--parchment)}
       <div class="litu" id="litu"></div>
       <div class="panel side-card" id="resumeCard" hidden></div>
       <div class="panel side-card" id="novSuggest" hidden></div>
-      <div class="panel side-card" id="fetesCard" hidden></div>
       <div class="hero">
         <div class="icon" id="heroIcon"></div>
         <p class="eyebrow" id="greet">Bonsoir</p>
@@ -639,7 +638,6 @@ details.autres p{margin:4px 0 2px;font-size:.92rem;color:var(--parchment)}
         <div class="setrow" id="voixRow" hidden><div class="lab"><b>Voix du petit bonhomme</b><small>Quelques mots d'encouragement à la fin d'une prière</small></div><button class="switch" role="switch" type="button" id="voixSw" aria-checked="true" aria-label="Voix du petit bonhomme"></button></div>
         <span class="eyebrow">Sonnerie de fin</span>
         <div class="fonds" id="sonPick"></div>
-        <div class="setrow" id="fetesRow" hidden><div class="lab"><b>Fêtes de mes contacts</b><small>Manete regarde les prénoms de tes contacts, sur ce téléphone uniquement, et te signale le matin ceux dont c'est la fête. Rien n'est enregistré ni envoyé.</small></div><button class="switch" role="switch" type="button" id="fetesSw" aria-checked="false" aria-label="Fêtes de mes contacts"></button></div>
         <div class="setrow" id="lockRow" hidden><div class="lab"><b>Verrouiller mon carnet</b><small id="lockNote"></small></div><button class="switch" role="switch" type="button" id="lockSw" aria-checked="false" aria-label="Verrouiller mon carnet"></button></div>
         <div class="setrow"><div class="lab"><b>Réduire les animations</b><small>Flammes fixes, pas de fondus ni de cercle qui respire</small></div><button class="switch" role="switch" type="button" id="calmeSw" aria-checked="false" aria-label="Réduire les animations"></button></div>
       </div>
@@ -3172,7 +3170,7 @@ function renderSettings(){
  $("#saintPick").innerHTML=SAINTS.map(x=>`<button type="button" aria-pressed="${S.saint===x.k}" data-s="${x.k}">${ICONS[x.icon].svg()}<span>${x.n.replace(/^(Saint|Sainte) /,"").replace("La Vierge Marie","Vierge Marie")}</span></button>`).join("");
  $("#saintPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.saint=S.saint===b.dataset.s?null:b.dataset.s;save();renderSettings();syncReminders();renderToday()});
  const ms=getSaint();$("#saintInfo").innerHTML=ms?`<b style="font-family:var(--f-display);font-weight:500;color:var(--gold)">${esc(ms.n)}</b>${ms.f?` · fête le ${feastInfo(ms.f).label}`:""}<br><span style="color:var(--mute)">${ms.bio}</span>`:"Aucun saint choisi pour l'instant.";
- $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);$("#buddySw").setAttribute("aria-checked",S.buddy!==false);$("#dictSw").setAttribute("aria-checked",S.dictate!==false);renderArtCredits();renderMySaintArt();renderLockRow();$("#fetesRow").hidden=!(nativeApp()&&plug("Prenoms"));$("#fetesSw").setAttribute("aria-checked",!!S.fetesContacts);$("#vibSw").setAttribute("aria-checked",S.vib!==false);
+ $("#hidePts").setAttribute("aria-checked",!!S.hidePoints);$("#buddySw").setAttribute("aria-checked",S.buddy!==false);$("#dictSw").setAttribute("aria-checked",S.dictate!==false);renderArtCredits();renderMySaintArt();renderLockRow();$("#vibSw").setAttribute("aria-checked",S.vib!==false);
  $("#musPick").innerHTML=MUSIQUES.map(([k,n])=>`<button type="button" aria-pressed="${(S.musique||"nappe")===k}" data-mus="${k}">${n}</button>`).join("");
  $("#musPick").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.musique=b.dataset.mus;save();renderSettings();musicStop();A.on=false;setTimeout(()=>{musicStart();clearTimeout(MUS.preview);MUS.preview=setTimeout(()=>{if($("#session").hidden)musicStop()},12000)},150)});
  $("#voixRow").hidden=!hasVoix();if(!REC.rec)renderVoix();$("#voixSw").setAttribute("aria-checked",S.buddyVoix!==false);
@@ -3201,14 +3199,13 @@ async function syncReminders(){
   const sz=S.snooze;if(sz&&sz.at>Date.now()+5000)list.push({id:90+sz.k,title:sz.title,body:sz.body,schedule:{at:new Date(sz.at),allowWhileIdle:true},isExactNotification:false,actionTypeId:"PRAY",extra:{kind:sz.k}});else if(sz){S.snooze=null;save()}
   try{await ln.registerActionTypes({types:[{id:"PRAY",actions:[{id:"now",title:"Prier maintenant"},{id:"later",title:"Dans 1 heure"}]}]})}catch(e){}
   try{await ln.createChannel({id:"angelus",name:"Angélus",description:"La cloche de l'Angélus, à midi",importance:4,visibility:1,sound:"angelus.wav"})}catch(e){}
-  if(S.fetesContacts&&!CONTACTS.loaded)await loadContacts(false);fetesReminders(list);
   if(list.length)await ln.schedule({notifications:list});
   if(note)note.textContent=`${list.length} rappel${list.length>1?"s":""} programmé${list.length>1?"s":""} ✓`;
  }catch(e){if(note)note.textContent="Impossible de programmer les rappels sur cet appareil."}}
 function initNative(){const ln=LN();if(!ln)return;try{ln.addListener("localNotificationActionPerformed",e=>{const nt=e&&e.notification||{},k=(nt.extra&&nt.extra.kind)||nt.id;
   if(e&&e.actionId==="later"){S.snooze={k,at:Date.now()+3600e3,title:nt.title||"Manete",body:nt.body||"C'est le moment de prier."};save();syncReminders();toast("Rappel dans 1 heure");setTimeout(()=>{try{plug("App").minimizeApp()}catch(e){}},900);return}
   if(S.snooze&&S.snooze.k===k){S.snooze=null;save()}
-  if(k===1||k===300){if(!SS&&!FL&&!NS)show("pray")}else if(k===6||k===7)startFlow("anges");else if(k===5&&getSaint())startFlow("saint");else if(k===3)startFlow("angelus");else if(k===4)startFlow("examen");else if(k===2)show("novena")})}catch(e){}syncReminders()}
+  if(k===1){if(!SS&&!FL&&!NS)show("pray")}else if(k===6||k===7)startFlow("anges");else if(k===5&&getSaint())startFlow("saint");else if(k===3)startFlow("angelus");else if(k===4)startFlow("examen");else if(k===2)show("novena")})}catch(e){}syncReminders()}
 
 /* ---------- Partage & sauvegarde ---------- */
 /* Passer APP_LIVE à true une fois la fiche Google Play en ligne : le lien est alors ajouté aux partages. */
@@ -3323,9 +3320,6 @@ $("#quitPause").onclick=()=>{$("#quitConfirm").hidden=true;pauseFlow()};
 $("#expressBtn").onclick=()=>startFlow("express");
 $("#tileRetreat").onclick=()=>{show("novena");setTimeout(()=>$("#retreatTitle").scrollIntoView({behavior:"smooth",block:"start"}),60)};
 $("#buddySw").onclick=()=>{S.buddy=S.buddy===false;save();renderSettings();renderAll()};
-$("#fetesSw").onclick=async()=>{if(S.fetesContacts){S.fetesContacts=false;CONTACTS.list=[];CONTACTS.loaded=false;save();renderSettings();renderFetes();syncReminders();return}
- const ok=await loadContacts(true);if(!ok){toast("Sans accès aux contacts, Manete ne peut pas trouver les fêtes. Tu peux l'autoriser dans les réglages du téléphone.");return}
- S.fetesContacts=true;save();renderSettings();renderFetes();syncReminders();const n=CONTACTS.list.length;toast(`${n} contact${n>1?"s":""} parcouru${n>1?"s":""}, sur ce téléphone uniquement.`)};
 $("#voixSw").onclick=()=>{S.buddyVoix=S.buddyVoix===false;save();renderSettings();if(S.buddyVoix!==false)buddySay("bravo")};
 $("#vibSw").onclick=()=>{S.vib=S.vib===false;save();renderSettings();haptic("dizaine")};
 $("#feteSw").onclick=()=>{S.fetesAuto=S.fetesAuto===false;save();applyFond();renderSettings()};
@@ -3543,7 +3537,7 @@ function backPressed(){const box=$("#shareBox"),sil=$("#silence"),ses=$("#sessio
  if($("#view-pray").hidden){show(["settings","table","sanct"].some(v=>!$("#view-"+v).hidden)?(lastView||"pray"):"pray");return}
  const A=plug("App");try{A&&A.minimizeApp&&A.minimizeApp()}catch(e){}}
 function initPhone(){ttsInit();const AP=plug("App");
- if(nativeApp()&&AP){try{AP.addListener("backButton",backPressed);AP.addListener("appStateChange",s=>{if(s&&!s.isActive){relock();ttsOff()}else if(s&&s.isActive){chapRead();renderFetes()}})}catch(e){}}
+ if(nativeApp()&&AP){try{AP.addListener("backButton",backPressed);AP.addListener("appStateChange",s=>{if(s&&!s.isActive){relock();ttsOff()}else if(s&&s.isActive){chapRead()}})}catch(e){}}
  document.addEventListener("visibilitychange",()=>{if(document.hidden){ttsOff();if(nativeApp())relock();MUS.els.forEach(a=>{try{a&&a.pause()}catch(e){}})}
   else if(A.on&&!MUS.synth){const a=MUS.els[MUS.cur];if(a&&a.paused)a.play().catch(()=>{})}})}
 
@@ -3589,31 +3583,6 @@ async function chapRead(){const P=nativeApp()&&plug("Preferences");if(!P)return 
   const set=o.set||DAY_MYST[new Date().getDay()],prev=S.paused&&S.paused.kind==="chapelet"?S.paused:null;
   S.chapTs=o.ts;S.paused={kind:"chapelet",set,i:chapIndex(set,o.d||0,o.b||0),data:{},elapsed:prev?prev.elapsed:0,at:o.ts};save();renderResume();return true}catch(e){return false}}
 
-/* ---------- Fêtes des prénoms de mes contacts (facultatif, tout reste sur le téléphone) ---------- */
-const PRENOM_DATE={jean:"12-27",marie:"08-15",pierre:"06-29",paul:"06-29",joseph:"03-19",louis:"08-25",francois:"10-04",jacques:"07-25",thomas:"07-03",philippe:"05-03",andre:"11-30",michel:"09-29",martin:"11-11",nicolas:"12-06",antoine:"06-13",anne:"07-26",catherine:"11-25",elisabeth:"11-17",therese:"10-01",benoit:"07-11",bernard:"08-20",charles:"11-04",claire:"08-11",dominique:"08-08",etienne:"12-26",georges:"04-23",gregoire:"09-03",helene:"08-18",jeanne:"05-30",laurent:"08-10",luc:"10-18",marc:"04-25",matthieu:"09-21",monique:"08-27",augustin:"08-28",cecile:"11-22",agnes:"01-21",lucie:"12-13",marthe:"07-29",rita:"05-22",vincent:"01-22",albert:"11-15",ignace:"07-31",sebastien:"01-20",fabien:"01-20",hubert:"11-03",genevieve:"01-03",clotilde:"06-04",camille:"07-14",gabriel:"09-29",raphael:"09-29",bernadette:"02-18",jerome:"09-30",simon:"10-28",jude:"10-28",barthelemy:"08-24",mathieu:"09-21",madeleine:"07-22"};
-const PRENOM_EXCLUS=new Set(["nom","innocents","anges","esprit","sacrement","sept","quarante","quatre","premiers","martyrs","ancetres"]);
-const normPrenom=t=>String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
-let NAMEDAYS=null;
-function nameDays(){if(NAMEDAYS)return NAMEDAYS;const M={},add=(n,k)=>{const x=normPrenom(n);if(!x||PRENOM_EXCLUS.has(x)||x.length<3)return;(M[x]=M[x]||new Set()).add(k)};
- const re=/(?:Saints?|Saintes?|Bienheureux|Bienheureuse|saints?|saintes?)\s+([A-ZÀ-Ý][a-zà-ÿœ]+(?:-[A-ZÀ-Ý][a-zà-ÿœ]+)*)((?:\s*(?:,|et)\s+[A-ZÀ-Ý][a-zà-ÿœ]+(?:-[A-ZÀ-Ý][a-zà-ÿœ]+)*)*)/g;
- const scan=(txt,k)=>{let m;re.lastIndex=0;while((m=re.exec(txt))){add(m[1],k);(m[2]||"").split(/\s*(?:,|\bet\b)\s*/).forEach(n=>{if(n)add(n,k)})}};
- const all=new Set([...Object.keys(SAINT_JOUR),...Object.keys(FIXED),...Object.keys(AUTRES_SAINTS)]);
- all.forEach(k=>{if(SAINT_JOUR[k])scan(SAINT_JOUR[k],k);if(FIXED[k])scan(FIXED[k].n,k);(AUTRES_SAINTS[k]||[]).forEach(t=>scan(t,k))});
- Object.entries(PRENOM_DATE).forEach(([n,k])=>{M[n]=new Set([k])});
- NAMEDAYS=M;return M}
-function fetesOn(k){const D=nameDays();return CONTACTS.list.filter(c=>{const x=D[normPrenom(c.prenom)];return x&&x.has(k)})}
-const CONTACTS={list:[],loaded:false};
-async function loadContacts(ask){const P=nativeApp()&&plug("Prenoms");if(!P)return false;
- try{const r=await P.lire({demander:!!ask});if(!r||!r.autorise){CONTACTS.list=[];return false}CONTACTS.list=(r.contacts||[]).filter(c=>c&&c.prenom);CONTACTS.loaded=true;return true}catch(e){return false}}
-function mmdd(d=new Date()){return String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-async function renderFetes(){const el=$("#fetesCard");if(!el)return;if(!S.fetesContacts||!nativeApp()){el.hidden=true;return}
- if(!CONTACTS.loaded)await loadContacts(false);const L=fetesOn(mmdd());
- if(!L.length){el.hidden=true;return}
- el.hidden=false;el.innerHTML=`<div class="icon">${ICONS.etoile.svg()}</div><div style="min-width:0;display:flex;flex-direction:column;gap:8px"><span class="eyebrow">Bonne fête !</span><b style="font-family:var(--f-display);font-weight:500">Aujourd'hui, on fête ${esc([...new Set(L.map(c=>c.prenom))].join(", "))}</b><div style="display:flex;flex-direction:column;gap:6px">${L.slice(0,6).map((c,i)=>`<div class="row between" style="gap:8px"><span style="min-width:0">${esc(c.nom)}</span><button class="small-link" type="button" data-fete="${i}">Souhaiter</button></div>`).join("")}</div>${L.length>6?`<span class="nov-status">et ${L.length-6} autre${L.length>7?"s":""}</span>`:""}</div>`;
- el.querySelectorAll("[data-fete]").forEach(b=>b.onclick=()=>{const c=L[+b.dataset.fete];shareText("Bonne fête",`Bonne fête, ${c.prenom} ! Que ton saint patron veille sur toi.`)})}
-function fetesReminders(at){if(!S.fetesContacts||!CONTACTS.list.length)return;const t=new Date();let n=0;
- for(let k=0;k<30&&n<20;k++){const d=new Date(t.getFullYear(),t.getMonth(),t.getDate()+k,9,0);if(d<=t)continue;const L=fetesOn(mmdd(d));if(!L.length)continue;
-  const noms=[...new Set(L.map(c=>c.prenom))].join(", ");at.push({id:300+k,title:`Bonne fête à ${noms}`,body:`C'est la fête de ${L.slice(0,3).map(c=>c.nom).join(", ")}${L.length>3?"…":""}. Pense à leur souhaiter !`,schedule:{at:d,allowWhileIdle:true},isExactNotification:false,extra:{kind:300}});n++}}
 
 function wrapLines(ctx,text,maxW){const words=text.split(/\s+/),lines=[];let cur="";words.forEach(w=>{const t=cur?cur+" "+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t});if(cur)lines.push(cur);return lines}
 async function verseCard(v){const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d"),cs=getComputedStyle(document.documentElement),col=n=>cs.getPropertyValue(n).trim();
@@ -3665,7 +3634,7 @@ function initLinks(){
  if(location.hash==="#express"){go("#express");try{history.replaceState(null,"",location.pathname)}catch(e){}}
  const A=plug("App");if(nativeApp()&&A){try{A.addListener("appUrlOpen",e=>go(e&&e.url));A.getLaunchUrl().then(r=>go(r&&r.url)).catch(()=>{})}catch(e){}}
  if(!nativeApp()&&window.isSecureContext&&location.protocol!=="file:"&&"serviceWorker" in navigator&&document.querySelector('link[rel="manifest"]')){navigator.serviceWorker.register("sw.js").catch(()=>{})}}
-renderAll();showVerse();renderGallery();initNative();initLinks();initPhone();loadVoix();chapRead();renderFetes();$("#buddyHome").addEventListener("click",()=>buddySay("bonjour"));initAwake();syncWidget();loadArt();
+renderAll();showVerse();renderGallery();initNative();initLinks();initPhone();loadVoix();chapRead();$("#buddyHome").addEventListener("click",()=>buddySay("bonjour"));initAwake();syncWidget();loadArt();
 </script>
 
 </body>
