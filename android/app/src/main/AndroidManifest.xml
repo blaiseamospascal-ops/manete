@@ -50,6 +50,35 @@
                 android:resource="@xml/prayer_widget_info" />
         </receiver>
 
+        <!-- Widget « Mon chapelet » -->
+        <receiver
+            android:name=".RosaryWidget"
+            android:exported="false"
+            android:label="@string/rosary_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="app.manete.priere.ROSARY_PLUS" />
+                <action android:name="app.manete.priere.ROSARY_MINUS" />
+                <action android:name="app.manete.priere.ROSARY_RESET" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rosary_widget_info" />
+        </receiver>
+
+        <!-- Widget « Mon saint patron » -->
+        <receiver
+            android:name=".SaintWidget"
+            android:exported="false"
+            android:label="@string/saint_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/saint_widget_info" />
+        </receiver>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -67,6 +96,8 @@
     <!-- Micro : seulement pour enregistrer les voix du petit bonhomme, gardées sur le téléphone -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- Contacts (lecture seule, facultatif) : signaler les fêtes du jour. Rien n'est enregistré ni envoyé. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- Verrou du carnet par empreinte ou visage -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <!-- Rappels : pas besoin d'alarmes exactes (évite la déclaration Play « Exact alarm ») -->

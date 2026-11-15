@@ -24,6 +24,7 @@ Ce que tu coches pendant la préparation à la confession n'est **jamais enregis
 - **Lecture à voix haute** : le texte est lu par la synthèse vocale installée sur ton téléphone. L'app n'envoie rien elle-même ; le fonctionnement de cette voix dépend des réglages de ton téléphone.
 - **Verrou du carnet** : la vérification de l'empreinte ou du visage est faite par Android. L'app reçoit seulement « oui » ou « non » et n'a jamais accès à tes données biométriques.
 - **Micro** : utilisé seulement quand tu touches « Enregistrer » pour donner ta voix au petit bonhomme. Les enregistrements restent sur ton téléphone et ne sont envoyés nulle part. Tu peux les supprimer à tout moment.
+- **Contacts (facultatif, désactivé par défaut)** : si tu actives « Fêtes de mes contacts », Manete lit seulement les prénoms et noms de tes contacts, sur ton téléphone, pour te signaler ceux dont c'est la fête. Ils ne sont ni enregistrés, ni envoyés, ni modifiés. Tu peux couper cette option à tout moment, et retirer l'autorisation dans les réglages du téléphone.
 - **Sauvegarde automatique d'Android** : désactivée. Tes données ne sont pas copiées vers ton compte Google.
 
 ## Sauvegarde

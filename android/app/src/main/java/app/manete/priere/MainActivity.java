@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(BarsPlugin.class);
+        registerPlugin(PrenomsPlugin.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -17,5 +18,7 @@ public class MainActivity extends BridgeActivity {
     public void onPause() {
         super.onPause();
         PrayerWidget.refreshAll(this);
+        RosaryWidget.refreshAll(this);
+        SaintWidget.refreshAll(this);
     }
 }

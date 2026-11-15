@@ -12,4 +12,8 @@
     <string name="sc_chapelet_long">Prier le chapelet</string>
     <string name="sc_angelus_short">Angélus</string>
     <string name="sc_angelus_long">Prier l\'Angélus</string>
+    <string name="rosary_widget_label">Mon chapelet</string>
+    <string name="rosary_widget_description">Garde ta place dans le chapelet, grain par grain</string>
+    <string name="saint_widget_label">Mon saint patron</string>
+    <string name="saint_widget_description">Ton saint patron et son invocation</string>
 </resources>
