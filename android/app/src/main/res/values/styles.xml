@@ -13,6 +13,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- Barres du téléphone aux couleurs de l'app dès le lancement (bleu nuit) -->
+        <item name="android:statusBarColor">#0E1A36</item>
+        <item name="android:navigationBarColor">#0A1328</item>
+        <item name="android:windowBackground">@color/manete_fond</item>
     </style>
 
 

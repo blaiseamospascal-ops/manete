@@ -1,5 +1,6 @@
 package app.manete.priere;
 
+import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -34,10 +35,67 @@ public class PrayerWidget extends AppWidgetProvider {
         for (int id : ids) {
             update(context, manager, id);
         }
+        scheduleMidnight(context);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+        String a = intent.getAction();
+        if (ACTION_MIDNIGHT.equals(a) || Intent.ACTION_TIME_CHANGED.equals(a)
+                || Intent.ACTION_TIMEZONE_CHANGED.equals(a) || Intent.ACTION_DATE_CHANGED.equals(a)
+                || Intent.ACTION_MY_PACKAGE_REPLACED.equals(a)) {
+            refreshAll(context);
+            scheduleMidnight(context);
+        }
+    }
+
+    @Override
+    public void onEnabled(Context context) {
+        scheduleMidnight(context);
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (am != null) {
+            am.cancel(midnightIntent(context));
+        }
+    }
+
+    static final String ACTION_MIDNIGHT = "app.manete.priere.WIDGET_MIDNIGHT";
+
+    private static PendingIntent midnightIntent(Context context) {
+        Intent i = new Intent(context, PrayerWidget.class);
+        i.setAction(ACTION_MIDNIGHT);
+        return PendingIntent.getBroadcast(context, 3, i, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    /**
+     * Réveil peu après minuit pour changer de saint et de parole, même si l'app n'est pas ouverte.
+     * Alarme non exacte : Android peut la décaler un peu pour économiser la batterie,
+     * mais elle part au plus tard quand le téléphone se réveille.
+     */
+    static void scheduleMidnight(Context context) {
+        try {
+            AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (am == null) {
+                return;
+            }
+            Calendar next = Calendar.getInstance();
+            next.add(Calendar.DAY_OF_YEAR, 1);
+            next.set(Calendar.HOUR_OF_DAY, 0);
+            next.set(Calendar.MINUTE, 1);
+            next.set(Calendar.SECOND, 0);
+            next.set(Calendar.MILLISECOND, 0);
+            am.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.getTimeInMillis(), midnightIntent(context));
+        } catch (Exception ignored) {
+        }
     }
 
     /** Met à jour tous les widgets posés sur l'écran d'accueil (appelé quand l'app passe en arrière-plan). */
     static void refreshAll(Context context) {
+        scheduleMidnight(context);
         try {
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             int[] ids = manager.getAppWidgetIds(new ComponentName(context, PrayerWidget.class));
