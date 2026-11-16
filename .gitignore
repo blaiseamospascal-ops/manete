@@ -10,3 +10,5 @@ android/app/release/
 *.aab
 *.apk
 .DS_Store
+Claude outputs/
+Manete/
