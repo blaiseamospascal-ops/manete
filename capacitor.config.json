@@ -2,5 +2,13 @@
   "appId": "app.manete.priere",
   "appName": "Manete",
   "webDir": "www",
-  "android": { "backgroundColor": "#0e1a36" }
+  "android": {
+    "backgroundColor": "#0e1a36"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_manete",
+      "iconColor": "#D9AD55"
+    }
+  }
 }
